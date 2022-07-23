@@ -1,23 +1,37 @@
 package com.mobeedev.kajakorg.data.model.detail
 
-import com.google.android.gms.maps.model.LatLng
 import com.mobeedev.kajakorg.data.datasource.local.db.path.SectionDB
+import com.tickaroo.tikxml.annotation.Attribute
+import com.tickaroo.tikxml.annotation.Element
+import com.tickaroo.tikxml.annotation.PropertyElement
+import com.tickaroo.tikxml.annotation.Xml
 
-data class SectionDto(
-    val id: Int,
-    val type: String,
-    val name: String,
-    val nuisance: String,
-    val difficult: String,
-    val picturesque: String,
-    val cleanliness: String,
-    val sortOrder: String,
-    val description: String,
+@Xml(name = "odcinek")
+data class SectionDto (
+    @Attribute(name = "id")
+    var id: Int = 0,
+    @Attribute(name = "typ")
+    var type: String = "",
+    @Attribute(name = "nazwa")
+    var name: String = "",
+    @Attribute(name = "uciazliwosc")
+    var nuisance: String = "",
+    @Attribute(name = "trudnosc")
+    var difficult: String = "",
+    @Attribute(name = "malowniczosc")
+    var picturesque: String = "",
+    @Attribute(name = "czystosc")
+    var cleanliness: String = "",
+    @Attribute(name = "kolejnosc")
+    var sortOrder: String = "",
+    @PropertyElement(name = "opis")
+    var description: String = "",
 
-    val events: MutableList<EventDto> = mutableListOf()
+    @Element(name = "punkt")
+    var events: MutableList<EventDto> = mutableListOf()
 )
 
-fun SectionDto.toDB(pathId:Int): SectionDB = SectionDB(
+fun SectionDto.toDB(pathId: Int): SectionDB = SectionDB(
     sectionId = id,
     pathId = pathId,
     type = type,

@@ -9,10 +9,10 @@ import com.mobeedev.kajakorg.data.model.detail.EventDto
 data class EventDB(
     @PrimaryKey
     val eventId: Int = 0,
-    val sectionId: Int,
+    val pathId: Int = -1,
+    val sectionId: Int = -1,
 
     val townName: String,
-    val name: String,
     val position: LatLng,
     val atKilometer: Double,
     val label: String,
@@ -22,9 +22,9 @@ data class EventDB(
 fun EventDB.toDto(): EventDto = EventDto(
     id = eventId,
     townName = townName,
-    name = name,
-    position = position,
-    atKilometer = atKilometer,
+    lat = position.latitude.toString(),
+    lng = position.longitude.toString(),
+    atKilometer = atKilometer.toString(),
     label = label,
-    sortOrder = sortOrder
+    sortOrder = sortOrder.toString()
 )

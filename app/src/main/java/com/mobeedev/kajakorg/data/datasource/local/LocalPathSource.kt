@@ -14,8 +14,9 @@ class LocalPathSource(
     suspend fun savePathsOverview(paths: List<PathOverviewDto>) =
         kajakPathDao.insertAllPathsOverview(paths.map { it.toDB() })
 
-    suspend fun savePaths(paths: List<PathDto>) =
-        kajakPathDao.insertAllPaths(paths.map { it.toDB() })
+    suspend fun savePaths(paths: List<PathDto>) = paths.forEach { path->
+        kajakPathDao.insert(path)
+    }
 
     suspend fun savePath(path: PathDto) = kajakPathDao.insert(path)
 

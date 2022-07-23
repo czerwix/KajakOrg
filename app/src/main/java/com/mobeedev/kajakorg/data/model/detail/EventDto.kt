@@ -2,26 +2,63 @@ package com.mobeedev.kajakorg.data.model.detail
 
 import com.google.android.gms.maps.model.LatLng
 import com.mobeedev.kajakorg.data.datasource.local.db.path.EventDB
+import com.tickaroo.tikxml.annotation.Attribute
+import com.tickaroo.tikxml.annotation.Element
+import com.tickaroo.tikxml.annotation.Xml
 
+@Xml(name = "punkt")
 data class EventDto(
-    val id: Int,
-    val townName: String,
-    val name: String,
-    val position: LatLng,
-    val atKilometer: Double,
-    val label: String,
-    val sortOrder: Int,
+    @Attribute(name = "id")
+    var id: Int = 0,
+    @Attribute(name = "miejscowosc")
+    var townName: String = "",
+    @Attribute(name = "ns")
+    var lat: String = "",
+    @Attribute(name = "we")
+    var lng: String = "",
+    @Attribute(name = "km")
+    var atKilometer: String = "",
+    @Attribute(name = "etykieta")
+    var label: String = "",
+    @Attribute(name = "kolejnosc")
+    var sortOrder: String = "-1",
 
-    val eventDescription: MutableList<EventDescriptionDto> = mutableListOf()
+    @Element(name = "opispunktu")
+    var eventDescription: MutableList<EventDescriptionDto> = mutableListOf()
 )
 
-fun EventDto.toDB(sectionId: Int): EventDB = EventDB(
+fun EventDto.toSectionDB(sectionId: Int): EventDB = EventDB(
     eventId = id,
     sectionId = sectionId,
     townName = townName,
-    name = name,
-    position = position,
-    atKilometer = atKilometer,
+    position = LatLng(lat.toDouble(), lng.toDouble()),
+    atKilometer = if (atKilometer.isNullOrEmpty()) {
+        0.0
+    } else {
+        atKilometer.toDouble()
+    },
     label = label,
-    sortOrder = sortOrder
+    sortOrder = if (sortOrder?.isEmpty()) {
+        -1
+    } else {
+        sortOrder.toInt()
+    },
+)
+
+fun EventDto.toPathDB(pathId: Int): EventDB = EventDB(
+    eventId = id,
+    pathId = pathId,
+    townName = townName,
+    position = LatLng(lat.toDouble(), lng.toDouble()),
+    atKilometer = if (atKilometer.isNullOrEmpty()) {
+        0.0
+    } else {
+        atKilometer.toDouble()
+    },
+    label = label,
+    sortOrder = if (sortOrder?.isEmpty()) {
+        -1
+    } else {
+        sortOrder.toInt()
+    },
 )

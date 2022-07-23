@@ -5,7 +5,7 @@ package com.mobeedev.kajakorg.data.model.detail
  * the specified names of bridges,Weir etc are names very specific to Polish language,
  * thats wehy i have left them in polish. might attempt to translate these values in teh future.
  */
-enum class EventType(val value: String) {
+enum class EventType(val polishName: String) {
     Biwak("biwak"),
     Jaz("jaz"),
     Most("most"),
@@ -14,20 +14,30 @@ enum class EventType(val value: String) {
     Stanica("stanica"),
     Ujscie("ujście"),
     Uwaga("uwaga"),
-    Wyplyw("wypływ");
+    Wyplyw("wypływ"),
+    Wypozyczalnia("wypożyczalnia"),
+    Niebezpieczeństwo("niebezpieczeństwo"),
+    Lekarz("lekarz"),
+    Bar("bar"),
+    sluza("śluza");
 
     companion object {
         public fun fromValue(value: String): EventType = when (value) {
-            "biwak"     -> Biwak
-            "jaz"       -> Jaz
-            "most"      -> Most
+            "biwak" -> Biwak
+            "jaz" -> Jaz
+            "most" -> Most
             "przenoska" -> Przenoska
-            "sklep"     -> Sklep
-            "stanica"   -> Stanica
-            "ujście"    -> Ujscie
-            "uwaga"     -> Uwaga
-            "wypływ"    -> Wyplyw
-            else        -> throw error("Unrecognised pathType")
+            "sklep" -> Sklep
+            "stanica" -> Stanica
+            "ujście" -> Ujscie
+            "uwaga" -> Uwaga
+            "wypływ" -> Wyplyw
+            "wypożyczalnia" -> Wypozyczalnia
+            "niebezpieczeństwo" -> Niebezpieczeństwo
+            "lekarz" -> Lekarz
+            "bar" -> Bar
+            "śluza"->sluza
+            else -> throw error("Unrecognised Event type: $value")
         }
     }
 }

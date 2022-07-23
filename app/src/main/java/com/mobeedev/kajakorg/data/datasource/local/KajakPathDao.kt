@@ -5,6 +5,8 @@ import com.mobeedev.kajakorg.data.datasource.local.db.overview.PathOverviewDB
 import com.mobeedev.kajakorg.data.datasource.local.db.path.*
 import com.mobeedev.kajakorg.data.model.detail.PathDto
 import com.mobeedev.kajakorg.data.model.detail.toDB
+import com.mobeedev.kajakorg.data.model.detail.toPathDB
+import com.mobeedev.kajakorg.data.model.detail.toSectionDB
 
 @Dao
 abstract class KajakPathDao {
@@ -31,13 +33,19 @@ abstract class KajakPathDao {
     @Transaction
     open suspend fun insert(path: PathDto) {
         insert(path.toDB())
-        path.sections.forEach { sectionDto ->
+        path.sections?.forEach { sectionDto ->
             insert(sectionDto.toDB(path.id))
             sectionDto.events.forEach { eventDto ->
-                insert(eventDto.toDB(sectionDto.id))
+                insert(eventDto.toSectionDB(sectionDto.id))
                 eventDto.eventDescription.forEach { eventDescriptionDto ->
                     insert(eventDescriptionDto.toDB(eventDto.id))
                 }
+            }
+        }
+        path.events?.forEach { eventDto ->
+            insert(eventDto.toPathDB(path.id))
+            eventDto.eventDescription.forEach { eventDescriptionDto ->
+                insert(eventDescriptionDto.toDB(eventDto.id))
             }
         }
     }
@@ -53,6 +61,8 @@ abstract class KajakPathDao {
     @Query("SELECT * FROM SectionDB WHERE pathId=:pathId")
     abstract fun getSectionByPath(pathId: Int): List<SectionDB>
 
+    @Query("SELECT * FROM EventDB WHERE pathId=:pathId")
+    abstract fun getEventByPath(pathId: Int): List<EventDB>
     @Query("SELECT * FROM EventDB WHERE sectionId=:sectionId")
     abstract fun getEventBySection(sectionId: Int): List<EventDB>
 
@@ -64,6 +74,7 @@ abstract class KajakPathDao {
     open suspend fun getPathDto(pathId: Int): PathDto {
         val path = getPath(pathId).toDto()
         val sectionsForPath = getSectionByPath(pathId).map { it.toDto() }
+        val eventForPath = getEventByPath(pathId).map { it.toDto() }
 
         sectionsForPath.forEach { section ->
             val eventsForSection = getEventBySection(section.id).map { it.toDto() }
@@ -75,8 +86,16 @@ abstract class KajakPathDao {
 
             section.events.addAll(eventsForSection.toMutableList())
         }
+
+        eventForPath.forEach { event ->
+            val eventDescriptionForEvent =
+                getEventDescriptionByEvent(event.id).map { it.toDto() }
+            event.eventDescription.addAll(eventDescriptionForEvent)
+        }
+
         return path.apply {
-            sections.addAll(sectionsForPath)
+            sections?.addAll(sectionsForPath)
+            events?.addAll(eventForPath)
         }
     }
 }

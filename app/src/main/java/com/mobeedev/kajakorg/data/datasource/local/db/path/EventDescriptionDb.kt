@@ -17,7 +17,7 @@ data class EventDescriptionDB(
 )
 
 fun EventDescriptionDB.toDto(): EventDescriptionDto = EventDescriptionDto(
-    type = type,
-    sortOrder = sortOrder,
+    eventType = type.toString(),
+    sortOrder = sortOrder.toString(),
     description = description
 )
