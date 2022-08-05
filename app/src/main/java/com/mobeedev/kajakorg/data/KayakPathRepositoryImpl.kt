@@ -1,19 +1,29 @@
 package com.mobeedev.kajakorg.data
 
+import android.content.Context
 import android.util.Log
+import androidx.datastore.preferences.core.edit
+import com.mobeedev.kajakorg.common.extensions.dataStore
+import com.mobeedev.kajakorg.data.datasource.local.KajakOrgHtmlParser.parsePathHTML
 import com.mobeedev.kajakorg.data.datasource.local.LocalPathSource
+import com.mobeedev.kajakorg.data.datasource.local.PreferencesKeys
 import com.mobeedev.kajakorg.data.datasource.remote.RemotePathSource
 import com.mobeedev.kajakorg.data.model.detail.PathDto
 import com.mobeedev.kajakorg.data.model.overview.PathOverviewDto
+import com.mobeedev.kajakorg.domain.error.DataErrors
 import com.mobeedev.kajakorg.domain.error.runRecoverCatching
 import com.mobeedev.kajakorg.domain.repository.KayakPathRepository
-import org.jsoup.nodes.Document
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import java.time.ZonedDateTime
 
 val ID_REGEX = Regex("[0-9]+")
 
 class KayakPathRepositoryImpl(
     private val remotePathSource: RemotePathSource,
-    private val localPathSource: LocalPathSource
+    private val localPathSource: LocalPathSource,
+    private val context: Context
 ) : KayakPathRepository {
 
     override suspend fun loadAllAvailablePaths() = runRecoverCatching {
@@ -26,8 +36,11 @@ class KayakPathRepositoryImpl(
 
     override suspend fun loadAllPathsDetails(paths: List<Int>) = runRecoverCatching {
         val pathDetails = mutableListOf<PathDto>()
+
         paths.forEach { pathId ->
-            //todo for nmow removing a badly formatted XML path with id 91 and 72... todo in the future extend xmlParser library and allow badly formatted xml files.
+            //todo for now removing a badly formatted XML path with id 91 and 72...
+            //todo in the future extend xmlParser library and allow badly formatted xml files.
+            //or fix issues on website or add maybe google drive source with upodated values?
             if (pathId == 91 || pathId == 72) {
                 Log.d(
                     "--Debug--",
@@ -43,42 +56,31 @@ class KayakPathRepositoryImpl(
                 )
             }
         }
-        localPathSource.savePaths(pathDetails)
+
         pathDetails
+    }.onSuccess {
+        localPathSource.savePaths(it)
+        context.dataStore.edit { prefs ->
+            prefs[PreferencesKeys.lastUpdateDate] = ZonedDateTime.now().toString()
+        }
     }.map {
         it.size > 0//todo think of better solution to know if paths are loaded
     }
 
-    //todo extract to dedicated parser
-    private fun parsePathHTML(response: Document): List<PathOverviewDto> {
-        val pathsRawData =
-            response.select("table").select("tr").map { it.toString() }.toMutableList()
-                .apply { removeFirst() }
-        val pathsParsed = mutableListOf<PathOverviewDto>()
+    override suspend fun getPathsOverviewDetails(): Result<List<PathOverviewDto>> {
+        TODO("Not yet implemented")
+    }
 
-        pathsRawData.forEach { pathraw: String ->
-            val wipItem = pathraw.replace("<tr>", "")
-                .replace("<td>", "")
-                .replace("</tr>", "")
-                .split("</td>")
-                .map { it.replace("//n", "").trim() }
+    override suspend fun getPathsDetails(): Result<List<PathDto>> {
+        TODO("Not yet implemented")
+    }
 
-            pathsParsed.add(
-                PathOverviewDto(
-                    ID_REGEX.find(wipItem[7])?.value?.toInt()
-                        ?: error("Path can not have null ID."),
-                    wipItem[0],//todo extract to const
-                    wipItem[1].toInt(),
-                    wipItem[2].toDouble(),
-                    wipItem[3].toInt(),
-                    wipItem[4].toInt(),
-                    wipItem[5],
-                    wipItem[6]
-                )
+    override suspend fun getLastUpdateDate(): Result<ZonedDateTime> = runRecoverCatching {
+        var lastUpdateString: Flow<String> = context.dataStore.data.map { prefs ->
+            prefs[PreferencesKeys.lastUpdateDate] ?: throw DataErrors.LastUpdateDateNotSet(
+                "No Previous Data information set. Please load data from Kajak.org.pl"
             )
         }
-
-
-        return pathsParsed
+        ZonedDateTime.parse(lastUpdateString.first())
     }
 }

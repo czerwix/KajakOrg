@@ -1,5 +1,9 @@
 package com.mobeedev.kajakorg
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.dataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.multidex.MultiDexApplication
 import com.mobeedev.kajakorg.ui.di.AppModule
 import com.mobeedev.kajakorg.ui.di.MainModule

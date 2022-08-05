@@ -1,7 +1,12 @@
 package com.mobeedev.kajakorg.ui.di
 
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.security.crypto.EncryptedSharedPreferences
 import com.mobeedev.kajakorg.common.config.EnvironmentConfiguration
+import com.mobeedev.kajakorg.common.extensions.dataStore
 import com.mobeedev.kajakorg.data.datasource.remote.KajakOrgService
 import com.mobeedev.kajakorg.data.db.KajakDB
 import com.tickaroo.tikxml.TikXml
@@ -18,6 +23,8 @@ class AppModule {
         single { KajakDB.getInstance(androidContext()) }
 
         single { get<KajakDB>().kajakPathDao() }
+
+        single<DataStore<Preferences>> { get<Context>().dataStore }
     }
 
     val configModule = module {

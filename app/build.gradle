@@ -90,9 +90,11 @@ dependencies {
     implementation "androidx.room:room-ktx:2.4.2"
     kapt  "androidx.room:room-compiler:$room_version"
 
+    //dataStore
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
 
     //map
-    implementation 'com.google.android.gms:play-services-maps:18.0.2'
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
 
     //test
     testImplementation 'junit:junit:4.13.2'
