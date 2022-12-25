@@ -1,4 +1,4 @@
-package com.mobeedev.kajakorg.ui.theme
+package com.mobeedev.kajakorg.designsystem.theme
 
 import android.app.Activity
 import android.os.Build
@@ -38,7 +38,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun KajakOrgTheme(
+fun KajakTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
@@ -62,7 +62,7 @@ fun KajakOrgTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = KajakTypography,
+        typography = KajakOrgTypography,
         content = content
     )
 }

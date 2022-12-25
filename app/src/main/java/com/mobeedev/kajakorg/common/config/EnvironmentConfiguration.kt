@@ -1,7 +1,7 @@
 package com.mobeedev.kajakorg.common.config
 
 object EnvironmentConfiguration {
-    const val baseUrl = "http://kajak.org.pl"
+    const val baseUrl = "https://web.archive.org"
 
     const val maxTimeout = 16L
 

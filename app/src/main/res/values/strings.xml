@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">KajakOrg</string>
+    <string name="retry_data_load">Try again</string>
+
+
+
+    <string name="refresh_content_description">refresh</string>
+    <string name="could_not_load_path_data">Could not load path data, please check if kajak.org.pl is active and your internet is working.</string>
 </resources>

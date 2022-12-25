@@ -6,5 +6,6 @@ import java.time.ZonedDateTime
 
 class GetLastUpdateDateUseCase(private val kayakPathRepository: KayakPathRepository) :
     NoParametersUseCase<ZonedDateTime>() {
+
     override suspend fun run(): Result<ZonedDateTime> = kayakPathRepository.getLastUpdateDate()
 }

@@ -6,5 +6,6 @@ import com.mobeedev.kajakorg.domain.usecase.comon.NoParametersUseCase
 
 class GetPathsOverviewUseCase(private val kayakPathRepository: KayakPathRepository) :
     NoParametersUseCase<List<PathOverviewDto>>() {
+
     override suspend fun run() = kayakPathRepository.getPathsOverviewDetails()
 }

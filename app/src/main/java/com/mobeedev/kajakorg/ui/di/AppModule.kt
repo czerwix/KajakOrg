@@ -12,6 +12,7 @@ import com.mobeedev.kajakorg.data.db.KajakDB
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -51,12 +52,12 @@ class AppModule {
                 .apply {
                     connectTimeout(timeout, TimeUnit.SECONDS).readTimeout(timeout, TimeUnit.SECONDS)
                 }
-//                .addInterceptor(
-//                    HttpLoggingInterceptor()
-//                        .apply {
-//                            //todo remove if not in debug flavour
-//                            level = HttpLoggingInterceptor.Level.BODY
-//                        })
+                .addInterceptor(
+                    HttpLoggingInterceptor()
+                        .apply {
+                            //todo remove if not in debug flavour
+                            level = HttpLoggingInterceptor.Level.BODY
+                        })
                 .build()
         }
 

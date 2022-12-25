@@ -1,13 +1,14 @@
-package com.mobeedev.kajakorg.ui.theme
+package com.mobeedev.kajakorg.designsystem.theme
 
 import androidx.compose.material3.Typography
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 // Set of Material typography styles to start with
-val KajakTypography = Typography(
+val KajakOrgTypography = Typography(
     displayLarge = TextStyle(
         fontWeight = FontWeight.W400,
         fontSize = 57.sp,

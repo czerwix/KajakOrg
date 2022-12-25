@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/user/AndroidStudioProjects/KajakOrg/app/src/main/res/drawable/ic_launcher_background.xml" value="0.127" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/KajakOrg/app/src/main/res/drawable/refresh-48px.xml" value="0.127" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/KajakOrg/app/src/main/res/drawable/refresh_icon.xml" value="0.1" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/KajakOrg/app/src/main/res/drawable/sync_problem_icon.xml" value="0.3635" />
         <entry key="..\:/Users/user/AndroidStudioProjects/KajakOrg/app/src/main/res/xml/network_security_config.xml" value="0.87" />
       </map>
     </option>

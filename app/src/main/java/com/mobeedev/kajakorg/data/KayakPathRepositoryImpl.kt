@@ -48,8 +48,10 @@ class KayakPathRepositoryImpl(
                 )
             } else {
                 Log.d("--Debug--", "started pathId: $pathId")
+
                 val result = remotePathSource.getPath(pathId)
                 pathDetails.add(result.pathDto)
+
                 Log.d(
                     "--Debug--",
                     "parsed pathId: ${result.pathDto.id} name:${result.pathDto.name}"
@@ -67,18 +69,19 @@ class KayakPathRepositoryImpl(
         it.size > 0//todo think of better solution to know if paths are loaded
     }
 
-    override suspend fun getPathsOverviewDetails(): Result<List<PathOverviewDto>> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getPathsOverviewDetails(): Result<List<PathOverviewDto>> =
+        runRecoverCatching {
+            localPathSource.getPathsOverview()
+        }
 
-    override suspend fun getPathsDetails(): Result<List<PathDto>> {
-        TODO("Not yet implemented")
+    override suspend fun getPathsDetails(): Result<List<PathDto>> = runRecoverCatching {
+        localPathSource.getPaths()
     }
 
     override suspend fun getLastUpdateDate(): Result<ZonedDateTime> = runRecoverCatching {
         var lastUpdateString: Flow<String> = context.dataStore.data.map { prefs ->
             prefs[PreferencesKeys.lastUpdateDate] ?: throw DataErrors.LastUpdateDateNotSet(
-                "No Previous Data information set. Please load data from Kajak.org.pl"
+                "No Previous Data information set. Please load data from Kajak.org.pl first"
             )
         }
         ZonedDateTime.parse(lastUpdateString.first())

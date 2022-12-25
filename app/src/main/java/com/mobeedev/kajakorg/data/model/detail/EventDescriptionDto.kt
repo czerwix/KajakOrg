@@ -1,5 +1,6 @@
 package com.mobeedev.kajakorg.data.model.detail
 
+import com.mobeedev.kajakorg.common.extensions.empty
 import com.mobeedev.kajakorg.data.datasource.local.db.path.EventDescriptionDB
 import com.tickaroo.tikxml.annotation.Attribute
 import com.tickaroo.tikxml.annotation.TextContent
@@ -8,13 +9,13 @@ import com.tickaroo.tikxml.annotation.Xml
 @Xml(name = "opispunktu")
 data class EventDescriptionDto(
     @Attribute(name = "typ")
-    val eventType: String = "",
+    val eventType: String = String.empty,
 
     @Attribute(name = "kolejnosc")
     val sortOrder: String = "-1",
 
     @TextContent
-    val description: String? = ""
+    val description: String? = String.empty
 )
 
 fun EventDescriptionDto.toDB(eventId: Int) = EventDescriptionDB(
@@ -25,5 +26,5 @@ fun EventDescriptionDto.toDB(eventId: Int) = EventDescriptionDB(
     } else {
         sortOrder.toInt()
     },
-    description = description ?: ""
+    description = description ?: String.empty
 )

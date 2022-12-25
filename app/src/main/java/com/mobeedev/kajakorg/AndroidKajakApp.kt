@@ -1,9 +1,5 @@
 package com.mobeedev.kajakorg
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.multidex.MultiDexApplication
 import com.mobeedev.kajakorg.ui.di.AppModule
 import com.mobeedev.kajakorg.ui.di.MainModule
@@ -12,7 +8,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 
-class KajakApp : MultiDexApplication() {
+class AndroidKajakApp : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
@@ -24,7 +20,7 @@ class KajakApp : MultiDexApplication() {
         val modules = AppModule()
         startKoin {
             androidLogger(Level.NONE)
-            androidContext(this@KajakApp)
+            androidContext(this@AndroidKajakApp)
             modules(
                 modules.dataModule,
                 modules.configModule,

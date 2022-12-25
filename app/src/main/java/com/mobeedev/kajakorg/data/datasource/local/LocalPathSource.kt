@@ -23,5 +23,9 @@ class LocalPathSource(
     suspend fun getPathsOverview(): List<PathOverviewDto> =
         kajakPathDao.getAllPathsOverview().map { it.toDto() }
 
+    suspend fun getPaths(): List<PathDto> = kajakPathDao.getAllPathsIds().map {
+         getPath(it)
+     }
+
     suspend fun getPath(pathId: Int): PathDto = kajakPathDao.getPathDto(pathId)
 }

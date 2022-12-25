@@ -54,6 +54,8 @@ abstract class KajakPathDao {
     @Query("SELECT * FROM PathOverviewDB")
     abstract fun getAllPathsOverview(): List<PathOverviewDB>
 
+    @Query("SELECT pathId FROM PathDB")
+    abstract fun getAllPathsIds(): List<Int>
     //getPathHelpers
     @Query("SELECT * FROM PathDB WHERE pathId=:id")
     abstract fun getPath(id: Int): PathDB
@@ -69,7 +71,7 @@ abstract class KajakPathDao {
     @Query("SELECT * FROM EventDescriptionDB WHERE eventId=:eventId")
     abstract fun getEventDescriptionByEvent(eventId: Int): List<EventDescriptionDB>
 
-    //get path main transaction todo(Optimise this)
+    //todo use CrossRef after MVP
     @Transaction
     open suspend fun getPathDto(pathId: Int): PathDto {
         val path = getPath(pathId).toDto()

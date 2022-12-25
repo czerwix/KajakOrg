@@ -1,5 +1,6 @@
 package com.mobeedev.kajakorg.data.datasource.local
 
+import android.util.Log
 import com.mobeedev.kajakorg.common.extensions.empty
 import com.mobeedev.kajakorg.data.ID_REGEX
 import com.mobeedev.kajakorg.data.model.overview.PathOverviewDto
@@ -30,11 +31,16 @@ object KajakOrgHtmlParser {
         val pathsRawData =
             response.select(TABLE_SELECTOR).select(ROW_SELECTOR).map { it.toString() }
                 .toMutableList()
-                .apply { removeFirst() }
+                .apply {
+                    removeFirst()
+                    removeFirst()
+                    removeFirst()
+                    removeFirst()
+                }
         val pathsParsed = mutableListOf<PathOverviewDto>()
 
-        pathsRawData.forEach { pathraw: String ->
-            val wipItem = pathraw.replace(ROW_OPENING_TAG, String.empty)
+        pathsRawData.forEach { pathRaw: String ->
+            val wipItem = pathRaw.replace(ROW_OPENING_TAG, String.empty)
                 .replace(CELL_OPENING_TAG, String.empty)
                 .replace(ROW_CLOSING_TAG, String.empty)
                 .split(CELL_CLOSING_TAG)
@@ -55,7 +61,7 @@ object KajakOrgHtmlParser {
             )
         }
 
-
+        Log.d("---PATH OVERVIEW LOADED---","")
         return pathsParsed
     }
 }

@@ -21,6 +21,6 @@ interface KajakOrgService {
     @GET("splywww/tabelaszlakow.php")
     suspend fun getPathList(): Response<String>
 
-    @GET("splywww/xmlout.php")
+    @GET("web/20220518221922if_/http://www.kajak.org.pl/splywww/xmlout.php")
     suspend fun getPathXML(@Query("idsz") id:String):Response<TripDto>
 }
