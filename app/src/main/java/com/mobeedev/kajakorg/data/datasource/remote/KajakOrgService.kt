@@ -1,9 +1,6 @@
 package com.mobeedev.kajakorg.data.datasource.remote
 
-import com.mobeedev.kajakorg.data.model.detail.PathDto
-import com.mobeedev.kajakorg.data.model.detail.TripDto
-import okhttp3.ResponseBody
-import retrofit2.Call
+import com.mobeedev.kajakorg.domain.model.detail.TripDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers

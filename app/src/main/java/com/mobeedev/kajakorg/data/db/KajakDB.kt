@@ -48,6 +48,7 @@ abstract class KajakDB() : RoomDatabase() {
 //                        .build()
 
                     instance = Room.databaseBuilder(context, KajakDB::class.java, DATABASE_NAME)
+                        .createFromAsset("database/kajak_db.db")
                         .fallbackToDestructiveMigration()
                         .build()
                     INSTANCE = instance

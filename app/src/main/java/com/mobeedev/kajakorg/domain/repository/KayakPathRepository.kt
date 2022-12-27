@@ -1,19 +1,23 @@
 package com.mobeedev.kajakorg.domain.repository
 
-import com.mobeedev.kajakorg.data.model.detail.PathDto
-import com.mobeedev.kajakorg.data.model.overview.PathOverviewDto
-import java.time.ZonedDateTime
+import com.mobeedev.kajakorg.domain.model.DataDownloadStatus
+import com.mobeedev.kajakorg.domain.model.detail.Path
+import com.mobeedev.kajakorg.domain.model.overview.PathOverview
+import kotlinx.coroutines.flow.MutableStateFlow
 
 interface KayakPathRepository {
     //change return type to domain models.
-    suspend fun loadAllAvailablePaths(): Result<List<PathOverviewDto>>
+    suspend fun loadAllAvailablePaths(): Result<List<PathOverview>>
 
-    suspend fun loadAllPathsDetails(paths: List<Int>): Result<Boolean>
+    suspend fun loadAllPathsDetails(
+        paths: List<Int>,
+        workStatusFlow: MutableStateFlow<Int?>
+    ): Result<List<Path>>
 
     //change return type to domain models.
-    suspend fun getPathsOverviewDetails(): Result<List<PathOverviewDto>>
+    suspend fun getPathsOverviewDetails(): Result<List<PathOverview>>
 
-    suspend fun getPathsDetails(): Result<List<PathDto>>
+    suspend fun getPathsDetails(): Result<List<Path>>
 
-    suspend fun getLastUpdateDate(): Result<ZonedDateTime>
+    suspend fun getDataDownloadStatus(): Result<DataDownloadStatus>
 }

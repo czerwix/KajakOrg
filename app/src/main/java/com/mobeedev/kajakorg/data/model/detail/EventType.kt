@@ -3,7 +3,7 @@ package com.mobeedev.kajakorg.data.model.detail
 /**
  * This enum contains values of different events you can find on your way.
  * the specified names of bridges,Weir etc are names very specific to Polish language,
- * thats wehy i have left them in polish. might attempt to translate these values in teh future.
+ * thats why i have left them in polish. might attempt to translate these values in the future.
  */
 enum class EventType(val polishName: String) {
     Biwak("biwak"),

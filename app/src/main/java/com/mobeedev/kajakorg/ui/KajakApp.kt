@@ -1,14 +1,15 @@
 package com.mobeedev.kajakorg.ui
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
 import com.mobeedev.kajakorg.navigation.KajakNavHost
 
@@ -28,17 +29,6 @@ fun KajakApp(
             modifier = Modifier.fillMaxSize()
         ) {
             Scaffold(
-                topBar = {
-                        CenterAlignedTopAppBar(
-                            title = {
-                                Text(
-                                    stringResource(com.mobeedev.kajakorg.R.string.app_name),
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
-                                )
-                            }
-                        )
-                },
                 containerColor = Color.Transparent,
                 contentColor = MaterialTheme.colorScheme.onBackground
             ) { padding ->

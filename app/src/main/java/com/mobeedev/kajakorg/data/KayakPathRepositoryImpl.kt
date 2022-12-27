@@ -9,12 +9,15 @@ import com.mobeedev.kajakorg.data.datasource.local.LocalPathSource
 import com.mobeedev.kajakorg.data.datasource.local.PreferencesKeys
 import com.mobeedev.kajakorg.data.datasource.remote.RemotePathSource
 import com.mobeedev.kajakorg.data.model.detail.PathDto
-import com.mobeedev.kajakorg.data.model.overview.PathOverviewDto
-import com.mobeedev.kajakorg.domain.error.DataErrors
 import com.mobeedev.kajakorg.domain.error.runRecoverCatching
+import com.mobeedev.kajakorg.domain.model.DataDownloadState
+import com.mobeedev.kajakorg.domain.model.DataDownloadStatus
+import com.mobeedev.kajakorg.domain.model.detail.Path
+import com.mobeedev.kajakorg.domain.model.detail.toDomain
+import com.mobeedev.kajakorg.domain.model.overview.PathOverview
+import com.mobeedev.kajakorg.domain.model.overview.toDomain
 import com.mobeedev.kajakorg.domain.repository.KayakPathRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import java.time.ZonedDateTime
 
@@ -32,15 +35,17 @@ class KayakPathRepositoryImpl(
         parsePathHTML(it)
     }.onSuccess {
         localPathSource.savePathsOverview(it)
-    }
+    }.map { listOfPaths -> listOfPaths.map { it.toDomain() } }
 
-    override suspend fun loadAllPathsDetails(paths: List<Int>) = runRecoverCatching {
+    override suspend fun loadAllPathsDetails(
+        paths: List<Int>,
+        workStatusFlow: MutableStateFlow<Int?>
+    ) = runRecoverCatching {
         val pathDetails = mutableListOf<PathDto>()
 
         paths.forEach { pathId ->
             //todo for now removing a badly formatted XML path with id 91 and 72...
             //todo in the future extend xmlParser library and allow badly formatted xml files.
-            //or fix issues on website or add maybe google drive source with upodated values?
             if (pathId == 91 || pathId == 72) {
                 Log.d(
                     "--Debug--",
@@ -48,14 +53,13 @@ class KayakPathRepositoryImpl(
                 )
             } else {
                 Log.d("--Debug--", "started pathId: $pathId")
-
                 val result = remotePathSource.getPath(pathId)
                 pathDetails.add(result.pathDto)
-
                 Log.d(
                     "--Debug--",
                     "parsed pathId: ${result.pathDto.id} name:${result.pathDto.name}"
                 )
+                workStatusFlow.emit(pathDetails.size)
             }
         }
 
@@ -64,26 +68,33 @@ class KayakPathRepositoryImpl(
         localPathSource.savePaths(it)
         context.dataStore.edit { prefs ->
             prefs[PreferencesKeys.lastUpdateDate] = ZonedDateTime.now().toString()
+            prefs[PreferencesKeys.dataDownloadState] = DataDownloadState.DONE.toString()
         }
-    }.map {
-        it.size > 0//todo think of better solution to know if paths are loaded
-    }
+    }.map { pathList -> pathList.map { it.toDomain() } }
 
-    override suspend fun getPathsOverviewDetails(): Result<List<PathOverviewDto>> =
+    override suspend fun getPathsOverviewDetails(): Result<List<PathOverview>> =
         runRecoverCatching {
             localPathSource.getPathsOverview()
         }
 
-    override suspend fun getPathsDetails(): Result<List<PathDto>> = runRecoverCatching {
+    override suspend fun getPathsDetails(): Result<List<Path>> = runRecoverCatching {
         localPathSource.getPaths()
     }
 
-    override suspend fun getLastUpdateDate(): Result<ZonedDateTime> = runRecoverCatching {
-        var lastUpdateString: Flow<String> = context.dataStore.data.map { prefs ->
-            prefs[PreferencesKeys.lastUpdateDate] ?: throw DataErrors.LastUpdateDateNotSet(
-                "No Previous Data information set. Please load data from Kajak.org.pl first"
-            )
+    override suspend fun getDataDownloadStatus(): Result<DataDownloadStatus> = runRecoverCatching {
+        var lastUpdateAt: String? = null
+        var dataDownloadState: String? = null
+        context.dataStore.data.map { prefs ->
+            lastUpdateAt = prefs[PreferencesKeys.lastUpdateDate]
+            dataDownloadState = prefs[PreferencesKeys.dataDownloadState]
         }
-        ZonedDateTime.parse(lastUpdateString.first())
+
+        when {
+            dataDownloadState == null -> DataDownloadStatus()
+            dataDownloadState == DataDownloadState.PARTIAL.toString() -> DataDownloadStatus(status = DataDownloadState.PARTIAL)
+            else -> {
+                DataDownloadStatus(ZonedDateTime.parse(lastUpdateAt), DataDownloadState.DONE)
+            }
+        }
     }
 }

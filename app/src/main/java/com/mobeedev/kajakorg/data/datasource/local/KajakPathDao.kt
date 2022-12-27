@@ -2,11 +2,16 @@ package com.mobeedev.kajakorg.data.datasource.local
 
 import androidx.room.*
 import com.mobeedev.kajakorg.data.datasource.local.db.overview.PathOverviewDB
-import com.mobeedev.kajakorg.data.datasource.local.db.path.*
+import com.mobeedev.kajakorg.data.datasource.local.db.path.EventDB
+import com.mobeedev.kajakorg.data.datasource.local.db.path.EventDescriptionDB
+import com.mobeedev.kajakorg.data.datasource.local.db.path.PathDB
+import com.mobeedev.kajakorg.data.datasource.local.db.path.SectionDB
 import com.mobeedev.kajakorg.data.model.detail.PathDto
 import com.mobeedev.kajakorg.data.model.detail.toDB
 import com.mobeedev.kajakorg.data.model.detail.toPathDB
 import com.mobeedev.kajakorg.data.model.detail.toSectionDB
+import com.mobeedev.kajakorg.domain.model.detail.Path
+import com.mobeedev.kajakorg.domain.model.detail.toDomain
 
 @Dao
 abstract class KajakPathDao {
@@ -56,6 +61,7 @@ abstract class KajakPathDao {
 
     @Query("SELECT pathId FROM PathDB")
     abstract fun getAllPathsIds(): List<Int>
+
     //getPathHelpers
     @Query("SELECT * FROM PathDB WHERE pathId=:id")
     abstract fun getPath(id: Int): PathDB
@@ -65,6 +71,7 @@ abstract class KajakPathDao {
 
     @Query("SELECT * FROM EventDB WHERE pathId=:pathId")
     abstract fun getEventByPath(pathId: Int): List<EventDB>
+
     @Query("SELECT * FROM EventDB WHERE sectionId=:sectionId")
     abstract fun getEventBySection(sectionId: Int): List<EventDB>
 
@@ -73,31 +80,18 @@ abstract class KajakPathDao {
 
     //todo use CrossRef after MVP
     @Transaction
-    open suspend fun getPathDto(pathId: Int): PathDto {
-        val path = getPath(pathId).toDto()
-        val sectionsForPath = getSectionByPath(pathId).map { it.toDto() }
-        val eventForPath = getEventByPath(pathId).map { it.toDto() }
+    open suspend fun getPathDomain(pathId: Int): Path = getPath(pathId).toDomain(
+        getSectionsForPath(pathId),
+        getEventsForPath(pathId)
+    )
 
-        sectionsForPath.forEach { section ->
-            val eventsForSection = getEventBySection(section.id).map { it.toDto() }
-            eventsForSection.forEach { event ->
-                val eventDescriptionForEvent =
-                    getEventDescriptionByEvent(event.id).map { it.toDto() }
-                event.eventDescription.addAll(eventDescriptionForEvent)
-            }
+    private fun getSectionsForPath(pathId: Int) = getSectionByPath(pathId).map { section ->
+        section.toDomain(getEventBySection(section.sectionId).map { event ->
+            event.toDomain(getEventDescriptionByEvent(event.eventId).map { it.toDomain() })
+        })
+    }
 
-            section.events.addAll(eventsForSection.toMutableList())
-        }
-
-        eventForPath.forEach { event ->
-            val eventDescriptionForEvent =
-                getEventDescriptionByEvent(event.id).map { it.toDto() }
-            event.eventDescription.addAll(eventDescriptionForEvent)
-        }
-
-        return path.apply {
-            sections?.addAll(sectionsForPath)
-            events?.addAll(eventForPath)
-        }
+    private fun getEventsForPath(pathId: Int) = getEventByPath(pathId).map { event ->
+        event.toDomain(getEventDescriptionByEvent(event.eventId).map { it.toDomain() })
     }
 }

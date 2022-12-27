@@ -29,7 +29,7 @@ abstract class NoParametersUseCase<Type>(
   abstract suspend fun run(): Result<Type>
 
   /**
-   * @see UseCase.invoke
+   * @see WorkStatusExposedUseCase.invoke
    */
   operator fun invoke(parentJob: Job = Job(), onResult: (Result<Type>) -> Unit = {}) {
     val combinedScope = CoroutineScope(backgroundContext + parentJob)

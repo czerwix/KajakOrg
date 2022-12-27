@@ -1,9 +1,11 @@
 package com.mobeedev.kajakorg.ui.path.overview
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -11,24 +13,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.mobeedev.kajakorg.data.model.detail.PathDto
-import com.mobeedev.kajakorg.designsystem.component.DownloadErrorRetry
 import com.mobeedev.kajakorg.designsystem.component.PathOverViewElement
-import com.mobeedev.kajakorg.ui.MainViewModel
-import com.mobeedev.kajakorg.ui.MainViewModelState
+import com.mobeedev.kajakorg.domain.model.overview.PathOverview
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun PathOverviewRoute(
     modifier: Modifier = Modifier,
-    viewModel: MainViewModel = getViewModel(),
+    viewModel: PathOverViewViewModel = getViewModel(),
     navigateToPathDetails: (Int) -> Unit
 ) {
-    val uiState: MainViewModelState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState: PathOverViewViewModelState by viewModel.uiState.collectAsStateWithLifecycle()
 
     PathOverviewScreen(
-        pathState = uiState,
+        uiState = uiState,
         modifier = modifier,
         navigateToPathDetails = navigateToPathDetails
     )
@@ -38,23 +37,23 @@ fun PathOverviewRoute(
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun PathOverviewScreen(
-    pathState: MainViewModelState,
+    uiState: PathOverViewViewModelState,
     modifier: Modifier = Modifier,
     navigateToPathDetails: (Int) -> Unit
 ) {
     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-        when (pathState) {
-            MainViewModelState.Error -> DownloadErrorRetry({})
-            MainViewModelState.InitialStart -> TODO()
-            is MainViewModelState.Loading -> TODO()
-            is MainViewModelState.Success -> {
+        when (uiState) {
+            PathOverViewViewModelState.Error -> TODO()
+            PathOverViewViewModelState.InitialStart, PathOverViewViewModelState.Loading -> Unit
+            is PathOverViewViewModelState.PartialOverviewData -> Unit
+            is PathOverViewViewModelState.Success -> {
                 LazyColumn(
                     modifier = modifier
-                        .fillMaxWidth()
+                        .fillMaxSize()
                         .padding(start = 16.dp, end = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
-                    pathCards(pathState.pathList, navigateToPathDetails)
+                    pathCards(uiState.pathOverviewList, navigateToPathDetails)
                 }
             }
         }
@@ -62,11 +61,11 @@ fun PathOverviewScreen(
 }
 
 private fun LazyListScope.pathCards(
-    pathList: List<PathDto>,
+    pathList: List<PathOverview>,
     navigateToPathDetails: (Int) -> Unit
 ) {
-    items(pathList){item->
-//       PathOverViewElement(item)
+    items(pathList.size) { item ->
+       PathOverViewElement(item)
     }
 }
 

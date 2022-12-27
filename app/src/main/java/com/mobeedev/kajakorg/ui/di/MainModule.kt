@@ -5,7 +5,7 @@ import com.mobeedev.kajakorg.data.datasource.local.LocalPathSource
 import com.mobeedev.kajakorg.data.datasource.remote.RemotePathSource
 import com.mobeedev.kajakorg.domain.repository.KayakPathRepository
 import com.mobeedev.kajakorg.domain.usecase.*
-import com.mobeedev.kajakorg.ui.MainViewModel
+import com.mobeedev.kajakorg.ui.MainDataLoadingViewModel
 import com.mobeedev.kajakorg.ui.common.ModuleLoader
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
@@ -26,7 +26,7 @@ object MainModule : ModuleLoader() {
 
 private val viewModelModule = module {
     viewModel {
-        MainViewModel(
+        MainDataLoadingViewModel(
             application = get(),
             loadAllAvailablePathsUseCase = get(),
             loadAllPathsDetailsUseCase = get(),
@@ -41,8 +41,8 @@ private val useCaseModule = module {
     factory { LoadAllAvailablePathsUseCase(kayakPathRepository = get()) }
     factory { LoadAllPathsDetailsUseCase(kayakPathRepository = get()) }
 
-    factory { GetPathsOverviewUseCase(kayakPathRepository = get()) }
-    factory { GetPathsDetailsUseCase(kayakPathRepository = get()) }
+    factory { GetLocalPathsOverviewUseCase(kayakPathRepository = get()) }
+    factory { GetLocalPathsDetailsUseCase(kayakPathRepository = get()) }
     factory { GetLastUpdateDateUseCase(kayakPathRepository = get()) }
 }
 

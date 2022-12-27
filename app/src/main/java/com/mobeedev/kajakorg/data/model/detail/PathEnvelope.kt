@@ -5,7 +5,7 @@ import com.tickaroo.tikxml.annotation.Element
 import com.tickaroo.tikxml.annotation.Xml
 
 @Xml(name = "splywww")
-data class TripDto(
+data class PathEnvelope(
     @Element(name = "szlak")
     var pathDto: PathDto = PathDto(),
 
