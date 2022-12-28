@@ -3,7 +3,7 @@ package com.mobeedev.kajakorg.ui.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.mobeedev.kajakorg.navigation.KajakNavigationDestination
-import com.mobeedev.kajakorg.ui.path.LoadKajakDataRoute
+import com.mobeedev.kajakorg.ui.path.load.LoadKajakDataRoute
 
 object LoadPathDestination : KajakNavigationDestination {
     override val route = "load_path_route"

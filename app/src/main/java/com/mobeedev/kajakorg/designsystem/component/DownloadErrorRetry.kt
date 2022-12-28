@@ -16,14 +16,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mobeedev.kajakorg.R
-import com.mobeedev.kajakorg.ui.theme.KajakOrgTheme
+import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
 
 @Composable
 fun DownloadErrorRetry(
     onRetryClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    KajakOrgTheme {
+    KajakTheme {
         Box(
             modifier = Modifier
                 .wrapContentHeight()
@@ -80,7 +80,7 @@ fun DownloadErrorRetry(
 @Preview
 @Composable
 fun PreviewDownloadErrorRetry() {
-    KajakOrgTheme {
+    KajakTheme {
         Surface {
             DownloadErrorRetry(
                 onRetryClicked = {}

@@ -1,6 +1,7 @@
 package com.mobeedev.kajakorg.data.datasource.remote
 
-import com.mobeedev.kajakorg.domain.model.detail.TripDto
+
+import com.mobeedev.kajakorg.data.model.detail.PathEnvelope
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -19,5 +20,5 @@ interface KajakOrgService {
     suspend fun getPathList(): Response<String>
 
     @GET("web/20220518221922if_/http://www.kajak.org.pl/splywww/xmlout.php")
-    suspend fun getPathXML(@Query("idsz") id:String):Response<TripDto>
+    suspend fun getPathXML(@Query("idsz") id: String): Response<PathEnvelope>
 }

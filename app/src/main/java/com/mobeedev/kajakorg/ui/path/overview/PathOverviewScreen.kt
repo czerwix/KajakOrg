@@ -10,10 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.mobeedev.kajakorg.designsystem.component.PathOverViewElement
+import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
 import com.mobeedev.kajakorg.domain.model.overview.PathOverview
 import org.koin.androidx.compose.getViewModel
 
@@ -65,15 +66,15 @@ private fun LazyListScope.pathCards(
     navigateToPathDetails: (Int) -> Unit
 ) {
     items(pathList.size) { item ->
-       PathOverViewElement(item)
+//       PathOverViewElement(item)
     }
 }
 
-//@Preview(name = "phone", device = "spec:shape=Normal,width=360,height=640,unit=dp,dpi=480")
-//@Composable
-//fun PathOverViewPopulated(){
-//    KajakOrgTheme {
-//
-//    }
-//}
+@Preview(name = "phone", device = "spec:shape=Normal,width=360,height=640,unit=dp,dpi=480")
+@Composable
+fun PathOverViewPopulated() {
+    KajakTheme {
+
+    }
+}
 

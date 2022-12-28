@@ -1,4 +1,4 @@
-package com.mobeedev.kajakorg.ui.path
+package com.mobeedev.kajakorg.ui.path.load
 
 import android.util.Log
 import androidx.compose.foundation.layout.*

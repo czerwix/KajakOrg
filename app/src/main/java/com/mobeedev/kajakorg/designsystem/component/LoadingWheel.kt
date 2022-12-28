@@ -18,16 +18,7 @@ package com.mobeedev.kajakorg.designsystem.component
 
 import android.content.res.Configuration
 import androidx.compose.animation.animateColor
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.StartOffset
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.keyframes
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -46,7 +37,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mobeedev.kajakorg.ui.theme.KajakOrgTheme
+import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
 import kotlinx.coroutines.launch
 
 @Composable
@@ -135,7 +126,7 @@ fun VamaLoadingWheel(
 )
 @Composable
 fun VamaLoadingWheelPreview() {
-    KajakOrgTheme() {
+    KajakTheme() {
         Surface {
             VamaLoadingWheel(contentDesc = "LoadingWheel")
         }
