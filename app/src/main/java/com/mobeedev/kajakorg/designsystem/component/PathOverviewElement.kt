@@ -12,6 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
@@ -21,10 +24,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mobeedev.kajakorg.R
-import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
-import com.mobeedev.kajakorg.designsystem.theme.Teal700
-import com.mobeedev.kajakorg.designsystem.theme.Teal700_50
-import com.mobeedev.kajakorg.designsystem.theme.Teal700_80
+import com.mobeedev.kajakorg.designsystem.theme.*
 import com.mobeedev.kajakorg.ui.model.PathOveriewItem
 
 @Composable
@@ -44,6 +44,17 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: () -> Unit) {
                     .height(140.dp)
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(8.dp))
+                    .drawWithCache {
+                        val gradient = Brush.verticalGradient(
+                            colors = listOf(PathOverviewOverlay, Color.Transparent),
+                            startY = 0f,
+                            endY = size.height - (size.height/4)
+                        )
+                        onDrawWithContent {
+                            drawContent()
+                            drawRect(gradient, blendMode = BlendMode.Multiply)
+                        }
+                    }
             )
 
             Column(
@@ -57,10 +68,6 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: () -> Unit) {
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier
                         .wrapContentSize()
-                        .background(
-                            Teal700_80,
-                            RoundedCornerShape(8.dp)
-                        )
                         .padding(start = 4.dp, end = 2.dp)
                 )
                 Text(
@@ -72,10 +79,6 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: () -> Unit) {
                     modifier = Modifier
                         .wrapContentSize()
                         .padding(start = 16.dp, top = 4.dp)
-                        .background(
-                            Teal700_50,
-                            RoundedCornerShape(8.dp)
-                        )
                         .padding(start = 4.dp, end = 2.dp)
                 )
 
@@ -85,9 +88,9 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: () -> Unit) {
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .height(35.dp)
-                            .width(35.dp),
-                        colorFilter = ColorFilter.tint(Teal700)
+                            .height(28.dp)
+                            .width(28.dp),
+                        colorFilter = ColorFilter.tint(White)
                     )
                     Text(
                         text = stringResource(id = R.string.path_length_km, item.length),
@@ -97,10 +100,6 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: () -> Unit) {
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier
                             .wrapContentSize()
-                            .background(
-                                Teal700_50,
-                                RoundedCornerShape(8.dp)
-                            )
                             .padding(start = 4.dp, end = 2.dp)
                     )
                     if (item.difficulty.isNotBlank()) {
@@ -113,10 +112,6 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: () -> Unit) {
                             modifier = Modifier
                                 .wrapContentSize()
                                 .padding(start = 4.dp)
-                                .background(
-                                    Teal700_50,
-                                    RoundedCornerShape(8.dp)
-                                )
                                 .padding(start = 4.dp, end = 2.dp)
                                 .weight(1f)
                         )
@@ -131,10 +126,6 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: () -> Unit) {
                             modifier = Modifier
                                 .wrapContentSize()
                                 .padding(start = 4.dp)
-                                .background(
-                                    Teal700_50,
-                                    RoundedCornerShape(8.dp)
-                                )
                                 .padding(start = 4.dp, end = 2.dp)
                                 .weight(1f)
                         )
