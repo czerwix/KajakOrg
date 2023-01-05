@@ -3,6 +3,7 @@ package com.mobeedev.kajakorg.domain.repository
 import com.mobeedev.kajakorg.domain.model.DataDownloadStatus
 import com.mobeedev.kajakorg.domain.model.detail.Path
 import com.mobeedev.kajakorg.domain.model.overview.PathOverview
+import com.mobeedev.kajakorg.ui.model.PathOveriewItem
 import kotlinx.coroutines.flow.MutableStateFlow
 
 interface KayakPathRepository {
@@ -20,4 +21,6 @@ interface KayakPathRepository {
     suspend fun getPathsDetails(): Result<List<Path>>
 
     suspend fun getDataDownloadStatus(): Result<DataDownloadStatus>
+
+    suspend fun getPathsOverviewItem(): Result<List<PathOveriewItem>>
 }

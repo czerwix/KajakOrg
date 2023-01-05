@@ -1,5 +1,6 @@
 package com.mobeedev.kajakorg.ui.path.overview
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -25,6 +26,7 @@ import com.mobeedev.kajakorg.ui.model.PathOveriewItem
 import com.mobeedev.kajakorg.ui.model.PathSortOrderItem
 import com.mobeedev.kajakorg.ui.path.load.showLoadingState
 import org.koin.androidx.compose.getViewModel
+import java.time.ZonedDateTime
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
@@ -52,10 +54,9 @@ fun PathOverviewScreen(
 ) {
     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
         when (uiState) {
-            PathOverviewViewModelState.Error -> TODO()
+            PathOverviewViewModelState.Error -> {}
             PathOverviewViewModelState.InitialStart,
-            PathOverviewViewModelState.Loading,
-            is PathOverviewViewModelState.PartialOverviewData -> showLoadingState()
+            PathOverviewViewModelState.Loading -> showLoadingState()
             is PathOverviewViewModelState.Success -> {
                 showDataList(
                     uiState,

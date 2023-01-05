@@ -1,6 +1,7 @@
 package com.mobeedev.kajakorg.data.datasource.local
 
 import androidx.room.*
+import com.mobeedev.kajakorg.common.extensions.empty
 import com.mobeedev.kajakorg.data.datasource.local.db.overview.PathOverviewDB
 import com.mobeedev.kajakorg.data.datasource.local.db.path.EventDB
 import com.mobeedev.kajakorg.data.datasource.local.db.path.EventDescriptionDB
@@ -12,6 +13,8 @@ import com.mobeedev.kajakorg.data.model.detail.toPathDB
 import com.mobeedev.kajakorg.data.model.detail.toSectionDB
 import com.mobeedev.kajakorg.domain.model.detail.Path
 import com.mobeedev.kajakorg.domain.model.detail.toDomain
+import com.mobeedev.kajakorg.domain.model.overview.toItem
+import com.mobeedev.kajakorg.ui.model.PathOveriewItem
 
 @Dao
 abstract class KajakPathDao {
@@ -66,6 +69,9 @@ abstract class KajakPathDao {
     @Query("SELECT * FROM PathDB WHERE pathId=:id")
     abstract fun getPath(id: Int): PathDB
 
+    @Query("SELECT description FROM PathDB WHERE pathId=:id")
+    abstract fun getPathDescription(id: Int): String?
+
     @Query("SELECT * FROM SectionDB WHERE pathId=:pathId")
     abstract fun getSectionByPath(pathId: Int): List<SectionDB>
 
@@ -94,4 +100,12 @@ abstract class KajakPathDao {
     private fun getEventsForPath(pathId: Int) = getEventByPath(pathId).map { event ->
         event.toDomain(getEventDescriptionByEvent(event.eventId).map { it.toDomain() })
     }
+
+    @Transaction
+    open suspend fun getPathsOverviewItem(): List<PathOveriewItem> =
+        mutableListOf<PathOveriewItem>().apply {
+            getAllPathsOverview().forEach { path ->
+                add(path.toItem(getPathDescription(path.pathOverviewId) ?: String.empty))
+            }
+        }
 }

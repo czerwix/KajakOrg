@@ -40,8 +40,7 @@ private val viewModelModule = module {
     viewModel {
         PathOverviewViewModel(
             application = get(),
-            getPathsOverviewUseCase = get(),
-            getPathsDetailsUseCase = get(),
+            getPathsOverViewItemUseCase = get()
         )
     }
 }
@@ -52,6 +51,7 @@ private val useCaseModule = module {
 
     factory { GetLocalPathsOverviewUseCase(kayakPathRepository = get()) }
     factory { GetLocalPathsDetailsUseCase(kayakPathRepository = get()) }
+    factory { GetLocalPathOverviewItemUseCase(kayakPathRepository = get()) }
     factory { GetLastUpdateDateUseCase(kayakPathRepository = get()) }
 }
 
