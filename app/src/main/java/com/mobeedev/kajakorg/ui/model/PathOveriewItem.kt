@@ -1,5 +1,6 @@
 package com.mobeedev.kajakorg.ui.model
 
+import com.mobeedev.kajakorg.common.extensions.empty
 import com.mobeedev.kajakorg.domain.model.overview.PathOverview
 
 data class PathOveriewItem(
@@ -12,7 +13,8 @@ data class PathOveriewItem(
     val numberOfSections: Int,
     val difficulty: String,
     val nuisance: String,
-    val description: String
+    val description: String,
+    var pictureID: String = String.empty
 )
 
 fun PathOverview.toItem(description: String) = PathOveriewItem(

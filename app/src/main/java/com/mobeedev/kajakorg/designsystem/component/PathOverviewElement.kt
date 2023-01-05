@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -24,7 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mobeedev.kajakorg.R
 import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
-import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlay
+import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayEnd
+import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayStart
 import com.mobeedev.kajakorg.designsystem.theme.White
 import com.mobeedev.kajakorg.ui.model.PathOveriewItem
 
@@ -39,7 +41,13 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: (Int) -> Unit) {
         ) {
 
             Image(
-                painter = painterResource(id = R.drawable.kajak1),
+                painter = painterResource(
+                    id = LocalContext.current.resources.getIdentifier(
+                        "path_${item.id}",
+                        "drawable",
+                        LocalContext.current.packageName
+                    )
+                ),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -48,7 +56,11 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: (Int) -> Unit) {
                     .clip(RoundedCornerShape(8.dp))
                     .drawWithCache {
                         val gradient = Brush.verticalGradient(
-                            colors = listOf(PathOverviewOverlay, Color.Transparent),
+                            colors = listOf(
+                                PathOverviewOverlayStart,
+                                PathOverviewOverlayEnd,
+                                Color.Transparent
+                            ),
                             startY = 0f,
                             endY = size.height - (size.height / 4) //todo extract to separate const
                         )

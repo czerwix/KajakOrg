@@ -1,5 +1,6 @@
 package com.mobeedev.kajakorg.data.datasource.local
 
+import android.util.Log
 import androidx.room.*
 import com.mobeedev.kajakorg.common.extensions.empty
 import com.mobeedev.kajakorg.data.datasource.local.db.overview.PathOverviewDB
