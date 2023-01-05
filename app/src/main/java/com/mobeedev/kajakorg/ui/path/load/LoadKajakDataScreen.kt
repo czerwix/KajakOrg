@@ -71,14 +71,14 @@ fun showLoadingState(loadingNow: Int = -1, numberOfPaths: Int = -1) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.loading_ball))
+        val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.loading_paperplane))
         LottieAnimation(
             composition,
             iterations = LottieConstants.IterateForever,
             restartOnPlay = true,
             modifier = Modifier
-                .wrapContentHeight()
-                .wrapContentHeight()
+                .height(240.dp)
+                .fillMaxWidth()
         )
 
         Text(

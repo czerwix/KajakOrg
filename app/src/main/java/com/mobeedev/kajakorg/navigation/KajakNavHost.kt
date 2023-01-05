@@ -21,7 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.mobeedev.kajakorg.ui.navigation.LoadPathDestination
+import com.mobeedev.kajakorg.ui.navigation.PathOverviewDestination
 import com.mobeedev.kajakorg.ui.navigation.pathGraph
 
 
@@ -39,7 +39,7 @@ fun KajakNavHost(
     onBackClick: () -> Unit,
     windowSizeClass: WindowSizeClass,
     modifier: Modifier = Modifier,
-    startDestination: String = LoadPathDestination.route //todo add starting position here
+    startDestination: String = PathOverviewDestination.route //todo add starting position here
 ) {
     NavHost(
         navController = navController,
@@ -48,6 +48,9 @@ fun KajakNavHost(
     ) {
         pathGraph(
             navigateToPathOverview = {
+                //todo
+            },
+            navigateToPathDetails = {
                 //todo
             }
         )

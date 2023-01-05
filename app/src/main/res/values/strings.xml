@@ -10,4 +10,10 @@
     <string name="path_length_km">%.0f km</string>
     <string name="path_difficulty">Difficulty: %1$s</string>
     <string name="path_nuisance">Nuisance: %1$s</string>
+    <string name="path_search">Search by name</string>
+
+    <string name="path_sort_a_z">A-Z</string>
+    <string name="path_sort_z_a">Z-A</string>
+    <string name="path_sort_longest_shortest">Longest</string>
+    <string name="path_sort_shortest_longest">Shortest</string>
 </resources>

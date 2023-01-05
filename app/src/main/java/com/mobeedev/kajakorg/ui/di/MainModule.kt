@@ -7,6 +7,7 @@ import com.mobeedev.kajakorg.domain.repository.KayakPathRepository
 import com.mobeedev.kajakorg.domain.usecase.*
 import com.mobeedev.kajakorg.ui.MainDataLoadingViewModel
 import com.mobeedev.kajakorg.ui.common.ModuleLoader
+import com.mobeedev.kajakorg.ui.path.overview.PathOverviewViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -33,6 +34,14 @@ private val viewModelModule = module {
             getPathsOverviewUseCase = get(),
             getPathsDetailsUseCase = get(),
             getLastUpdateDateUseCase = get()
+        )
+    }
+
+    viewModel {
+        PathOverviewViewModel(
+            application = get(),
+            getPathsOverviewUseCase = get(),
+            getPathsDetailsUseCase = get(),
         )
     }
 }

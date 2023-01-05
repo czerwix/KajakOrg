@@ -1,7 +1,6 @@
 package com.mobeedev.kajakorg.designsystem.component
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,21 +23,24 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mobeedev.kajakorg.R
-import com.mobeedev.kajakorg.designsystem.theme.*
+import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
+import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlay
+import com.mobeedev.kajakorg.designsystem.theme.White
 import com.mobeedev.kajakorg.ui.model.PathOveriewItem
 
 @Composable
-fun PathOverViewElement(item: PathOveriewItem, onClick: () -> Unit) {
+fun PathOverViewElement(item: PathOveriewItem, onClick: (Int) -> Unit) {
     KajakTheme {
         Box(modifier = Modifier
             .wrapContentHeight()
             .fillMaxWidth()
-            .clickable { onClick() }
-            .padding(2.dp, 2.dp, 2.dp, 2.dp)
+            .padding(start = 10.dp, end = 10.dp, top = 2.dp, bottom = 2.dp)
+            .clickable { onClick(item.id) }
         ) {
 
             Image(
-                painter = painterResource(id = R.drawable.kajak1), contentDescription = null,
+                painter = painterResource(id = R.drawable.kajak1),
+                contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .height(140.dp)
@@ -48,7 +50,7 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: () -> Unit) {
                         val gradient = Brush.verticalGradient(
                             colors = listOf(PathOverviewOverlay, Color.Transparent),
                             startY = 0f,
-                            endY = size.height - (size.height/4)
+                            endY = size.height - (size.height / 4) //todo extract to separate const
                         )
                         onDrawWithContent {
                             drawContent()
