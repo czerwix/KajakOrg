@@ -36,7 +36,7 @@ enum class EventType(val polishName: String) {
             "niebezpieczeństwo" -> Niebezpieczeństwo
             "lekarz" -> Lekarz
             "bar" -> Bar
-            "śluza"->sluza
+            "śluza" -> sluza
             else -> throw error("Unrecognised Event type: $value")
         }
     }

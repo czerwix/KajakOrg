@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -108,9 +109,10 @@ dependencies {
     implementation 'androidx.security:security-crypto-ktx:1.1.0-alpha04'
     implementation "androidx.core:core-ktx:1.9.0"
 
-    //Coil
-    implementation("io.coil-kt:coil:2.2.0")
-    implementation("io.coil-kt:coil-compose:2.2.0")
+    //Glide
+    implementation "com.github.skydoves:landscapist-glide:2.1.0"
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+    kapt 'com.github.bumptech.glide:compiler:4.14.2'
 
     //map
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
@@ -119,6 +121,12 @@ dependencies {
 
     //animation
     implementation 'com.airbnb.android:lottie-compose:5.2.0'
+
+    //firebase
+    implementation platform('com.google.firebase:firebase-bom:31.1.1')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-storage-ktx'
+    implementation 'com.firebaseui:firebase-ui-storage:8.0.2'
 
     //test
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.4.0-alpha03"

@@ -17,13 +17,13 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mobeedev.kajakorg.R
+import com.mobeedev.kajakorg.designsystem.path.pathIdToPicture
 import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
 import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayEnd
 import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayStart
@@ -36,20 +36,14 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: (Int) -> Unit) {
         Box(modifier = Modifier
             .wrapContentHeight()
             .fillMaxWidth()
-            .padding(start = 10.dp, end = 10.dp, top = 2.dp, bottom = 2.dp)
+            .padding(start = 4.dp, end = 4.dp, top = 0.dp, bottom = 0.dp)
             .clickable { onClick(item.id) }
         ) {
 
             Image(
-                painter = painterResource(
-                    id = LocalContext.current.resources.getIdentifier(
-                        "path_${item.id}",
-                        "drawable",
-                        LocalContext.current.packageName
-                    )
-                ),
+                painter = painterResource(id = pathIdToPicture[item.id]!!),
                 contentDescription = null,
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.FillWidth,
                 modifier = Modifier
                     .height(140.dp)
                     .fillMaxWidth()
