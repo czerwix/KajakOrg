@@ -14,9 +14,11 @@ import com.mobeedev.kajakorg.domain.model.DataDownloadState
 import com.mobeedev.kajakorg.domain.model.DataDownloadStatus
 import com.mobeedev.kajakorg.domain.model.detail.Path
 import com.mobeedev.kajakorg.domain.model.detail.toDomain
+import com.mobeedev.kajakorg.domain.model.detail.toItem
 import com.mobeedev.kajakorg.domain.model.overview.PathOverview
 import com.mobeedev.kajakorg.domain.model.overview.toDomain
 import com.mobeedev.kajakorg.domain.repository.KayakPathRepository
+import com.mobeedev.kajakorg.ui.model.PathItem
 import com.mobeedev.kajakorg.ui.model.PathOveriewItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
@@ -103,4 +105,9 @@ class KayakPathRepositoryImpl(
         runRecoverCatching {
             localPathSource.getPathsOverviewItem()
         }
+
+    override suspend fun getPathItemById(pathId: Int): Result<PathItem> = runRecoverCatching {
+        val pathOverviewItem = localPathSource.getPathOverviewItem(pathId)
+        localPathSource.getPath(pathId).toItem(pathOverviewItem)
+    }
 }

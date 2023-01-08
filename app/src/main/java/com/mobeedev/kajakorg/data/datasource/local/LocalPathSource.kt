@@ -27,6 +27,9 @@ class LocalPathSource(
     suspend fun getPathsOverviewItem(): List<PathOveriewItem> =
         kajakPathDao.getPathsOverviewItem()
 
+    suspend fun getPathOverviewItem(pathId: Int): PathOveriewItem =
+        kajakPathDao.getPathOverviewItem(pathId)
+
     suspend fun getPaths(): List<Path> = kajakPathDao.getAllPathsIds().map {
         getPath(it)
     }

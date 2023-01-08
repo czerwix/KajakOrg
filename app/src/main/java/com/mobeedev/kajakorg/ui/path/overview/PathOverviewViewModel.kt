@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.update
 
 class PathOverviewViewModel(
     application: Application,
-    private val getPathsOverViewItemUseCase: GetLocalPathOverviewItemUseCase,
+    private val getPathsOverViewUseCase: GetLocalPathOverviewItemUseCase,
 ) : AndroidViewModel(application) {
 
     private val _uiState: MutableStateFlow<PathOverviewViewModelState> =
@@ -28,7 +28,7 @@ class PathOverviewViewModel(
 
     fun getPathsOverview() {
         _uiState.update { PathOverviewViewModelState.Loading }
-        getPathsOverViewItemUseCase.invoke { result ->
+        getPathsOverViewUseCase.invoke { result ->
             result.onSuccess { pathList ->
                 _uiState.update { PathOverviewViewModelState.Success(pathList) }
             }.onFailure {

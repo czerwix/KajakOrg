@@ -7,6 +7,7 @@ import com.mobeedev.kajakorg.domain.repository.KayakPathRepository
 import com.mobeedev.kajakorg.domain.usecase.*
 import com.mobeedev.kajakorg.ui.MainDataLoadingViewModel
 import com.mobeedev.kajakorg.ui.common.ModuleLoader
+import com.mobeedev.kajakorg.ui.path.details.PathDetailsViewModel
 import com.mobeedev.kajakorg.ui.path.overview.PathOverviewViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
@@ -22,7 +23,6 @@ object MainModule : ModuleLoader() {
             repositoryModule,
             dataSourceModule
         )
-
 }
 
 private val viewModelModule = module {
@@ -40,7 +40,15 @@ private val viewModelModule = module {
     viewModel {
         PathOverviewViewModel(
             application = get(),
-            getPathsOverViewItemUseCase = get()
+            getPathsOverViewUseCase = get()
+        )
+    }
+
+    viewModel {
+        PathDetailsViewModel(
+            application = get(),
+            savedStateHandle = it.get(),
+            getPathDetailsUseCase = get()
         )
     }
 }
@@ -50,9 +58,10 @@ private val useCaseModule = module {
     factory { LoadAllPathsDetailsUseCase(kayakPathRepository = get()) }
 
     factory { GetLocalPathsOverviewUseCase(kayakPathRepository = get()) }
-    factory { GetLocalPathsDetailsUseCase(kayakPathRepository = get()) }
+    factory { GetLocalAllPathDetailsUseCase(kayakPathRepository = get()) }
     factory { GetLocalPathOverviewItemUseCase(kayakPathRepository = get()) }
     factory { GetLastUpdateDateUseCase(kayakPathRepository = get()) }
+    factory { GetLocalPathDetailsUseCase(kayakPathRepository = get()) }
 }
 
 private val repositoryModule = module {

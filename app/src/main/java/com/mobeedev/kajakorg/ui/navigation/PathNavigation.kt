@@ -1,49 +1,49 @@
 package com.mobeedev.kajakorg.ui.navigation
 
-import android.net.Uri
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavGraphBuilder
+import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.*
 import androidx.navigation.compose.composable
-import com.mobeedev.kajakorg.navigation.KajakNavigationDestination
+import com.mobeedev.kajakorg.ui.path.details.PathDetailsRoute
 import com.mobeedev.kajakorg.ui.path.load.LoadKajakDataRoute
 import com.mobeedev.kajakorg.ui.path.overview.PathOverviewRoute
 
-object LoadPathDestination : KajakNavigationDestination {
-    override val route = "load_path_route"
-    override val destination = "load_path_destination"
+val pathLoadingRoute = "load_path_route"
+val pathOverviewRoute = "path_overview_route"
+
+fun NavController.navigateToPathLoading(navOptions: NavOptions? = null) {
+    this.navigate(pathLoadingRoute, navOptions)
 }
 
-object PathOverviewDestination : KajakNavigationDestination {
-    override val route = "path_overview_route"
-    override val destination = "path_overview_destination"
+fun NavController.navigateToPathOverview(navOptions: NavOptions? = null) {
+    this.navigate(pathOverviewRoute, navOptions)
 }
 
-object PathDetailsDestination : KajakNavigationDestination {
-    //todo once screen is done add to graph
-    const val pathDetailsIdArg = "path_details_Id"
-    override val route = "path_details_route/{$pathDetailsIdArg}"
-    override val destination = "path_details_destination"
 
+const val pathDetailsIdArg = "path_details_Id"
 
-    fun createNavigationRoute(pathDetailsIdArg: String): String {
-        val encodedId = Uri.encode(pathDetailsIdArg)
-        return "path_details_route/$encodedId"
-    }
+internal class PathDetailsArgs(val pathId: Int)
 
-    fun fromNavArgs(entry: NavBackStackEntry): String {
-        val encodedId = entry.arguments?.getString(pathDetailsIdArg)!!
-        return Uri.decode(encodedId)
-    }
+fun NavController.navigateToPathDetails(pathId: Int) {
+    this.navigate("path_details_route/$pathId")
 }
 
 fun NavGraphBuilder.pathGraph(
     navigateToPathOverview: () -> Unit,
     navigateToPathDetails: (Int) -> Unit,
+    onBackClick: () -> Unit
 ) {
-    composable(route = LoadPathDestination.route) {
+    composable(route = pathLoadingRoute) {
         LoadKajakDataRoute(navigateToPathOverview = navigateToPathOverview)
     }
-    composable(route = PathOverviewDestination.route) {
+    composable(route = pathOverviewRoute) {
         PathOverviewRoute(navigateToPathDetails = navigateToPathDetails)
+    }
+    composable(
+        route = "path_details_route/{${pathDetailsIdArg}}",
+        arguments = listOf(navArgument(pathDetailsIdArg) {
+            type = NavType.IntType
+        })
+    ) {
+        PathDetailsRoute(onBackClick = onBackClick)
     }
 }

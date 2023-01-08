@@ -3,6 +3,8 @@ package com.mobeedev.kajakorg.domain.model.detail
 import com.mobeedev.kajakorg.common.extensions.empty
 import com.mobeedev.kajakorg.data.datasource.local.db.path.PathDB
 import com.mobeedev.kajakorg.data.model.detail.PathDto
+import com.mobeedev.kajakorg.ui.model.PathItem
+import com.mobeedev.kajakorg.ui.model.PathOveriewItem
 
 data class Path(
     var id: Int = 0,
@@ -25,5 +27,11 @@ fun PathDto.toDomain() = Path(
     versionCode,
     description ?: String.empty,
     sections?.map { it.toDomain() } ?: mutableListOf(),
-    events?.map { it.toDomain() }  ?: mutableListOf()
+    events?.map { it.toDomain() } ?: mutableListOf()
+)
+
+fun Path.toItem(overview: PathOveriewItem) = PathItem(
+    overview = overview,
+    sections = sections,
+    events = events
 )

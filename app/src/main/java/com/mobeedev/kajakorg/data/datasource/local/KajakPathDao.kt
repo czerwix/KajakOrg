@@ -1,6 +1,5 @@
 package com.mobeedev.kajakorg.data.datasource.local
 
-import android.util.Log
 import androidx.room.*
 import com.mobeedev.kajakorg.common.extensions.empty
 import com.mobeedev.kajakorg.data.datasource.local.db.overview.PathOverviewDB
@@ -63,6 +62,9 @@ abstract class KajakPathDao {
     @Query("SELECT * FROM PathOverviewDB")
     abstract fun getAllPathsOverview(): List<PathOverviewDB>
 
+    @Query("SELECT * FROM PathOverviewDB WHERE pathOverviewId=:id")
+    abstract fun getPathOverview(id: Int): PathOverviewDB
+
     @Query("SELECT pathId FROM PathDB")
     abstract fun getAllPathsIds(): List<Int>
 
@@ -109,4 +111,9 @@ abstract class KajakPathDao {
                 add(path.toItem(getPathDescription(path.pathOverviewId) ?: String.empty))
             }
         }
+
+    @Transaction
+    open suspend fun getPathOverviewItem(pathId: Int) =
+        getPathOverview(pathId).toItem(getPathDescription(pathId) ?: String.empty)
+
 }

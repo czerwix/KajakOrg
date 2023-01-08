@@ -23,7 +23,7 @@ class MainDataLoadingViewModel(
     private val loadAllAvailablePathsUseCase: LoadAllAvailablePathsUseCase,
     private val loadAllPathsDetailsUseCase: LoadAllPathsDetailsUseCase,
     private val getPathsOverviewUseCase: GetLocalPathsOverviewUseCase,
-    private val getPathsDetailsUseCase: GetLocalPathsDetailsUseCase,
+    private val getPathsDetailsUseCase: GetLocalAllPathDetailsUseCase,
     private val getLastUpdateDateUseCase: GetLastUpdateDateUseCase
 ) : AndroidViewModel(application) {
 
