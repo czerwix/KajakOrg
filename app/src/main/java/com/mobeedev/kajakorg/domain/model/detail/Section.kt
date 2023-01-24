@@ -9,24 +9,24 @@ data class Section(
     var type: String = String.empty,
     var name: String = String.empty,
     var nuisance: String = String.empty,
-    var difficult: String = String.empty,
+    var difficulty: String = String.empty,
     var picturesque: String = String.empty,
     var cleanliness: String = String.empty,
-    var sortOrder: String = String.empty,
+    override var sortOrder: Int = -1,
     var description: String = String.empty,
 
     var events: List<Event> = mutableListOf()
-)
+) : PathEvent
 
 fun SectionDB.toDomain(events: List<Event>) = Section(
     id = sectionId,
     type = type,
     name = name,
     nuisance = nuisance,
-    difficult = difficult,
+    difficulty = difficult,
     picturesque = picturesque,
     cleanliness = cleanliness,
-    sortOrder = sortOrder,
+    sortOrder = sortOrder.toInt(),
     description = description,
     events = events
 )
@@ -40,6 +40,6 @@ fun SectionDto.toDomain() =
         difficult,
         picturesque,
         cleanliness,
-        sortOrder,
+        sortOrder.toInt(),
         description,
         events.map { it.toDomain() })

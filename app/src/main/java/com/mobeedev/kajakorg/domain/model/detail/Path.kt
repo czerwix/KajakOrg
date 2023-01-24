@@ -30,8 +30,13 @@ fun PathDto.toDomain() = Path(
     events?.map { it.toDomain() } ?: mutableListOf()
 )
 
-fun Path.toItem(overview: PathOveriewItem) = PathItem(
+fun Path.toItem(overview: PathOveriewItem): PathItem = PathItem(
     overview = overview,
-    sections = sections,
-    events = events
-)
+    pathSectionsEvents = (sections + events).sortedBy { it.sortOrder }
+).apply {
+    pathSectionsEvents.forEach { element ->
+        if (element is Section) {
+            element.events.sortedBy { it.sortOrder }
+        }
+    }
+}

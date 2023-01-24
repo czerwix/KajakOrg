@@ -12,8 +12,20 @@
     <string name="path_nuisance">Nuisance: %1$s</string>
     <string name="path_search">Search by name</string>
 
-    <string name="path_sort_a_z">A-Z</string>
-    <string name="path_sort_z_a">Z-A</string>
+    <string name="path_sort_a_z" translatable="false">A-Z</string>
+    <string name="path_sort_z_a" translatable="false">Z-A</string>
     <string name="path_sort_longest_shortest">Longest</string>
     <string name="path_sort_shortest_longest">Shortest</string>
+
+    <string name="section">"Section - %1$s"</string>
+    <string name="number_of_sections">No. of sections:</string>
+    <string name="events_on_section">"No. of events:"</string>
+    <string name="event_title">"Event at %1$s!"</string>
+    <string name="event_type">"Event type:"</string>
+    <string name="nuisance">"Nuisance:"</string>
+    <string name="difficulty">"Difficulty:"</string>
+    <string name="picturesque">"Picturesque:"</string>
+    <string name="cleanliness">"Cleanliness:"</string>
+    <string name="at_kilometer" translatable="false">"km"</string>
+
 </resources>

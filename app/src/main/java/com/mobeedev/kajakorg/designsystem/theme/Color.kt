@@ -12,10 +12,13 @@ val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 val White = Color(0xFFFFFFFF)
-val Gray =Color(0xFFB5B5B5)
+val Gray = Color(0xFFB5B5B5)
 
 val Teal700 = Color(0xFF018786)
-val  Teal700_80= Color(0xCC018786)
-val Teal700_50 =Color(0x99367C7B)
-val PathOverviewOverlayStart =Color(0xB2000000)
-val PathOverviewOverlayEnd =Color(0x61000000)
+val Teal700_80 = Color(0xCC018786)
+val Teal700_50 = Color(0x99367C7B)
+val PathOverviewOverlayStart = Color(0xB2000000)
+val PathOverviewOverlayEnd = Color(0x61000000)
+
+
+val RiverBlue = Color(0xFF39A9B8)

@@ -1,5 +1,6 @@
 package com.mobeedev.kajakorg.ui.path.overview
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -19,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.mobeedev.kajakorg.designsystem.component.PathOverViewElement
+import com.mobeedev.kajakorg.designsystem.path.PathOverViewElement
 import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
 import com.mobeedev.kajakorg.ui.model.PathOveriewItem
 import com.mobeedev.kajakorg.ui.model.PathSortOrderItem
@@ -68,6 +69,7 @@ fun PathOverviewScreen(
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun showDataList(
@@ -94,17 +96,16 @@ fun showDataList(
     ) {
         LazyColumn(
             modifier = modifier
-                .padding(it)
                 .fillMaxSize()
                 .focusTarget(),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            pathCards(pathList, navigateToPathDetails)
+            pathOverviewCards(pathList, navigateToPathDetails)
         }
     }
 }
 
-private fun LazyListScope.pathCards(
+private fun LazyListScope.pathOverviewCards(
     pathList: List<PathOveriewItem>,
     navigateToPathDetails: (Int) -> Unit
 ) {

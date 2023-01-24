@@ -1,4 +1,4 @@
-package com.mobeedev.kajakorg.designsystem.component
+package com.mobeedev.kajakorg.designsystem.path
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -23,7 +23,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mobeedev.kajakorg.R
-import com.mobeedev.kajakorg.designsystem.path.pathIdToPicture
 import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
 import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayEnd
 import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayStart
@@ -36,7 +35,7 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: (Int) -> Unit) {
         Box(modifier = Modifier
             .wrapContentHeight()
             .fillMaxWidth()
-            .padding(start = 4.dp, end = 4.dp, top = 0.dp, bottom = 0.dp)
+            .padding(start = 4.dp, end = 4.dp)
             .clickable { onClick(item.id) }
         ) {
 
@@ -87,7 +86,6 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: (Int) -> Unit) {
                     modifier = Modifier
                         .wrapContentSize()
                         .padding(start = 16.dp, top = 4.dp)
-                        .padding(start = 4.dp, end = 2.dp)
                 )
 
                 Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
@@ -96,8 +94,7 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: (Int) -> Unit) {
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .height(28.dp)
-                            .width(28.dp),
+                            .size(28.dp),
                         colorFilter = ColorFilter.tint(White)
                     )
                     Text(
@@ -108,7 +105,7 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: (Int) -> Unit) {
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier
                             .wrapContentSize()
-                            .padding(start = 4.dp, end = 2.dp)
+                            .padding(start = 4.dp)
                     )
                     if (item.difficulty.isNotBlank()) {
                         Text(
@@ -120,7 +117,6 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: (Int) -> Unit) {
                             modifier = Modifier
                                 .wrapContentSize()
                                 .padding(start = 4.dp)
-                                .padding(start = 4.dp, end = 2.dp)
                                 .weight(1f)
                         )
                     }
@@ -134,7 +130,6 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: (Int) -> Unit) {
                             modifier = Modifier
                                 .wrapContentSize()
                                 .padding(start = 4.dp)
-                                .padding(start = 4.dp, end = 2.dp)
                                 .weight(1f)
                         )
                     }
@@ -147,11 +142,11 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: (Int) -> Unit) {
 
 @Preview
 @Composable
-fun PreviewAlbumElement() {
+fun PreviewPathOverViewElement() {
     KajakTheme {
         Surface {
             PathOverViewElement(
-                PathOveriewItem(
+                PathOveriewItem( //extract to PreviewParameter. do teh same for othe rmodels
                     id = 1,
                     name = "Bystrzyca kłodzka",
                     versionCode = 1,

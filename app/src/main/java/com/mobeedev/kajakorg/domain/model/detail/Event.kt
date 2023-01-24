@@ -6,20 +6,23 @@ import com.mobeedev.kajakorg.data.model.detail.EventDto
 
 data class Event(
     var id: Int,
-    val townName: String,
-    val position: LatLng,
-    val atKilometer: Double,
-    val label: String,
-    val sortOrder: Int,
+    var townName: String,
+    var position: LatLng,
+    var atKilometer: Double,
+    var label: String,
+    override var sortOrder: Int,
 
     var eventDescription: List<EventDescription> = mutableListOf()
-)
+) : PathEvent
 
 fun EventDB.toDomain(eventDescription: List<EventDescription>) = Event(
     eventId,
     townName,
     position,
-    atKilometer, label, sortOrder
+    atKilometer,
+    label,
+    sortOrder,
+    eventDescription
 )
 
 fun EventDto.toDomain() = Event(
