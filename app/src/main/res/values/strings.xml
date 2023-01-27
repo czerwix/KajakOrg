@@ -18,6 +18,7 @@
     <string name="path_sort_shortest_longest">Shortest</string>
 
     <string name="section">"Section - %1$s"</string>
+    <string name="section_length">"from %1.0fkm - %2.0fkm, total length:%3.0fkm"</string>
     <string name="number_of_sections">No. of sections:</string>
     <string name="events_on_section">"No. of events:"</string>
     <string name="event_title">"Event at %1$s!"</string>

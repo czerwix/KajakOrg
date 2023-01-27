@@ -142,8 +142,8 @@ fun showPathDetails(
         CollapsingToolbar(
             backgroundImageResId = pathIdToPicture[uiState.path.overview.id]!!,
             progress = toolbarState.progress,
-            onPrivacyTipButtonClicked = { },//todo
-            onSettingsButtonClicked = { }, //todo
+            onPrivacyTipButtonClicked = {},//todo
+            onSettingsButtonClicked = {},//todo
             modifier = Modifier
                 .fillMaxWidth()
                 .height(with(LocalDensity.current) { toolbarState.height.toDp() })

@@ -2,7 +2,7 @@ package com.mobeedev.kajakorg.designsystem.path
 
 import com.mobeedev.kajakorg.R
 
-val pathIdToPicture = mapOf<Int, Int>(
+val pathIdToPicture = mapOf(
     1 to R.drawable.path_1,
     2 to R.drawable.path_2,
     3 to R.drawable.path_3,

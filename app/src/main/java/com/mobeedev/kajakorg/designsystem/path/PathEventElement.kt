@@ -46,6 +46,7 @@ fun PathEventElement(
         Box(modifier = Modifier
             .height(IntrinsicSize.Max)
             .fillMaxWidth()
+            .padding(start = 10.dp, end = 10.dp)
             .clickable { onClick(item.id) }
         ) {
             var uiSettings by remember {
@@ -69,7 +70,6 @@ fun PathEventElement(
             GoogleMap(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(start = 4.dp, end = 4.dp)
                     .clip(RoundedCornerShape(8.dp)),
                 properties = properties,
                 uiSettings = uiSettings,
@@ -111,7 +111,7 @@ fun PathEventElement(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.End,
                     modifier = Modifier
-                        .padding(end = 16.dp)
+                        .padding(end = 16.dp, top = 6.dp)
                         .background(
                             PathOverviewOverlayEnd,
                             RoundedCornerShape(4.dp)
@@ -178,6 +178,7 @@ fun PathEventElement(
                                 color = Color.White,
                                 modifier = Modifier
                                     .wrapContentSize()
+                                    .padding(top = 8.dp)
                                     .background(
                                         PathOverviewOverlayEnd,
                                         RoundedCornerShape(4.dp)
@@ -191,25 +192,26 @@ fun PathEventElement(
     }
 }
 
-fun determineBottomPadding(item: Event, density: Density): Int = with(density) {
-    var textRows = 0
-    var textLengthTotal = 0
-    var textPadding = 0
-    item.eventDescription.forEach {
-        textLengthTotal += it.description.length
+fun determineBottomPadding(item: Event, density: Density): Int =
+    with(density) {//todo refactor function. Fighting with GoogleMaps padding junk -_- why they don't implement a zoom offset is beyond me!
+        var textRows = 0
+        var textLengthTotal = 0
+        var textPadding = 0
+        item.eventDescription.forEach {
+            textLengthTotal += it.description.length
+        }
+        textRows += textLengthTotal / 50
+        if (item.eventDescription.size > 1) {
+            textPadding = 26.dp.toPx().toInt() * item.eventDescription.size
+        }
+        if (textRows == 0) {
+            0
+        } else if (textRows < 5) {
+            (14.sp.toPx() * (textRows * 1.1)).toInt() + textPadding
+        } else {
+            (14.sp.toPx() * (textRows * 1.8)).toInt() + textPadding
+        }
     }
-    textRows += textLengthTotal / 50
-    if (item.eventDescription.size > 1) {
-        textPadding = 26.dp.toPx().toInt() * item.eventDescription.size
-    }
-    if (textRows == 0) {
-        0
-    } else if (textRows < 5) {
-        (14.sp.toPx() * (textRows * 1.1)).toInt() + textPadding
-    } else {
-        (14.sp.toPx() * (textRows * 1.8)).toInt() + textPadding
-    }
-}
 
 @Preview(showBackground = true)
 @Composable

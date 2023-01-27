@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
+import androidx.compose.ui.unit.sp
 import com.mobeedev.kajakorg.R
 import com.mobeedev.kajakorg.common.extensions.space
 import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
@@ -42,6 +43,7 @@ private const val Alpha = 0.75f
 
 private val ExpandedPadding = 1.dp
 private val ExpandedSectionsPadding = 4.dp
+private val ExpandedBottomPadding = 16.dp
 private val CollapsedPadding = 3.dp
 
 private val TitleHeight = 32.dp
@@ -137,6 +139,7 @@ fun CollapsingToolbar(
     path: PathOveriewItem
 ) {
     val logoPadding = lerp(CollapsedPadding, ExpandedPadding, progress)
+    val bottomTitlePadding = lerp(CollapsedPadding, ExpandedBottomPadding, progress)
 
     Surface(
         color = RiverBlue,
@@ -181,15 +184,16 @@ fun CollapsingToolbar(
                         text = path.name,
                         color = Color.White,
                         style = MaterialTheme.typography.titleLarge,
+                        fontSize = 28.sp,
                         modifier = Modifier
-                            .padding(logoPadding)
+                            .padding(bottom = bottomTitlePadding)
                             .height(TitleHeight)
                             .wrapContentWidth()
                     )
                     Text(
                         text = path.length.toString() + String.space + stringResource(id = R.string.at_kilometer),
                         color = Color.White,
-                        style = MaterialTheme.typography.bodySmall,
+                        style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier
                             .padding(logoPadding)
                             .wrapContentSize()
@@ -198,7 +202,7 @@ fun CollapsingToolbar(
                     Text(
                         text = stringResource(id = R.string.number_of_sections) + String.space + path.numberOfSections,
                         color = Color.White,
-                        style = MaterialTheme.typography.bodySmall,
+                        style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier
                             .padding(logoPadding)
                             .wrapContentSize()
@@ -207,7 +211,7 @@ fun CollapsingToolbar(
                     Text(
                         text = path.description,
                         color = Color.White,
-                        style = MaterialTheme.typography.bodySmall,
+                        style = MaterialTheme.typography.bodyMedium,
                         maxLines = 8,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier
