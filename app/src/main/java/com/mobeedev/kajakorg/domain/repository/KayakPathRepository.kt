@@ -4,6 +4,7 @@ import com.mobeedev.kajakorg.domain.model.DataDownloadStatus
 import com.mobeedev.kajakorg.domain.model.detail.Path
 import com.mobeedev.kajakorg.domain.model.overview.PathOverview
 import com.mobeedev.kajakorg.ui.model.PathItem
+import com.mobeedev.kajakorg.ui.model.PathMapItem
 import com.mobeedev.kajakorg.ui.model.PathOveriewItem
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -26,4 +27,6 @@ interface KayakPathRepository {
     suspend fun getPathsOverviewItem(): Result<List<PathOveriewItem>>
 
     suspend fun getPathItemById(pathId: Int): Result<PathItem>
+
+    suspend fun getPathMap(pathId: Int?):Result<List<PathMapItem>>
 }

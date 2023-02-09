@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -23,7 +22,6 @@ import com.mobeedev.kajakorg.ui.MainDataLoadingViewModel
 import com.mobeedev.kajakorg.ui.MainViewModelState
 import org.koin.androidx.compose.getViewModel
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun LoadKajakDataRoute(
     modifier: Modifier = Modifier,
@@ -39,7 +37,6 @@ fun LoadKajakDataRoute(
     ) { viewModel.onErrorReload() }
 }
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun LoadKajakDataScreen(
     pathState: MainViewModelState,

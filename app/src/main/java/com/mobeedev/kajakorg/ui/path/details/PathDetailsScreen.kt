@@ -20,7 +20,6 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mobeedev.kajakorg.designsystem.path.pathIdToPicture
 import com.mobeedev.kajakorg.designsystem.toolbar.CollapsingToolbar
@@ -32,8 +31,6 @@ import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
-
-@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun PathDetailsRoute(
     onBackClick: () -> Unit,

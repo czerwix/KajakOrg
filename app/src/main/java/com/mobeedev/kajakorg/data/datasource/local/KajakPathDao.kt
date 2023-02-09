@@ -11,9 +11,13 @@ import com.mobeedev.kajakorg.data.model.detail.PathDto
 import com.mobeedev.kajakorg.data.model.detail.toDB
 import com.mobeedev.kajakorg.data.model.detail.toPathDB
 import com.mobeedev.kajakorg.data.model.detail.toSectionDB
+import com.mobeedev.kajakorg.domain.model.detail.Event
 import com.mobeedev.kajakorg.domain.model.detail.Path
+import com.mobeedev.kajakorg.domain.model.detail.Section
 import com.mobeedev.kajakorg.domain.model.detail.toDomain
 import com.mobeedev.kajakorg.domain.model.overview.toItem
+import com.mobeedev.kajakorg.ui.model.EventMapItem
+import com.mobeedev.kajakorg.ui.model.PathMapItem
 import com.mobeedev.kajakorg.ui.model.PathOveriewItem
 
 @Dao
@@ -87,6 +91,7 @@ abstract class KajakPathDao {
     @Query("SELECT * FROM EventDescriptionDB WHERE eventId=:eventId")
     abstract fun getEventDescriptionByEvent(eventId: Int): List<EventDescriptionDB>
 
+
     //todo use CrossRef after MVP
     @Transaction
     open suspend fun getPathDomain(pathId: Int): Path = getPath(pathId).toDomain(
@@ -116,4 +121,60 @@ abstract class KajakPathDao {
     open suspend fun getPathOverviewItem(pathId: Int) =
         getPathOverview(pathId).toItem(getPathDescription(pathId) ?: String.empty)
 
+    @Transaction
+    open suspend fun getAllPathMapData(): List<PathMapItem> =
+        mutableListOf<PathMapItem>().apply {
+            getAllPathsOverview().forEach { path ->
+                add(
+                    PathMapItem(
+                        overview = path.toItem(
+                            getPathDescription(path.pathOverviewId) ?: String.empty
+                        ),
+                        points = getEventMapByPathSorted(path.pathOverviewId)
+                    )
+                )
+            }
+        }
+
+    @Transaction
+    open suspend fun getPathMapData(pathId: Int): PathMapItem = with(getPathOverview(pathId)) {
+        PathMapItem(this.toItem(String.empty), getEventMapByPathSorted(pathId))
+    }
+
+
+    private fun getEventMapByPathSorted(pathOverviewId: Int): List<EventMapItem> {
+        val pathSectionEvents =
+            (getSectionByPath(pathOverviewId).map { it.toDomain(mutableListOf()) } +
+                    getEventByPath(pathOverviewId).map { it.toDomain(mutableListOf()) })
+                .sortedBy { it.sortOrder }
+        val sortedPathItems = mutableListOf<EventMapItem>()
+
+        pathSectionEvents.forEach { pathEvent ->
+            when (pathEvent) {
+                is Section -> {
+                    sortedPathItems.addAll(getEventBySection(pathEvent.id).map {
+                        EventMapItem(
+                            it.eventId,
+                            it.position,
+                            it.atKilometer,
+                            it.label,
+                            it.sortOrder
+                        )
+                    })
+                }
+                is Event -> {
+                    sortedPathItems.add(
+                        EventMapItem(
+                            pathEvent.id,
+                            pathEvent.position,
+                            pathEvent.atKilometer,
+                            pathEvent.label,
+                            pathEvent.sortOrder
+                        )
+                    )
+                }
+            }
+        }
+        return sortedPathItems
+    }
 }

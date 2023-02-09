@@ -19,6 +19,7 @@ import com.mobeedev.kajakorg.domain.model.overview.PathOverview
 import com.mobeedev.kajakorg.domain.model.overview.toDomain
 import com.mobeedev.kajakorg.domain.repository.KayakPathRepository
 import com.mobeedev.kajakorg.ui.model.PathItem
+import com.mobeedev.kajakorg.ui.model.PathMapItem
 import com.mobeedev.kajakorg.ui.model.PathOveriewItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
@@ -92,9 +93,10 @@ class KayakPathRepositoryImpl(
             dataDownloadState = prefs[PreferencesKeys.dataDownloadState]
         }
 
-        when {
-            dataDownloadState == null -> DataDownloadStatus()
-            dataDownloadState == DataDownloadState.PARTIAL.toString() -> DataDownloadStatus(status = DataDownloadState.PARTIAL)
+        when (dataDownloadState) {
+            null -> DataDownloadStatus()
+            DataDownloadState.PARTIAL.toString() ->
+                DataDownloadStatus(status = DataDownloadState.PARTIAL)
             else -> {
                 DataDownloadStatus(ZonedDateTime.parse(lastUpdateAt), DataDownloadState.DONE)
             }
@@ -109,5 +111,13 @@ class KayakPathRepositoryImpl(
     override suspend fun getPathItemById(pathId: Int): Result<PathItem> = runRecoverCatching {
         val pathOverviewItem = localPathSource.getPathOverviewItem(pathId)
         localPathSource.getPath(pathId).toItem(pathOverviewItem)
+    }
+
+    override suspend fun getPathMap(pathId: Int?): Result<List<PathMapItem>> = runRecoverCatching {
+        if (pathId == null) {
+            localPathSource.getAllPathMapData()
+        } else {
+            listOf(localPathSource.getPathMapData(pathId))
+        }
     }
 }

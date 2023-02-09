@@ -18,7 +18,6 @@ import androidx.compose.ui.focus.focusTarget
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mobeedev.kajakorg.designsystem.path.PathOverViewElement
 import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
@@ -27,12 +26,12 @@ import com.mobeedev.kajakorg.ui.model.PathSortOrderItem
 import com.mobeedev.kajakorg.ui.path.load.showLoadingState
 import org.koin.androidx.compose.getViewModel
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun PathOverviewRoute(
     modifier: Modifier = Modifier,
     viewModel: PathOverviewViewModel = getViewModel(),
-    navigateToPathDetails: (Int) -> Unit
+    navigateToPathDetails: (Int) -> Unit,
+    navigateToPathMap: () -> Unit
 ) {
     val uiState: PathOverviewViewModelState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -40,6 +39,7 @@ fun PathOverviewRoute(
         uiState = uiState,
         modifier = modifier,
         navigateToPathDetails = navigateToPathDetails,
+        navigateToPathMap = navigateToPathMap,
         viewModel = viewModel
     )
 }
@@ -49,6 +49,7 @@ fun PathOverviewScreen(
     uiState: PathOverviewViewModelState,
     modifier: Modifier = Modifier,
     navigateToPathDetails: (Int) -> Unit,
+    navigateToPathMap: () -> Unit,
     viewModel: PathOverviewViewModel
 ) {
     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
@@ -56,12 +57,14 @@ fun PathOverviewScreen(
             PathOverviewViewModelState.Error -> {}
             PathOverviewViewModelState.InitialStart,
             PathOverviewViewModelState.Loading -> showLoadingState()
+
             is PathOverviewViewModelState.Success -> {
                 showDataList(
                     uiState,
                     getFilteredPathList(uiState),
                     modifier,
                     navigateToPathDetails,
+                    navigateToPathMap,
                     viewModel
                 )
             }
@@ -77,6 +80,7 @@ fun showDataList(
     pathList: List<PathOveriewItem>,
     modifier: Modifier,
     navigateToPathDetails: (Int) -> Unit,
+    navigateToPathMap: () -> Unit,
     viewModel: PathOverviewViewModel
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
@@ -91,7 +95,7 @@ fun showDataList(
             .fillMaxSize()
             .focusTarget(),
         topBar = {
-            getPathSearchTopBar(uiState, viewModel, scrollBehavior)
+            getPathSearchTopBar(uiState, viewModel, scrollBehavior,navigateToPathMap)
         }
     ) {
         LazyColumn(

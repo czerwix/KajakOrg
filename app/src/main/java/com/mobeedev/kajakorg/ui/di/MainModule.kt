@@ -8,6 +8,7 @@ import com.mobeedev.kajakorg.domain.usecase.*
 import com.mobeedev.kajakorg.ui.MainDataLoadingViewModel
 import com.mobeedev.kajakorg.ui.common.ModuleLoader
 import com.mobeedev.kajakorg.ui.path.details.PathDetailsViewModel
+import com.mobeedev.kajakorg.ui.path.map.PathMapViewModel
 import com.mobeedev.kajakorg.ui.path.overview.PathOverviewViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
@@ -51,6 +52,14 @@ private val viewModelModule = module {
             getPathDetailsUseCase = get()
         )
     }
+
+    viewModel {
+        PathMapViewModel(
+            application = get(),
+            savedStateHandle = it.get(),
+            getLocalMapPathsUseCase = get()
+        )
+    }
 }
 
 private val useCaseModule = module {
@@ -62,6 +71,7 @@ private val useCaseModule = module {
     factory { GetLocalPathOverviewItemUseCase(kayakPathRepository = get()) }
     factory { GetLastUpdateDateUseCase(kayakPathRepository = get()) }
     factory { GetLocalPathDetailsUseCase(kayakPathRepository = get()) }
+    factory { GetLocalMapPathsUseCase(kayakPathRepository = get()) }
 }
 
 private val repositoryModule = module {

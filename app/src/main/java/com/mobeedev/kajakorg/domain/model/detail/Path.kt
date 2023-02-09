@@ -12,7 +12,6 @@ data class Path(
     var versionCode: Int = -1,
     var description: String = String.empty,
 
-
     var sections: List<Section> = mutableListOf(),
     var events: List<Event> = mutableListOf()
 )

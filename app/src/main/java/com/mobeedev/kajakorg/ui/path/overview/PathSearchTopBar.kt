@@ -32,7 +32,8 @@ import com.mobeedev.kajakorg.ui.model.PathSortOrderItem
 fun getPathSearchTopBar(
     uiState: PathOverviewViewModelState.Success,
     viewModel: PathOverviewViewModel,
-    scrollBehavior: TopAppBarScrollBehavior
+    scrollBehavior: TopAppBarScrollBehavior,
+    onMapClicked: () -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
@@ -87,6 +88,16 @@ fun getPathSearchTopBar(
                         focusManager.moveFocus(FocusDirection.Exit)
                     }),
                 )
+
+                IconButton(
+                    modifier = Modifier.wrapContentSize(),
+                    onClick = onMapClicked) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.outline_map_24),
+                        null
+                    )
+                }
+
                 Box(modifier = Modifier.wrapContentSize()) {
                     IconButton(
                         modifier = Modifier.wrapContentSize(),

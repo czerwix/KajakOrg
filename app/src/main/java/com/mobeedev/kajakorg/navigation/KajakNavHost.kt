@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.mobeedev.kajakorg.ui.navigation.navigateToPathDetails
+import com.mobeedev.kajakorg.ui.navigation.navigateToPathMap
 import com.mobeedev.kajakorg.ui.navigation.navigateToPathOverview
 import com.mobeedev.kajakorg.ui.navigation.pathGraph
 import com.mobeedev.kajakorg.ui.navigation.pathOverviewRoute
@@ -55,7 +56,10 @@ fun KajakNavHost(
             navigateToPathDetails = {
                 navController.navigateToPathDetails(it)
             },
-            {navController.popBackStack()}
+            navigateToPathMap = {
+                navController.navigateToPathMap(-1)
+            },
+            onBackClick = { navController.popBackStack() }
         )
         //todo add other nav_graph here
     }

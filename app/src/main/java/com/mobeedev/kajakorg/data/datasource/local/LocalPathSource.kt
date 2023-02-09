@@ -6,6 +6,7 @@ import com.mobeedev.kajakorg.data.model.overview.toDB
 import com.mobeedev.kajakorg.domain.model.detail.Path
 import com.mobeedev.kajakorg.domain.model.overview.PathOverview
 import com.mobeedev.kajakorg.domain.model.overview.toDomain
+import com.mobeedev.kajakorg.ui.model.PathMapItem
 import com.mobeedev.kajakorg.ui.model.PathOveriewItem
 
 class LocalPathSource(
@@ -35,5 +36,12 @@ class LocalPathSource(
     }
 
     suspend fun getPath(pathId: Int): Path = kajakPathDao.getPathDomain(pathId)
+
+    suspend fun getAllPathMapData(): List<PathMapItem> =
+        kajakPathDao.getAllPathMapData()
+
+    suspend fun getPathMapData(pathId: Int): PathMapItem =
+        kajakPathDao.getPathMapData(pathId)
+
 
 }
