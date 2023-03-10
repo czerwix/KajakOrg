@@ -112,9 +112,8 @@ fun PathSectionElement(item: Section, onClick: (Int) -> Unit) {
                         )
                     }
                 }
-                Row(
+                Column(
                     modifier = Modifier.padding(top = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
                 ) {//todo fix this rows alignment with icons maybe? i don't like this look
                     Text(
                         text = stringResource(id = R.string.events_on_section) +
@@ -126,6 +125,7 @@ fun PathSectionElement(item: Section, onClick: (Int) -> Unit) {
 //                        color = Color.White,
                         modifier = Modifier
                             .wrapContentSize()
+                            .padding(top = 2.dp)
                     )
                     Text(
                         text = stringResource(id = R.string.nuisance) +
@@ -137,7 +137,7 @@ fun PathSectionElement(item: Section, onClick: (Int) -> Unit) {
 //                        color = Color.White,
                         modifier = Modifier
                             .wrapContentSize()
-                            .padding(start = 8.dp)
+                            .padding(top = 2.dp)
                     )
                     if (item.difficulty.isNotBlank()) {
                         Text(
@@ -150,11 +150,9 @@ fun PathSectionElement(item: Section, onClick: (Int) -> Unit) {
 //                            color = Color.White,
                             modifier = Modifier
                                 .wrapContentSize()
-                                .padding(start = 8.dp)
+                                .padding(top = 2.dp)
                         )
                     }
-                }
-                Row {
                     if (item.picturesque.isNotBlank()) {
                         Text(
                             text = stringResource(id = R.string.picturesque) +
@@ -166,6 +164,7 @@ fun PathSectionElement(item: Section, onClick: (Int) -> Unit) {
 //                            color = Color.White,
                             modifier = Modifier
                                 .wrapContentSize()
+                                .padding(top = 2.dp)
                         )
                     }
                     if (item.cleanliness.isNotBlank()) {
@@ -179,7 +178,7 @@ fun PathSectionElement(item: Section, onClick: (Int) -> Unit) {
 //                            color = Color.White,
                             modifier = Modifier
                                 .wrapContentSize()
-                                .padding(start = 8.dp)
+                                .padding(top = 2.dp)
                         )
                     }
                 }
@@ -187,6 +186,7 @@ fun PathSectionElement(item: Section, onClick: (Int) -> Unit) {
         }
     }
 }
+
 
 fun getRandomBackgroundImage(id: Int): Int {//todo refactor/change this
     val pictures = pathIdToPicture.entries.toList()

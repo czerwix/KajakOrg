@@ -18,7 +18,7 @@
     <string name="path_sort_shortest_longest">Shortest</string>
 
     <string name="section">"Section - %1$s"</string>
-    <string name="section_length">"from %1.0fkm - %2.0fkm, total length:%3.0fkm"</string>
+    <string name="section_length">"from %1.0fkm - %2.0fkm, section length:%3.0fkm"</string>
     <string name="number_of_sections">No. of sections:</string>
     <string name="events_on_section">"No. of events:"</string>
     <string name="event_title">"Event at %1$s!"</string>
@@ -28,9 +28,11 @@
     <string name="picturesque">"Picturesque:"</string>
     <string name="cleanliness">"Cleanliness:"</string>
     <string name="at_kilometer" translatable="false">"km"</string>
-    <string name="location_request">Request permission</string>
     <string name="location_rationale">We use location data to handle better navigation on the Path\'s map. this permission is not required.</string>
     <string name="path_map">Path Map</string>
     <string name="path_list">Path List</string>
+
+    <string name="path_map_location_request">We utilise location data to better portray path\'s events in relation to location information.\nyour location is never sent anywhere and we don\'t saved any location information in our aplication/servers.</string>
+    <string name="location_request">Request permission</string>
 
 </resources>

@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.mobeedev.kajakorg.ui.navigation.navigateToPathDetails
+import com.mobeedev.kajakorg.ui.navigation.navigateToPathDetailsMap
 import com.mobeedev.kajakorg.ui.navigation.navigateToPathMap
 import com.mobeedev.kajakorg.ui.navigation.navigateToPathOverview
 import com.mobeedev.kajakorg.ui.navigation.pathGraph
@@ -58,6 +59,9 @@ fun KajakNavHost(
             },
             navigateToPathMap = {
                 navController.navigateToPathMap(-1)
+            },
+            navigateToPathDetailsMap = {
+                navController.navigateToPathDetailsMap(it)
             },
             onBackClick = { navController.popBackStack() }
         )

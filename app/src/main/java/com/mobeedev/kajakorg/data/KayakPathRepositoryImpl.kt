@@ -110,7 +110,8 @@ class KayakPathRepositoryImpl(
 
     override suspend fun getPathItemById(pathId: Int): Result<PathItem> = runRecoverCatching {
         val pathOverviewItem = localPathSource.getPathOverviewItem(pathId)
-        localPathSource.getPath(pathId).toItem(pathOverviewItem)
+        localPathSource.getPath(pathId)
+            .toItem(pathOverviewItem)
     }
 
     override suspend fun getPathMap(pathId: Int?): Result<List<PathMapItem>> = runRecoverCatching {

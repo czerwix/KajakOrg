@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.mobeedev.kajakorg.R
 import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
 import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayEnd
+import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayMiddle
 import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayStart
 import com.mobeedev.kajakorg.designsystem.theme.White
 import com.mobeedev.kajakorg.ui.model.PathOveriewItem
@@ -51,8 +52,8 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: (Int) -> Unit) {
                         val gradient = Brush.verticalGradient(
                             colors = listOf(
                                 PathOverviewOverlayStart,
-                                PathOverviewOverlayEnd,
-                                Color.Transparent
+                                PathOverviewOverlayMiddle,
+                                PathOverviewOverlayEnd
                             ),
                             startY = 0f,
                             endY = size.height - (size.height / 4) //todo extract to separate const
@@ -69,32 +70,22 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: (Int) -> Unit) {
                     .fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp)
             ) {
-                Text(
-                    text = item.name,
-                    color = Color.White,
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .padding(start = 4.dp, end = 2.dp)
-                )
-                Text(
-                    text = item.description,
-                    color = Color.White,
-                    style = MaterialTheme.typography.bodySmall,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .padding(start = 16.dp, top = 4.dp)
-                )
-
                 Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = item.name,
+                        color = Color.White,
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .padding(end = 2.dp)
+                    )
                     Image(
                         painter = painterResource(id = R.drawable.conversion_path),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .size(28.dp),
+                            .padding(start = 6.dp)
+                            .size(20.dp),
                         colorFilter = ColorFilter.tint(White)
                     )
                     Text(
@@ -107,7 +98,27 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: (Int) -> Unit) {
                             .wrapContentSize()
                             .padding(start = 4.dp)
                     )
-                    if (item.difficulty.isNotBlank()) {
+                }
+                var descriptionMaxLines = 2
+                if (item.difficulty.isBlank()) descriptionMaxLines += 1
+                if (item.nuisance.isBlank()) descriptionMaxLines += 1
+                Text(
+                    text = item.description,
+                    color = Color.White,
+                    style = MaterialTheme.typography.bodySmall,
+                    maxLines = descriptionMaxLines,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .padding(start = 16.dp, top = 4.dp)
+                )
+
+
+                if (item.difficulty.isNotBlank()) {
+                    Row(
+                        modifier = Modifier.padding(top = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Text(
                             text = stringResource(id = R.string.path_difficulty, item.difficulty),
                             color = Color.White,
@@ -116,11 +127,14 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: (Int) -> Unit) {
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier
                                 .wrapContentSize()
-                                .padding(start = 4.dp)
-                                .weight(1f)
                         )
                     }
-                    if (item.difficulty.isNotBlank()) {
+                }
+                if (item.nuisance.isNotBlank()) {
+                    Row(
+                        modifier = Modifier.padding(top = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Text(
                             text = stringResource(id = R.string.path_nuisance, item.nuisance),
                             color = Color.White,
@@ -129,12 +143,9 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: (Int) -> Unit) {
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier
                                 .wrapContentSize()
-                                .padding(start = 4.dp)
-                                .weight(1f)
                         )
                     }
                 }
-
             }
         }
     }

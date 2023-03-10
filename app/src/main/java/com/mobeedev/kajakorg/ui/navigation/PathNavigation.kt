@@ -4,7 +4,8 @@ import androidx.navigation.*
 import androidx.navigation.compose.composable
 import com.mobeedev.kajakorg.ui.path.details.PathDetailsRoute
 import com.mobeedev.kajakorg.ui.path.load.LoadKajakDataRoute
-import com.mobeedev.kajakorg.ui.path.map.PathMapRoute
+import com.mobeedev.kajakorg.ui.path.map.details.PathDetailsMapRoute
+import com.mobeedev.kajakorg.ui.path.map.overview.PathMapRoute
 import com.mobeedev.kajakorg.ui.path.overview.PathOverviewRoute
 
 val pathLoadingRoute = "load_path_route"
@@ -33,17 +34,25 @@ fun NavController.navigateToPathMap(pathId: Int) {
     this.navigate("path_map_route/$pathId")
 }
 
+fun NavController.navigateToPathDetailsMap(pathId: Int) {
+    this.navigate("path_details_map_route/$pathId")
+}
+
 fun NavGraphBuilder.pathGraph(
     navigateToPathOverview: () -> Unit,
     navigateToPathDetails: (Int) -> Unit,
     navigateToPathMap: () -> Unit,
+    navigateToPathDetailsMap: (Int) -> Unit,
     onBackClick: () -> Unit
 ) {
     composable(route = pathLoadingRoute) {
         LoadKajakDataRoute(navigateToPathOverview = navigateToPathOverview)
     }
     composable(route = pathOverviewRoute) {
-        PathOverviewRoute(navigateToPathDetails = navigateToPathDetails, navigateToPathMap = navigateToPathMap)
+        PathOverviewRoute(
+            navigateToPathDetails = navigateToPathDetails,
+            navigateToPathMap = navigateToPathMap
+        )
     }
     composable(
         route = "path_details_route/{${pathDetailsIdArg}}",
@@ -51,7 +60,10 @@ fun NavGraphBuilder.pathGraph(
             type = NavType.IntType
         })
     ) {
-        PathDetailsRoute(onBackClick = onBackClick)
+        PathDetailsRoute(
+            onBackClick = onBackClick,
+            navigateToPathMap = navigateToPathDetailsMap
+        )
     }
     composable(
         route = "path_map_route/{${pathMapIdArg}}",
@@ -60,5 +72,13 @@ fun NavGraphBuilder.pathGraph(
         })
     ) {
         PathMapRoute(onBackClick = onBackClick)
+    }
+    composable(
+        route = "path_details_map_route/{${pathMapIdArg}}",
+        arguments = listOf(navArgument(pathMapIdArg) {
+            type = NavType.IntType
+        })
+    ) {
+        PathDetailsMapRoute(onBackClick = onBackClick)
     }
 }

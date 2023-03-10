@@ -63,13 +63,13 @@ abstract class KajakPathDao {
     }
 
     //GET
-    @Query("SELECT * FROM PathOverviewDB")
+    @Query("SELECT * FROM PathOverviewDB ORDER BY pathOverviewId")
     abstract fun getAllPathsOverview(): List<PathOverviewDB>
 
     @Query("SELECT * FROM PathOverviewDB WHERE pathOverviewId=:id")
     abstract fun getPathOverview(id: Int): PathOverviewDB
 
-    @Query("SELECT pathId FROM PathDB")
+    @Query("SELECT pathId FROM PathDB ORDER BY pathId")
     abstract fun getAllPathsIds(): List<Int>
 
     //getPathHelpers
@@ -79,16 +79,16 @@ abstract class KajakPathDao {
     @Query("SELECT description FROM PathDB WHERE pathId=:id")
     abstract fun getPathDescription(id: Int): String?
 
-    @Query("SELECT * FROM SectionDB WHERE pathId=:pathId")
+    @Query("SELECT * FROM SectionDB WHERE pathId=:pathId ORDER BY sortOrder")
     abstract fun getSectionByPath(pathId: Int): List<SectionDB>
 
-    @Query("SELECT * FROM EventDB WHERE pathId=:pathId")
+    @Query("SELECT * FROM EventDB WHERE pathId=:pathId ORDER BY sortOrder")
     abstract fun getEventByPath(pathId: Int): List<EventDB>
 
-    @Query("SELECT * FROM EventDB WHERE sectionId=:sectionId")
+    @Query("SELECT * FROM EventDB WHERE sectionId=:sectionId ORDER BY sortOrder")
     abstract fun getEventBySection(sectionId: Int): List<EventDB>
 
-    @Query("SELECT * FROM EventDescriptionDB WHERE eventId=:eventId")
+    @Query("SELECT * FROM EventDescriptionDB WHERE eventId=:eventId ORDER BY sortOrder")
     abstract fun getEventDescriptionByEvent(eventId: Int): List<EventDescriptionDB>
 
 
@@ -99,7 +99,7 @@ abstract class KajakPathDao {
         getEventsForPath(pathId)
     )
 
-    private fun getSectionsForPath(pathId: Int) = getSectionByPath(pathId).map { section ->
+    private fun getSectionsForPath(pathId: Int) = getSectionByPath(pathId).sortedBy { it.sortOrder }.map { section ->
         section.toDomain(getEventBySection(section.sectionId).map { event ->
             event.toDomain(getEventDescriptionByEvent(event.eventId).map { it.toDomain() })
         })

@@ -6,7 +6,16 @@ import com.mobeedev.kajakorg.domain.model.detail.Section
 
 data class PathItem(
     val overview: PathOveriewItem,
-    var pathSectionsEvents:List<PathEvent>
+    var pathSectionsEvents: List<PathEvent>
 )
+
+fun List<PathEvent>.toPathEventsList(): List<Event> =
+    fold(mutableListOf<Event>()) { acc, pathEvent ->
+        when (pathEvent) {
+            is Section -> acc.addAll(pathEvent.events)
+            is Event -> acc.add(pathEvent)
+        }
+        acc
+    }.toList()
 
 

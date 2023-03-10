@@ -1,4 +1,4 @@
-package com.mobeedev.kajakorg.ui.path.map
+package com.mobeedev.kajakorg.ui.path.map.overview
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -6,7 +6,6 @@ import androidx.lifecycle.SavedStateHandle
 import com.mobeedev.kajakorg.domain.usecase.GetLocalMapPathsUseCase
 import com.mobeedev.kajakorg.ui.model.PathMapItem
 import com.mobeedev.kajakorg.ui.navigation.PathMapArgs
-import com.mobeedev.kajakorg.ui.navigation.pathDetailsIdArg
 import com.mobeedev.kajakorg.ui.navigation.pathMapIdArg
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

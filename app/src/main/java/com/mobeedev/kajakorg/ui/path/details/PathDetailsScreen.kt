@@ -24,6 +24,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mobeedev.kajakorg.designsystem.path.pathIdToPicture
 import com.mobeedev.kajakorg.designsystem.toolbar.CollapsingToolbar
 import com.mobeedev.kajakorg.designsystem.toolbar.FixedScrollFlagState
+import com.mobeedev.kajakorg.designsystem.toolbar.MaxToolbarHeight
+import com.mobeedev.kajakorg.designsystem.toolbar.MinToolbarHeight
 import com.mobeedev.kajakorg.designsystem.toolbar.ToolbarState
 import com.mobeedev.kajakorg.designsystem.toolbar.scrollflags.ExitUntilCollapsedState
 import com.mobeedev.kajakorg.ui.path.load.showLoadingState
@@ -34,8 +36,9 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun PathDetailsRoute(
     onBackClick: () -> Unit,
+    navigateToPathMap: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: PathDetailsViewModel = getViewModel(),
+    viewModel: PathDetailsViewModel = getViewModel()
 ) {
     val uiState: PathDetailsViewModelState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -43,7 +46,8 @@ fun PathDetailsRoute(
         uiState = uiState,
         modifier = modifier,
         viewModel = viewModel,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
+        navigateToPathMap = navigateToPathMap
     )
 }
 
@@ -52,25 +56,20 @@ fun PathDetailsScreen( // TODO: ADD PREVIEW
     uiState: PathDetailsViewModelState,
     modifier: Modifier = Modifier,
     viewModel: PathDetailsViewModel,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    navigateToPathMap: (Int) -> Unit
 ) {
     when (uiState) {
         PathDetailsViewModelState.Error -> TODO()
         is PathDetailsViewModelState.InitialStart -> showLoadingState() //todo remove loading state views for testing only
         is PathDetailsViewModelState.Success -> showPathDetails(
-            uiState,
-            viewModel,
-            onBackClick,
-            modifier
+            uiState, modifier, viewModel, onBackClick, navigateToPathMap
         )
     }
 }
 
-private val MinToolbarHeight = 60.dp
-private val MaxToolbarHeight = 360.dp
-
 @Composable
-private fun rememberToolbarState(toolbarHeightRange: IntRange): ToolbarState {
+private fun rememberPathDetailsToolbarState(toolbarHeightRange: IntRange): ToolbarState {
     return rememberSaveable(saver = ExitUntilCollapsedState.Saver) {
         ExitUntilCollapsedState(toolbarHeightRange)
     }
@@ -79,14 +78,15 @@ private fun rememberToolbarState(toolbarHeightRange: IntRange): ToolbarState {
 @Composable
 fun showPathDetails(
     uiState: PathDetailsViewModelState.Success,
+    modifier: Modifier = Modifier.fillMaxSize(),
     viewModel: PathDetailsViewModel,
     onBackClick: () -> Unit,
-    modifier: Modifier = Modifier.fillMaxSize()
+    navigateToPathMap: (Int) -> Unit
 ) {
     val toolbarHeightRange = with(LocalDensity.current) {
         MinToolbarHeight.roundToPx()..MaxToolbarHeight.roundToPx()
     }
-    val toolbarState = rememberToolbarState(toolbarHeightRange)
+    val toolbarState = rememberPathDetailsToolbarState(toolbarHeightRange)
     val listState = rememberLazyListState()
 
     val scope = rememberCoroutineScope()
@@ -123,23 +123,21 @@ fun showPathDetails(
     }
 
     Box(modifier = modifier.nestedScroll(nestedScrollConnection)) {
-        PathDetailsList( //todo add my lazy list here
-            pathList = uiState.path.pathSectionsEvents,
+        PathDetailsList(pathList = uiState.path.pathSectionsEvents,
             modifier = Modifier
                 .fillMaxSize()
                 .graphicsLayer { translationY = toolbarState.height + toolbarState.offset }
                 .pointerInput(Unit) {
-                    detectTapGestures(
-                        onPress = { scope.coroutineContext.cancelChildren() }
-                    )
+                    detectTapGestures(onPress = { scope.coroutineContext.cancelChildren() })
                 },
             listState = listState,
             contentPadding = PaddingValues(bottom = if (toolbarState is FixedScrollFlagState) MinToolbarHeight else 0.dp)
         )
-        CollapsingToolbar(
-            backgroundImageResId = pathIdToPicture[uiState.path.overview.id]!!,
+        CollapsingToolbar(backgroundImageResId = pathIdToPicture[uiState.path.overview.id]!!,
             progress = toolbarState.progress,
-            onPrivacyTipButtonClicked = {},//todo
+            onBackArrowButtonClicked = onBackClick,
+            onMapButtonClicked = { navigateToPathMap(uiState.path.overview.id) },
+            onStarButtonClicked = {},//todo
             onSettingsButtonClicked = {},//todo
             modifier = Modifier
                 .fillMaxWidth()
@@ -149,131 +147,3 @@ fun showPathDetails(
         )
     }
 }
-
-
-//@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
-//@Composable
-//fun showPathDetails(
-//    uiState: PathDetailsViewModelState.Success,
-//    modifier: Modifier,
-//    viewModel: PathDetailsViewModel,
-//    onBackClick: () -> Unit
-//) {
-//    val scrollState: ScrollState = rememberScrollState(0)
-//    Box(modifier = Modifier.fillMaxSize()) {//maybe extract this to separate file and make it more abstract  :D
-//        showHeader()
-//        showBody(uiState, scrollState)
-////        showToolbar()
-////        showTitle()
-//    }
-
-
-//    val scrollBehavior =
-//        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
-//
-//    Scaffold(
-//        modifier = Modifier
-//            .nestedScroll(scrollBehavior.nestedScrollConnection)
-//            .fillMaxSize()
-//            .focusTarget(),
-//        topBar = {
-//            getPathDetailTopBar(uiState, viewModel, scrollBehavior, onBackClick)
-//        }
-//    ) {
-//        LazyColumn(
-//            modifier = modifier
-//                .padding(it)
-//                .fillMaxSize()
-//                .focusTarget(),
-//            verticalArrangement = Arrangement.spacedBy(8.dp),
-//        ) {
-////            pathCards(pathList, navigateToPathDetails)
-//        }
-//    }
-
-//}
-//
-//private val headerHeight = 275.dp//todo figure out a place for this const.
-//
-//@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
-//@Composable
-//fun showHeader() {
-//
-//    val headerHeightPx = with(LocalDensity.current) { headerHeight.toPx() }
-//
-//    Box(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .height(headerHeight)
-//    ) {
-//        Image(
-//            painter = painterResource(id = R.drawable.kajak1),
-//            contentDescription = String.empty,
-//            contentScale = ContentScale.FillBounds
-//        )
-//
-//        Box(
-//            Modifier
-//                .fillMaxSize()
-//                .background(
-//                    brush = Brush.verticalGradient(
-//                        colors = listOf(Color.Transparent, Color(0xAA000000)),
-//                        startY = 3 * headerHeightPx / 4 // to wrap the title only
-//                    )
-//                )
-//        )
-//    }
-//}
-
-//@Composable
-//private fun showBody(
-//    uiState: PathDetailsViewModelState.Success,
-//    scrollState: ScrollState
-//) {
-//    Column(
-//        horizontalAlignment = Alignment.CenterHorizontally,
-////        modifier = Modifier.verticalScroll(scrollState)
-//    ) {
-//        Spacer(Modifier.height(headerHeight))//todo uncomment when continuing work with topBar
-//
-//        LazyColumn(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .focusTarget(),
-//            verticalArrangement = Arrangement.spacedBy(8.dp),
-//        ) {
-//            pathDetailsCards(uiState.path.pathSectionsEvents)
-//        }
-//    }
-//}
-
-//private fun LazyListScope.pathDetailsCards(pathList: List<PathEvent>) {
-//    item {//todo replace with separators here :D
-//        Box(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(16.dp)
-//        )
-//    }
-//    pathList.forEach { element ->
-//        if (element is Section) {
-//            item(key = element.hashCode()) {
-//                PathSectionElement(item = element, onClick = {})//todo add onclick here
-//            }
-//            items(items = element.events, key = { it.hashCode() }) { nestedSectionEvent ->
-//                PathEventElement(item = nestedSectionEvent, onClick = {})
-//            }
-//        } else if (element is Event) {
-//            item(key = element.hashCode()) {
-//                PathEventElement(item = element, onClick = {})
-//            }
-//        }
-//    }
-//    item {
-//        Box(//todo replace with separators here :D
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(16.dp)
-//        )
-//    }
-//}

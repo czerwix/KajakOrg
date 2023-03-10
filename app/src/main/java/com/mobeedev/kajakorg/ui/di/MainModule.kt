@@ -8,7 +8,8 @@ import com.mobeedev.kajakorg.domain.usecase.*
 import com.mobeedev.kajakorg.ui.MainDataLoadingViewModel
 import com.mobeedev.kajakorg.ui.common.ModuleLoader
 import com.mobeedev.kajakorg.ui.path.details.PathDetailsViewModel
-import com.mobeedev.kajakorg.ui.path.map.PathMapViewModel
+import com.mobeedev.kajakorg.ui.path.map.details.PathDetailMapViewModel
+import com.mobeedev.kajakorg.ui.path.map.overview.PathMapViewModel
 import com.mobeedev.kajakorg.ui.path.overview.PathOverviewViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
@@ -58,6 +59,14 @@ private val viewModelModule = module {
             application = get(),
             savedStateHandle = it.get(),
             getLocalMapPathsUseCase = get()
+        )
+    }
+
+    viewModel {
+        PathDetailMapViewModel(
+            application = get(),
+            savedStateHandle = it.get(),
+            getPathDetailsUseCase = get()
         )
     }
 }

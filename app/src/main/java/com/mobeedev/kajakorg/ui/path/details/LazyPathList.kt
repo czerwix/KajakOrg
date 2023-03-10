@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.mobeedev.kajakorg.designsystem.path.PathEventElement
+import com.mobeedev.kajakorg.designsystem.path.PathEventWithMapElement
 import com.mobeedev.kajakorg.designsystem.path.PathSectionElement
 import com.mobeedev.kajakorg.domain.model.detail.Event
 import com.mobeedev.kajakorg.domain.model.detail.PathEvent
@@ -47,12 +47,12 @@ fun LazyListScope.pathDetailsCards(
                 Divider(thickness = 10.dp, color = Color.Transparent)
             }
             items(items = element.events, key = { it.hashCode() }) { nestedSectionEvent ->
-                PathEventElement(item = nestedSectionEvent, onClick = {})
+                PathEventWithMapElement(item = nestedSectionEvent, onClick = {})
                 Divider(thickness = 10.dp, color = Color.Transparent)
             }
         } else if (element is Event) {
             item(key = element.hashCode()) {
-                PathEventElement(item = element, onClick = {})
+                PathEventWithMapElement(item = element, onClick = {})
                 Divider(thickness = 10.dp, color = Color.Transparent)
             }
         }

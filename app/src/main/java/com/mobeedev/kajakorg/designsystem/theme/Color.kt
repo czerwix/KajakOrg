@@ -18,7 +18,8 @@ val Teal700 = Color(0xFF018786)
 val Teal700_80 = Color(0xCC018786)
 val Teal700_50 = Color(0x99367C7B)
 val PathOverviewOverlayStart = Color(0xB2000000)
-val PathOverviewOverlayEnd = Color(0x61000000)
+val PathOverviewOverlayMiddle = Color(0xB5000000)
+val PathOverviewOverlayEnd = Color(0x48000000)
 
 
 val RiverBlue = Color(0xFF39A9B8)

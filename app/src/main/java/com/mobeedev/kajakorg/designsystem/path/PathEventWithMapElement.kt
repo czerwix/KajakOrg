@@ -35,7 +35,7 @@ import com.mobeedev.kajakorg.domain.model.detail.Event
 import com.mobeedev.kajakorg.domain.model.detail.EventDescription
 
 @Composable
-fun PathEventElement(
+fun PathEventWithMapElement(
     item: Event,
     onClick: (Int) -> Unit
 ) {//todo template view of most important info... make pretty when i have time.
@@ -215,9 +215,9 @@ fun determineBottomPadding(item: Event, density: Density): Int =
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewPathEventElement() {
+fun PreviewPathEventWithElement() {
     KajakTheme {
-        PathEventElement(
+        PathEventWithMapElement(
             item = Event(
                 0,
                 townName = "Bolimów",
@@ -228,6 +228,11 @@ fun PreviewPathEventElement() {
                 eventDescription = listOf(
                     EventDescription(
                         eventType = EventType.Uwaga,
+                        sortOrder = -1,
+                        description = "Łąka naprzeciw domu sołtysa. Wygodne miejsce wodowania. Łąka z pewnością jest czyjąś własnością, jednak właściciel nie objawił się."
+                    ),
+                    EventDescription(
+                        eventType = EventType.Most,
                         sortOrder = -1,
                         description = "Łąka naprzeciw domu sołtysa. Wygodne miejsce wodowania. Łąka z pewnością jest czyjąś własnością, jednak właściciel nie objawił się."
                     )
