@@ -18,10 +18,12 @@
     <string name="path_sort_shortest_longest">Shortest</string>
 
     <string name="section">"Section - %1$s"</string>
-    <string name="section_length">"from %1.0fkm - %2.0fkm, section length:%3.0fkm"</string>
+    <string name="section_compact">"Section\n%1$s"</string>
+    <string name="section_length">"From %1.0fkm - %2.0fkm, section length:%3.0fkm"</string>
     <string name="number_of_sections">No. of sections:</string>
     <string name="events_on_section">"No. of events:"</string>
     <string name="event_title">"Event at %1$s!"</string>
+    <string name="event_title_compact">"Event at\n%1$s!"</string>
     <string name="event_type">"Event type:"</string>
     <string name="nuisance">"Nuisance:"</string>
     <string name="difficulty">"Difficulty:"</string>

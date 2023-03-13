@@ -1,6 +1,5 @@
 package com.mobeedev.kajakorg.ui.path.map.details
 
-import android.app.LocaleConfig
 import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -25,6 +24,8 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,8 +41,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.mobeedev.kajakorg.common.view.checkLocationPermissions
 import com.mobeedev.kajakorg.designsystem.map.MapEventCard
@@ -55,8 +55,7 @@ import com.mobeedev.kajakorg.domain.model.detail.flatPathMapSectionEventList
 import com.mobeedev.kajakorg.ui.model.PathItem
 import com.mobeedev.kajakorg.ui.path.load.showLoadingState
 import com.mobeedev.kajakorg.ui.path.map.getCameraPositionWithOffset
-import com.mobeedev.kajakorg.ui.path.map.overview.PathMapViewModel
-import com.mobeedev.kajakorg.ui.path.map.overview.PathMapViewModelState
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 import kotlin.math.absoluteValue
 
@@ -104,13 +103,13 @@ private fun getCameraPosition(
     event: PathEvent,
     zoomLevel: Double,
     context: Context,
-    testOffsetRemoveME: Dp = 40.dp
+    offsetInDp: Dp = 40.dp
 ) =
     when (event) {
         is Section -> {
             getCameraPositionWithOffset(
                 position = event.events.first().position,
-                testOffsetRemoveME,
+                offsetInDp,
                 zoomLevel = zoomLevel,
                 180.0,
                 context = context
@@ -120,7 +119,7 @@ private fun getCameraPosition(
         is Event -> {
             getCameraPositionWithOffset(
                 position = event.position,
-                testOffsetRemoveME,
+                offsetInDp,
                 zoomLevel = zoomLevel,
                 180.0,
                 context = context
@@ -132,6 +131,7 @@ private fun getCameraPosition(
         }
     }
 
+private const val EVENT_ZOOM_LEVEL = 17.0
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -141,11 +141,18 @@ fun showSuccessMapDetailsScreen(
     isLocationPermissionGranted: Boolean,
     modifier: Modifier
 ) {
+    val scope = rememberCoroutineScope()
     val context = LocalContext.current
-    val configuration = LocalConfiguration.current.screenHeightDp / 12
+    val configuration = LocalConfiguration.current
+    val mapOffset = remember { configuration.screenHeightDp / 16 }
     val cameraPositionState = rememberCameraPositionState {
         position =
-            getCameraPosition(path.pathSectionsEvents.first(), 17.0, context, configuration.dp)
+            getCameraPosition(
+                path.pathSectionsEvents.first(),
+                EVENT_ZOOM_LEVEL,
+                context,
+                mapOffset.dp
+            )
     }
     Box(modifier) {
         //MAP
@@ -184,13 +191,19 @@ fun showSuccessMapDetailsScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(pathEventWithoutMapElementHeight)
+                    .wrapContentHeight()
                     .padding(bottom = 16.dp)
                     .weight(1f, false)
             ) {
                 showEventPager(path.pathSectionsEvents.flatPathMapSectionEventList()) {
-                    cameraPositionState.position =
-                        getCameraPosition(it, 17.0, context, configuration.dp)
+                    scope.launch {
+                        cameraPositionState.animate(
+                            update = CameraUpdateFactory.newCameraPosition(
+                                getCameraPosition(it, EVENT_ZOOM_LEVEL, context, mapOffset.dp)
+                            ),
+                            durationMs = 1000
+                        )
+                    }
                 }
             }
         }
@@ -214,7 +227,9 @@ fun showEventPager(pathSectionsEvents: List<PathEvent>, onPathEventSelected: (Pa
         state = pagerState,
         // Add 32.dp horizontal padding to 'center' the pages
         contentPadding = PaddingValues(horizontal = 32.dp),
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(pathEventWithoutMapElementHeight)
     ) { page: Int ->
         Card(
             Modifier
