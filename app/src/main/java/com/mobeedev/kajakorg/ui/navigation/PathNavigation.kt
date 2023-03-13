@@ -1,7 +1,11 @@
 package com.mobeedev.kajakorg.ui.navigation
 
-import androidx.navigation.*
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.mobeedev.kajakorg.ui.path.details.PathDetailsRoute
 import com.mobeedev.kajakorg.ui.path.load.LoadKajakDataRoute
 import com.mobeedev.kajakorg.ui.path.map.details.PathDetailsMapRoute
@@ -22,20 +26,21 @@ const val pathDetailsIdArg = "path_details_Id"
 
 internal class PathDetailsArgs(val pathId: Int)
 
-fun NavController.navigateToPathDetails(pathId: Int) {
-    this.navigate("path_details_route/$pathId")
+fun NavController.navigateToPathDetails(pathId: Int, navOptions: NavOptions? = null) {
+    this.navigate("path_details_route/$pathId", navOptions)
 }
 
 const val pathMapIdArg = "path_map_Id"
 
 internal class PathMapArgs(val pathId: Int = -1)
 
-fun NavController.navigateToPathMap(pathId: Int) {
-    this.navigate("path_map_route/$pathId")
+val pathMapOverviewRoute = "path_map_route"
+fun NavController.navigateToPathMap(navOptions: NavOptions? = null) {
+    this.navigate(pathMapOverviewRoute, navOptions)
 }
 
-fun NavController.navigateToPathDetailsMap(pathId: Int) {
-    this.navigate("path_details_map_route/$pathId")
+fun NavController.navigateToPathDetailsMap(pathId: Int, navOptions: NavOptions? = null) {
+    this.navigate("path_details_map_route/$pathId", navOptions)
 }
 
 fun NavGraphBuilder.pathGraph(
@@ -45,13 +50,14 @@ fun NavGraphBuilder.pathGraph(
     navigateToPathDetailsMap: (Int) -> Unit,
     onBackClick: () -> Unit
 ) {
+    //Loading
     composable(route = pathLoadingRoute) {
         LoadKajakDataRoute(navigateToPathOverview = navigateToPathOverview)
     }
+    //Path
     composable(route = pathOverviewRoute) {
         PathOverviewRoute(
-            navigateToPathDetails = navigateToPathDetails,
-            navigateToPathMap = navigateToPathMap
+            navigateToPathDetails = navigateToPathDetails, navigateToPathMap = navigateToPathMap
         )
     }
     composable(
@@ -61,16 +67,11 @@ fun NavGraphBuilder.pathGraph(
         })
     ) {
         PathDetailsRoute(
-            onBackClick = onBackClick,
-            navigateToPathMap = navigateToPathDetailsMap
+            onBackClick = onBackClick, navigateToPathMap = navigateToPathDetailsMap
         )
     }
-    composable(
-        route = "path_map_route/{${pathMapIdArg}}",
-        arguments = listOf(navArgument(pathMapIdArg) {
-            type = NavType.IntType
-        })
-    ) {
+    //MAP
+    composable(route = pathMapOverviewRoute) {
         PathMapRoute(onBackClick = onBackClick)
     }
     composable(

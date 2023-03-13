@@ -2,7 +2,15 @@ package com.mobeedev.kajakorg.designsystem.path
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -39,7 +47,6 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: (Int) -> Unit) {
             .padding(start = 4.dp, end = 4.dp)
             .clickable { onClick(item.id) }
         ) {
-
             Image(
                 painter = painterResource(id = pathIdToPicture[item.id]!!),
                 contentDescription = null,
@@ -167,8 +174,7 @@ fun PreviewPathOverViewElement() {
                     difficulty = "D1,D2,D3vbvbvcvbvfdsfdsfdsfdsfdsfdsfcbvcbvcb",
                     nuisance = "N1,N2,N3,N4,Ndsfdsfdsfdsfdsfdfdsfdsfdsfsd",
                     description = "Dłuuuuuuuuuusdusndusnadnsad sauidh sauidnsan dsajdi sd sadiosa ds dsoa disnadi said sadi sadio said sadio sadisa dsa doas dosa dosa doas dosa doas d"
-                ),
-                onClick = {}
+                ), onClick = {}
             )
         }
     }

@@ -130,7 +130,7 @@ abstract class KajakPathDao {
                         overview = path.toItem(
                             getPathDescription(path.pathOverviewId) ?: String.empty
                         ),
-                        points = getEventMapByPathSorted(path.pathOverviewId)
+                        eventList = getEventMapByPathSorted(path.pathOverviewId)
                     )
                 )
             }

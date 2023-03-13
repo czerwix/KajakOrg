@@ -1,6 +1,7 @@
 package com.mobeedev.kajakorg.ui.path.map.details
 
 import android.content.Context
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,6 +15,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
@@ -36,14 +40,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.calculateCurrentOffsetForPage
-import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.mobeedev.kajakorg.common.view.checkLocationPermissions
+import com.mobeedev.kajakorg.designsystem.map.DEFAULT_CAMERA_UPDATE_ANIMATION_LENGTH
+import com.mobeedev.kajakorg.designsystem.map.EVENT_ZOOM_LEVEL
 import com.mobeedev.kajakorg.designsystem.map.MapEventCard
 import com.mobeedev.kajakorg.designsystem.map.defaultCameraPosition
 import com.mobeedev.kajakorg.designsystem.map.showMapPathDetailsScreen
@@ -51,6 +53,7 @@ import com.mobeedev.kajakorg.designsystem.path.pathEventWithoutMapElementHeight
 import com.mobeedev.kajakorg.domain.model.detail.Event
 import com.mobeedev.kajakorg.domain.model.detail.PathEvent
 import com.mobeedev.kajakorg.domain.model.detail.Section
+import com.mobeedev.kajakorg.domain.model.detail.eventId
 import com.mobeedev.kajakorg.domain.model.detail.flatPathMapSectionEventList
 import com.mobeedev.kajakorg.ui.model.PathItem
 import com.mobeedev.kajakorg.ui.path.load.showLoadingState
@@ -104,36 +107,33 @@ private fun getCameraPosition(
     zoomLevel: Double,
     context: Context,
     offsetInDp: Dp = 40.dp
-) =
-    when (event) {
-        is Section -> {
-            getCameraPositionWithOffset(
-                position = event.events.first().position,
-                offsetInDp,
-                zoomLevel = zoomLevel,
-                180.0,
-                context = context
-            )
-        }
-
-        is Event -> {
-            getCameraPositionWithOffset(
-                position = event.position,
-                offsetInDp,
-                zoomLevel = zoomLevel,
-                180.0,
-                context = context
-            )
-        }
-
-        else -> {
-            defaultCameraPosition
-        }
+) = when (event) {
+    is Section -> {
+        getCameraPositionWithOffset(
+            position = event.events.first().position,
+            offsetInDp,
+            zoomLevel = zoomLevel,
+            180.0,
+            context = context
+        )
     }
 
-private const val EVENT_ZOOM_LEVEL = 17.0
+    is Event -> {
+        getCameraPositionWithOffset(
+            position = event.position,
+            offsetInDp,
+            zoomLevel = zoomLevel,
+            180.0,
+            context = context
+        )
+    }
 
-@OptIn(ExperimentalPermissionsApi::class)
+    else -> {
+        defaultCameraPosition
+    }
+}
+
+@OptIn(ExperimentalPermissionsApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun showSuccessMapDetailsScreen(
     path: PathItem,
@@ -141,10 +141,13 @@ fun showSuccessMapDetailsScreen(
     isLocationPermissionGranted: Boolean,
     modifier: Modifier
 ) {
+    val mapEventFlatList = path.pathSectionsEvents.flatPathMapSectionEventList()
+
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
     val mapOffset = remember { configuration.screenHeightDp / 16 }
+    val pagerState = rememberPagerState()
     val cameraPositionState = rememberCameraPositionState {
         position =
             getCameraPosition(
@@ -157,9 +160,20 @@ fun showSuccessMapDetailsScreen(
     Box(modifier) {
         //MAP
         showMapPathDetailsScreen(
-            path = path, isLocationPermissionGranted = isLocationPermissionGranted,
-            onMarkerClicked = {
-                //todo zoom and show selected Event
+            path = path,
+            isLocationPermissionGranted = isLocationPermissionGranted,
+            onMarkerClicked = { event ->
+                scope.launch {
+                    cameraPositionState.animate(
+                        update = CameraUpdateFactory.newCameraPosition(
+                            getCameraPosition(event, EVENT_ZOOM_LEVEL, context, mapOffset.dp)
+                        ),
+                        durationMs = DEFAULT_CAMERA_UPDATE_ANIMATION_LENGTH
+                    )
+                }
+                scope.launch {
+                    pagerState.animateScrollToPage(mapEventFlatList.indexOfFirst { it.eventId() == event.id })
+                }
             }, cameraPositionState
         )
         Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
@@ -195,13 +209,13 @@ fun showSuccessMapDetailsScreen(
                     .padding(bottom = 16.dp)
                     .weight(1f, false)
             ) {
-                showEventPager(path.pathSectionsEvents.flatPathMapSectionEventList()) {
+                showEventPager(mapEventFlatList, pagerState) {
                     scope.launch {
                         cameraPositionState.animate(
                             update = CameraUpdateFactory.newCameraPosition(
                                 getCameraPosition(it, EVENT_ZOOM_LEVEL, context, mapOffset.dp)
                             ),
-                            durationMs = 1000
+                            durationMs = DEFAULT_CAMERA_UPDATE_ANIMATION_LENGTH
                         )
                     }
                 }
@@ -210,11 +224,13 @@ fun showSuccessMapDetailsScreen(
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun showEventPager(pathSectionsEvents: List<PathEvent>, onPathEventSelected: (PathEvent) -> Unit) {
-    val pagerState = rememberPagerState()
-
+fun showEventPager(
+    pathSectionsEvents: List<PathEvent>,
+    pagerState: PagerState,
+    onPathEventSelected: (PathEvent) -> Unit
+) {
     LaunchedEffect(pagerState) {
         // Collect from the pager state a snapshotFlow reading the currentPage
         snapshotFlow { pagerState.currentPage }.collect { page ->
@@ -223,9 +239,8 @@ fun showEventPager(pathSectionsEvents: List<PathEvent>, onPathEventSelected: (Pa
     }
 
     HorizontalPager(
-        count = pathSectionsEvents.size,
+        pageCount = pathSectionsEvents.size,
         state = pagerState,
-        // Add 32.dp horizontal padding to 'center' the pages
         contentPadding = PaddingValues(horizontal = 32.dp),
         modifier = Modifier
             .fillMaxWidth()
@@ -237,7 +252,8 @@ fun showEventPager(pathSectionsEvents: List<PathEvent>, onPathEventSelected: (Pa
                     // Calculate the absolute offset for the current page from the
                     // scroll position. We use the absolute value which allows us to mirror
                     // any effects for both directions
-                    val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
+                    val pageOffset =
+                        ((pagerState.currentPage - page) + pagerState.currentPageOffsetFraction).absoluteValue
 
                     // We animate the scaleX + scaleY, between 85% and 100%
                     lerp(

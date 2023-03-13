@@ -1,7 +1,5 @@
 package com.mobeedev.kajakorg.designsystem.map
 
-import android.location.Location
-import android.os.Looper
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -15,14 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.Priority
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
@@ -30,24 +21,25 @@ import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.Polyline
-import com.mobeedev.kajakorg.domain.model.detail.Event
-import com.mobeedev.kajakorg.ui.model.PathItem
-import com.mobeedev.kajakorg.ui.model.toPathEventsList
+import com.mobeedev.kajakorg.ui.model.PathMapItem
+import com.mobeedev.kajakorg.ui.model.getNonZeroEvents
 import com.mobeedev.kajakorg.ui.path.map.UserLocationSource
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.callbackFlow
-import java.lang.IllegalStateException
-import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun showMapPathDetailsScreen(
-    path: PathItem,
+fun showMapOverviewScreenScreen(
+    pathList: List<PathMapItem>?,
+    selectedPath: PathMapItem?,
     isLocationPermissionGranted: Boolean,
-    onMarkerClicked: (Event) -> Unit,
+    onMarkerClicked: (PathMapItem?) -> Unit,
     cameraPositionState: CameraPositionState,
     modifier: Modifier = Modifier
 ) {
+    var dataList = if (selectedPath == null) {
+        pathList
+    } else {
+        mutableListOf(selectedPath)
+    }
     var mapProperties by remember {
         mutableStateOf(
             MapProperties(
@@ -77,26 +69,26 @@ fun showMapPathDetailsScreen(
             modifier = Modifier.matchParentSize(),
             cameraPositionState = cameraPositionState,
             locationSource = locationSource,
-            properties = mapProperties,
+            properties = mapProperties
         ) {
-            val eventList = path.pathSectionsEvents.toPathEventsList()
-            Polyline(//sorting should be good here
-                points = eventList.map { it.position }
-                    .filterNot { it.latitude == 0.0 || it.longitude == 0.0 },
-                clickable = false,
-                Color.Blue//todo think about adding some transparency here since we do not know how exactly the river flows
-            )
-
-            eventList.forEach { event ->
-                Marker(
-                    state = MarkerState(position = event.position),
-                    title = event.label,
-                    draggable = false,
-                    onClick = {
-                        onMarkerClicked(event)
-                        true
-                    }
+            dataList?.forEach { pathMapItem ->
+                Polyline(
+                    points = pathMapItem.getNonZeroEvents().map { it.position },
+                    clickable = false,
+                    Color.Blue//todo think about adding some transparency here since we do not know how exactly the river flows + change to my color blue for better resources management
                 )
+
+                pathMapItem.eventList.forEach { event ->
+                    Marker(
+                        state = MarkerState(position = event.position),
+                        title = event.label,
+                        draggable = false,
+                        onClick = {
+                            onMarkerClicked(pathMapItem)
+                            true
+                        }
+                    )
+                }
             }
         }
     }

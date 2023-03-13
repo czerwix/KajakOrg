@@ -5,8 +5,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import com.mobeedev.kajakorg.domain.usecase.GetLocalMapPathsUseCase
 import com.mobeedev.kajakorg.ui.model.PathMapItem
-import com.mobeedev.kajakorg.ui.navigation.PathMapArgs
-import com.mobeedev.kajakorg.ui.navigation.pathMapIdArg
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -15,13 +13,10 @@ class PathMapViewModel(
     application: Application,
     savedStateHandle: SavedStateHandle,
     private val getLocalMapPathsUseCase: GetLocalMapPathsUseCase
-    //todo add usecase to retrieve all paths and only GPS location list of events/sections.
 ) : AndroidViewModel(application) {
 
-    private val pathArgs = PathMapArgs(checkNotNull(savedStateHandle[pathMapIdArg]))
-
     private val _uiState: MutableStateFlow<PathMapViewModelState> =
-        MutableStateFlow(PathMapViewModelState.InitialStart(pathArgs.pathId))
+        MutableStateFlow(PathMapViewModelState.InitialStart)
     val uiState: StateFlow<PathMapViewModelState> = _uiState
 
     init {
@@ -29,26 +24,34 @@ class PathMapViewModel(
     }
 
     private fun getPathData() {
-        with(_uiState.value) {
-            var argsPathId =
-                if (this is PathMapViewModelState.InitialStart && this.pathId >= 0) this.pathId else null
-
-            _uiState.update { PathMapViewModelState.Loading }
-            getLocalMapPathsUseCase.invoke(params = GetLocalMapPathsUseCase.Params(argsPathId)) { resul ->
-                resul.onSuccess { pathItem ->
-                    _uiState.update { PathMapViewModelState.Success(pathItem) }
-                }.onFailure {
-                    _uiState.update { PathMapViewModelState.Error }
-                }
+        _uiState.update { PathMapViewModelState.Loading }
+        getLocalMapPathsUseCase.invoke(params = GetLocalMapPathsUseCase.Params(null)) { resul ->
+            resul.onSuccess { pathItem ->
+                _uiState.update { PathMapViewModelState.Success(pathItem) }
+            }.onFailure {
+                _uiState.update { PathMapViewModelState.Error }
             }
         }
     }
-    //todo add filtering etc. to path list.
+
+    fun onPathSelected(path: PathMapItem?) {
+        _uiState.update { prev ->
+            if (prev is PathMapViewModelState.Success) {
+                prev.copy(selectedPath = path)
+            } else {
+                PathMapViewModelState.Error
+            }
+        }
+    }
 }
 
 sealed interface PathMapViewModelState {
-    data class InitialStart(val pathId: Int) : PathMapViewModelState
+    object InitialStart : PathMapViewModelState
     object Loading : PathMapViewModelState
-    data class Success(val pathOverviewList: List<PathMapItem>) : PathMapViewModelState
+    data class Success(
+        val pathOverviewList: List<PathMapItem>,
+        val selectedPath: PathMapItem? = null
+    ) : PathMapViewModelState
+
     object Error : PathMapViewModelState
 }

@@ -3,7 +3,7 @@ package com.mobeedev.kajakorg.ui.path.map
 import android.location.Location
 import com.google.android.gms.maps.LocationSource
 
-internal class MyLocationSource : LocationSource {
+internal class UserLocationSource : LocationSource {
 
     private var listener: LocationSource.OnLocationChangedListener? = null
 

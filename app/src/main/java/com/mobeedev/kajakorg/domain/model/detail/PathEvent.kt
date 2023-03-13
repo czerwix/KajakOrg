@@ -18,3 +18,13 @@ fun List<PathEvent>.flatPathMapSectionEventList(): List<PathEvent> {
     }
     return outputList
 }
+
+fun PathEvent.eventId(): Int = when (this) {
+    is Event -> id
+    else -> -1
+}
+
+fun PathEvent.sectionId(): Int = when (this) {
+    is Section -> id
+    else -> -1
+}

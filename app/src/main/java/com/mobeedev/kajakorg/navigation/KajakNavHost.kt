@@ -58,7 +58,7 @@ fun KajakNavHost(
                 navController.navigateToPathDetails(it)
             },
             navigateToPathMap = {
-                navController.navigateToPathMap(-1)
+                navController.navigateToPathMap()
             },
             navigateToPathDetailsMap = {
                 navController.navigateToPathDetailsMap(it)
