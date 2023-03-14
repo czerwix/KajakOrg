@@ -37,7 +37,7 @@ class PathMapViewModel(
     fun onPathSelected(path: PathMapItem?) {
         _uiState.update { prev ->
             if (prev is PathMapViewModelState.Success) {
-                prev.copy(selectedPath = path)
+                prev.copy(selectedPath = path, lastSelectedPath = prev.selectedPath)
             } else {
                 PathMapViewModelState.Error
             }
@@ -50,7 +50,8 @@ sealed interface PathMapViewModelState {
     object Loading : PathMapViewModelState
     data class Success(
         val pathOverviewList: List<PathMapItem>,
-        val selectedPath: PathMapItem? = null
+        val selectedPath: PathMapItem? = null,
+        val lastSelectedPath: PathMapItem? = null
     ) : PathMapViewModelState
 
     object Error : PathMapViewModelState

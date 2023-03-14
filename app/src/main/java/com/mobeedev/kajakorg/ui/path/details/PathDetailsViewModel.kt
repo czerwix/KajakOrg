@@ -39,10 +39,22 @@ class PathDetailsViewModel(
             }
         }
     }
+
+    fun onDescriptionClicked() {
+        _uiState.update {
+            if (it is PathDetailsViewModelState.Success) {
+                it.copy(shouldShowDescription = true)
+            } else {
+                it
+            }
+        }
+    }
 }
 
 sealed interface PathDetailsViewModelState {
     data class InitialStart(val pathId: Int) : PathDetailsViewModelState
-    data class Success(val path: PathItem) : PathDetailsViewModelState
+    data class Success(val path: PathItem, val shouldShowDescription: Boolean = false) :
+        PathDetailsViewModelState
+
     object Error : PathDetailsViewModelState
 }

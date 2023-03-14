@@ -38,6 +38,8 @@ import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayStart
 import com.mobeedev.kajakorg.designsystem.theme.White
 import com.mobeedev.kajakorg.ui.model.PathOveriewItem
 
+val PathOverviewElementHeight = 140.dp
+
 @Composable
 fun PathOverViewElement(item: PathOveriewItem, onClick: (Int) -> Unit) {
     KajakTheme {
@@ -52,7 +54,7 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: (Int) -> Unit) {
                 contentDescription = null,
                 contentScale = ContentScale.FillWidth,
                 modifier = Modifier
-                    .height(140.dp)
+                    .height(PathOverviewElementHeight)
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(8.dp))
                     .drawWithCache {

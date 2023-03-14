@@ -72,7 +72,7 @@ fun NavGraphBuilder.pathGraph(
     }
     //MAP
     composable(route = pathMapOverviewRoute) {
-        PathMapRoute(onBackClick = onBackClick)
+        PathMapRoute(onBackClick = onBackClick, navigateToPathDetails = navigateToPathDetails)
     }
     composable(
         route = "path_details_map_route/{${pathMapIdArg}}",

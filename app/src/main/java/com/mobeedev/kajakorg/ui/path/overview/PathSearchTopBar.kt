@@ -4,14 +4,34 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -40,7 +60,6 @@ fun getPathSearchTopBar(
     var isSortMenuVisible by remember { mutableStateOf(false) }
 
     CenterAlignedTopAppBar(title = {},
-        navigationIcon = {},
         scrollBehavior = scrollBehavior,
         actions = {
             Row(
@@ -91,10 +110,12 @@ fun getPathSearchTopBar(
 
                 IconButton(
                     modifier = Modifier.wrapContentSize(),
-                    onClick = onMapClicked) {
+                    onClick = onMapClicked
+                ) {
                     Icon(
                         painter = painterResource(id = R.drawable.outline_map_24),
-                        null
+                        null,
+                        modifier = Modifier.size(30.dp),
                     )
                 }
 
@@ -106,7 +127,8 @@ fun getPathSearchTopBar(
                         }) {
                         Icon(
                             painter = painterResource(id = R.drawable.sort_icon),
-                            null
+                            null,
+                            modifier = Modifier.size(30.dp),
                         )
                     }
                     showPathSortMenu(

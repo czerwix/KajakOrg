@@ -1,9 +1,14 @@
 package com.mobeedev.kajakorg.ui.path.details
 
+import android.widget.Toast
 import androidx.compose.animation.core.FloatExponentialDecaySpec
 import androidx.compose.animation.core.animateDecay
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,6 +22,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
@@ -90,6 +96,7 @@ fun showPathDetails(
     val listState = rememberLazyListState()
 
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
@@ -124,6 +131,7 @@ fun showPathDetails(
 
     Box(modifier = modifier.nestedScroll(nestedScrollConnection)) {
         PathDetailsList(pathList = uiState.path.pathSectionsEvents,
+            description = if (uiState.shouldShowDescription) uiState.path.overview.description else null,
             modifier = Modifier
                 .fillMaxSize()
                 .graphicsLayer { translationY = toolbarState.height + toolbarState.offset }
@@ -133,12 +141,30 @@ fun showPathDetails(
             listState = listState,
             contentPadding = PaddingValues(bottom = if (toolbarState is FixedScrollFlagState) MinToolbarHeight else 0.dp)
         )
-        CollapsingToolbar(backgroundImageResId = pathIdToPicture[uiState.path.overview.id]!!,
+        CollapsingToolbar(
+            backgroundImageResId = pathIdToPicture[uiState.path.overview.id]!!,
             progress = toolbarState.progress,
             onBackArrowButtonClicked = onBackClick,
             onMapButtonClicked = { navigateToPathMap(uiState.path.overview.id) },
-            onStarButtonClicked = {},//todo
-            onSettingsButtonClicked = {},//todo
+            onStarButtonClicked = {//todo
+                Toast.makeText(
+                    context,
+                    "Not yet implemented. Maybe next update :D",
+                    Toast.LENGTH_LONG
+                ).show()
+            },
+            onSettingsButtonClicked = {//todo
+                Toast.makeText(
+                    context,
+                    "Not yet implemented. Maybe next update :D",
+                    Toast.LENGTH_LONG
+                ).show()
+            },
+            onDescriptionClicked = {
+                if (uiState.shouldShowDescription.not()) {
+                    viewModel.onDescriptionClicked()
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(with(LocalDensity.current) { toolbarState.height.toDp() })

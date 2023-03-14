@@ -48,6 +48,7 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun PathMapRoute(
     onBackClick: () -> Unit,
+    navigateToPathDetails: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: PathMapViewModel = getViewModel(),
 ) {
@@ -55,11 +56,11 @@ fun PathMapRoute(
 
     checkLocationPermissions(onPermissionGranted = {
         PathMapScreen(
-            uiState, viewModel, true, onBackClick, modifier,
+            uiState, viewModel, true, onBackClick, navigateToPathDetails, modifier
         )
     }, onPermissionDenied = {
         PathMapScreen(
-            uiState, viewModel, false, onBackClick, modifier,
+            uiState, viewModel, false, onBackClick, navigateToPathDetails, modifier
         )
     })
 }
@@ -71,6 +72,7 @@ fun PathMapScreen(
     viewModel: PathMapViewModel,
     locationStatus: Boolean,
     onBackClick: () -> Unit,
+    navigateToPathDetails: (Int) -> Unit,
     modifier: Modifier
 
 ) {
@@ -79,9 +81,11 @@ fun PathMapScreen(
             showPathMapScreen(
                 pathsList = null,
                 selectedPath = null,
+                lastSelectedPath = null,
                 viewModel = viewModel,
                 modifier = modifier,
                 onBackClick = onBackClick,
+                navigateToPathDetails,
                 isLocationPermissionGranted = locationStatus
             )
         }
@@ -90,9 +94,11 @@ fun PathMapScreen(
             showPathMapScreen(
                 pathsList = uiState.pathOverviewList,
                 selectedPath = uiState.selectedPath,
+                lastSelectedPath = uiState.lastSelectedPath,
                 viewModel = viewModel,
                 modifier = modifier,
                 onBackClick = onBackClick,
+                navigateToPathDetails,
                 isLocationPermissionGranted = locationStatus
             )
         }
@@ -108,12 +114,13 @@ fun PathMapScreen(
 fun showPathMapScreen(
     pathsList: List<PathMapItem>?,
     selectedPath: PathMapItem?,
+    lastSelectedPath: PathMapItem?,
     viewModel: PathMapViewModel,
     modifier: Modifier,
     onBackClick: () -> Unit,
+    navigateToPathDetails: (Int) -> Unit,
     isLocationPermissionGranted: Boolean
 ) {
-//    val scope = rememberCoroutineScope()
     val cameraPositionState = rememberCameraPositionState {
         position = defaultCameraPosition
     }
@@ -166,10 +173,8 @@ fun showPathMapScreen(
                         + shrinkVertically()
                         + fadeOut()
             ) {
-                if(selectedPath!=null){
-                    PathOverViewElement(selectedPath.overview) {
-                        //todo navigate to pathDetails
-                    }
+                (selectedPath ?: lastSelectedPath)?.apply {
+                    PathOverViewElement(overview, navigateToPathDetails)
                 }
             }
         }
@@ -177,7 +182,7 @@ fun showPathMapScreen(
         IconButton(
             onClick = onBackClick,
             modifier = Modifier
-                .size(40.dp)
+                .size(48.dp)
                 .padding(start = 16.dp, top = 16.dp)
                 .background(
                     color = LocalContentColor.current.copy(alpha = 0.0f),

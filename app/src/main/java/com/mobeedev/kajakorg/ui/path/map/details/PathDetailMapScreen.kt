@@ -186,7 +186,7 @@ fun showSuccessMapDetailsScreen(
                 IconButton(
                     onClick = onBackClick,
                     modifier = Modifier
-                        .size(40.dp)
+                        .size(48.dp)
                         .padding(start = 16.dp, top = 16.dp)
                         .background(
                             color = LocalContentColor.current.copy(alpha = 0.0f),

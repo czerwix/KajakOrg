@@ -4,14 +4,30 @@ package com.mobeedev.kajakorg.designsystem.toolbar
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
@@ -34,13 +50,12 @@ import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
 import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayEnd
 import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayStart
 import com.mobeedev.kajakorg.designsystem.theme.RiverBlue
-import com.mobeedev.kajakorg.designsystem.toolbar.scrollflags.ExitUntilCollapsedState
 import com.mobeedev.kajakorg.ui.model.PathOveriewItem
 import kotlin.math.roundToInt
 
-private val ContentPadding = 8.dp
+private val ContentPadding = 16.dp
 private val Elevation = 4.dp
-private val ButtonSize = 30.dp
+private val ButtonSize = 34.dp
 private const val Alpha = 0.75f
 
 private val ExpandedPadding = 1.dp
@@ -62,10 +77,11 @@ fun CollapsingToolbarCollapsedPreview() {
             onMapButtonClicked = {},
             onStarButtonClicked = {},
             onSettingsButtonClicked = {},
+            onDescriptionClicked = {},
             modifier = Modifier
                 .fillMaxWidth()
                 .height(MinToolbarHeight),
-            PathOveriewItem(
+            path = PathOveriewItem(
                 id = 1,
                 name = "Bystrzyca kłodzka",
                 versionCode = 1,
@@ -91,10 +107,11 @@ fun CollapsingToolbarHalfwayPreview() {
             onMapButtonClicked = {},
             onStarButtonClicked = {},
             onSettingsButtonClicked = {},
+            onDescriptionClicked = {},
             modifier = Modifier
                 .fillMaxWidth()
                 .height(120.dp),
-            PathOveriewItem(
+            path = PathOveriewItem(
                 id = 1,
                 name = "Bystrzyca kłodzka",
                 versionCode = 1,
@@ -120,10 +137,11 @@ fun CollapsingToolbarExpandedPreview() {
             onMapButtonClicked = {},
             onStarButtonClicked = {},
             onSettingsButtonClicked = {},
+            onDescriptionClicked = {},
             modifier = Modifier
                 .fillMaxWidth()
                 .height(MaxToolbarHeight),
-            PathOveriewItem(
+            path = PathOveriewItem(
                 id = 1,
                 name = "Bystrzyca kłodzka",
                 versionCode = 1,
@@ -146,6 +164,7 @@ fun CollapsingToolbar(
     onMapButtonClicked: () -> Unit,
     onStarButtonClicked: () -> Unit,
     onSettingsButtonClicked: () -> Unit,
+    onDescriptionClicked: () -> Unit,
     modifier: Modifier = Modifier,
     path: PathOveriewItem
 ) {
@@ -240,12 +259,13 @@ fun CollapsingToolbar(
                         text = path.description,
                         color = Color.White,
                         style = MaterialTheme.typography.bodyMedium,
-                        maxLines = 8,
+                        maxLines = 10,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier
                             .wrapContentSize()
                             .padding(logoPadding)
                             .graphicsLayer { alpha = (-(0.5f - progress) * 4).coerceIn(0f, 1f) }
+                            .clickable { onDescriptionClicked() }
                     )
                     Row(
                         modifier = Modifier.wrapContentSize(),
