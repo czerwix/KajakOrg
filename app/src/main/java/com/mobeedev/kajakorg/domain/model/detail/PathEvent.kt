@@ -4,6 +4,8 @@ interface PathEvent {
     var sortOrder: Int
 }
 
+fun List<PathEvent>.getSections(): List<Section?> = filterIsInstance<Section>()
+
 fun List<PathEvent>.flatPathMapSectionEventList(): List<PathEvent> {
     val outputList = mutableListOf<PathEvent>()
     forEach {

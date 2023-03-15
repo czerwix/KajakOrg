@@ -94,7 +94,6 @@ fun showPathDetails(
     }
     val toolbarState = rememberPathDetailsToolbarState(toolbarHeightRange)
     val listState = rememberLazyListState()
-
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 

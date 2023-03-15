@@ -37,13 +37,14 @@ import com.mobeedev.kajakorg.domain.model.detail.EventDescription
 @Composable
 fun PathEventWithMapElement(
     item: Event,
-    onClick: (Int) -> Unit
+    onClick: (Int) -> Unit,
+    modifier:Modifier
 ) {//todo template view of most important info... make pretty when i have time.
     KajakTheme {
         var mapEndPadding = with(LocalDensity.current) { 100.dp.toPx().toInt() }
         var mapBottomPadding: Int =
             with(LocalDensity.current) { determineBottomPadding(item, this) }
-        Box(modifier = Modifier
+        Box(modifier = modifier
             .height(IntrinsicSize.Max)
             .fillMaxWidth()
             .padding(start = 10.dp, end = 10.dp)
@@ -238,7 +239,8 @@ fun PreviewPathEventWithElement() {
                     )
                 )
             ),
-            onClick = {}
+            onClick = {},
+            Modifier
         )
     }
 }
