@@ -1,7 +1,5 @@
 package com.mobeedev.kajakorg.designsystem.map
 
-import android.location.Location
-import android.os.Looper
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -15,18 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.Priority
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapType
+import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.Polyline
@@ -34,10 +26,6 @@ import com.mobeedev.kajakorg.domain.model.detail.Event
 import com.mobeedev.kajakorg.ui.model.PathItem
 import com.mobeedev.kajakorg.ui.model.toPathEventsList
 import com.mobeedev.kajakorg.ui.path.map.UserLocationSource
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.callbackFlow
-import java.lang.IllegalStateException
-import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -56,6 +44,21 @@ fun showMapPathDetailsScreen(
                 isIndoorEnabled = false,
                 isTrafficEnabled = false,
                 isMyLocationEnabled = true
+            )
+        )
+    }
+    var uiSettings by remember {
+        mutableStateOf(
+            MapUiSettings(
+                compassEnabled = false,
+                indoorLevelPickerEnabled = false,
+                mapToolbarEnabled = false,
+                myLocationButtonEnabled = true,
+                rotationGesturesEnabled = true,
+                scrollGesturesEnabled = true,
+                scrollGesturesEnabledDuringRotateOrZoom = true,
+                tiltGesturesEnabled = true,
+                zoomControlsEnabled = false
             )
         )
     }
@@ -78,6 +81,7 @@ fun showMapPathDetailsScreen(
             cameraPositionState = cameraPositionState,
             locationSource = locationSource,
             properties = mapProperties,
+            uiSettings = uiSettings
         ) {
             val eventList = path.pathSectionsEvents.toPathEventsList()
             Polyline(//sorting should be good here

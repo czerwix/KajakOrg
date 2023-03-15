@@ -48,7 +48,7 @@ fun showMapOverviewScreenScreen(
         mutableListOf(selectedPath)
     }
     var bottomPadding =
-        with(LocalDensity.current) { if (dataList?.size == 1) (PathOverviewElementHeight+20.dp).roundToPx() else 0 }
+        with(LocalDensity.current) { (PathOverviewElementHeight+20.dp).roundToPx() }
 
     var mapProperties by remember {
         mutableStateOf(

@@ -82,7 +82,9 @@ fun LazyListScope.pathDetailsCards(
                         collapsedSectionState[sectionIndex] =
                             currentValue.copy(second = currentValue.second.not())
                     },
-                    modifier = Modifier.animateItemPlacement()
+                    modifier = Modifier.animateItemPlacement(),
+                    isSectionCollapsed = collapsedSectionState
+                        .find { it.first == element.id }?.second ?: true
                 )
                 Divider(
                     thickness = 10.dp,

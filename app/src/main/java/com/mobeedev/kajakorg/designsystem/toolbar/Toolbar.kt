@@ -1,6 +1,7 @@
 package com.mobeedev.kajakorg.designsystem.toolbar
 
 //import androidx.compose.material.icons.rounded.PrivacyTip
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -51,9 +52,11 @@ import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayEnd
 import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayStart
 import com.mobeedev.kajakorg.designsystem.theme.RiverBlue
 import com.mobeedev.kajakorg.ui.model.PathOveriewItem
+import kotlin.math.log
 import kotlin.math.roundToInt
 
 private val ContentPadding = 16.dp
+private val TitleStartPadding = 8.dp
 private val Elevation = 4.dp
 private val ButtonSize = 34.dp
 private const val Alpha = 0.75f
@@ -210,25 +213,9 @@ fun CollapsingToolbar(
                     .fillMaxSize()
             ) {
                 CollapsingToolbarLayout(progress = progress) {
-                    IconButton(
-                        onClick = onBackArrowButtonClicked,
-                        modifier = Modifier
-                            .size(ButtonSize)
-                            .background(
-                                color = LocalContentColor.current.copy(alpha = 0.0f),
-                                shape = CircleShape
-                            )
-                    ) {
-                        Icon(
-                            modifier = Modifier.fillMaxSize(),
-                            imageVector = Icons.Rounded.ArrowBack,
-                            contentDescription = null,
-                            tint = Color.White
-                        )
-                    }
-
+                    //path details
                     Text(
-                        text = path.name,
+                        text = if (progress >= 0.148112f) path.name else path.name.take(10),
                         color = Color.White,
                         style = MaterialTheme.typography.titleLarge,
                         fontSize = 28.sp,
@@ -267,6 +254,24 @@ fun CollapsingToolbar(
                             .graphicsLayer { alpha = (-(0.5f - progress) * 4).coerceIn(0f, 1f) }
                             .clickable { onDescriptionClicked() }
                     )
+                    //BackButton
+                    IconButton(
+                        onClick = onBackArrowButtonClicked,
+                        modifier = Modifier
+                            .size(ButtonSize)
+                            .background(
+                                color = LocalContentColor.current.copy(alpha = 0.0f),
+                                shape = CircleShape
+                            )
+                    ) {
+                        Icon(
+                            modifier = Modifier.fillMaxSize(),
+                            imageVector = Icons.Rounded.ArrowBack,
+                            contentDescription = null,
+                            tint = Color.White
+                        )
+                    }
+                    //utility buttons
                     Row(
                         modifier = Modifier.wrapContentSize(),
                         horizontalArrangement = Arrangement.spacedBy(ContentPadding)
@@ -337,11 +342,11 @@ private fun CollapsingToolbarLayout(
         content = content
     ) { measurables, constraints ->
         check(measurables.size == 6)
-        // [0]: BackArrow
-        // [1]: PathName
-        // [2]: PathLength
-        // [3]: PathNumberOfSections
-        // [4]: PathDescription
+        // [0]: PathName
+        // [1]: PathLength
+        // [2]: PathNumberOfSections
+        // [3]: PathDescription
+        // [4]: BackArrow
         // [5]: Buttons Row
 
         val placeables = measurables.map {
@@ -354,20 +359,17 @@ private fun CollapsingToolbarLayout(
 
             val collapsedHorizontalGuideline = (constraints.maxHeight * 0.5f).roundToInt()
 
-            val backArrow = placeables[0]
-            val riverName = placeables[1]
-            val pathLength = placeables[2]
-            val numberOfSections = placeables[3]
-            val pathDescription = placeables[4]
+
+            val riverName = placeables[0]
+            val pathLength = placeables[1]
+            val numberOfSections = placeables[2]
+            val pathDescription = placeables[3]
+            val backArrow = placeables[4]
             val buttons = placeables[5]
 
-            backArrow.placeRelative(
-                x = 0,
-                y = (MinToolbarHeight.roundToPx() - backArrow.height) / 2,
-            )
             riverName.placeRelative(
                 x = androidx.compose.ui.util.lerp(
-                    start = backArrow.width + ContentPadding.toPx().toInt(),
+                    start = backArrow.width + TitleStartPadding.toPx().toInt(),
                     stop = 0,
                     fraction = progress
                 ),
@@ -377,9 +379,6 @@ private fun CollapsingToolbarLayout(
                     fraction = progress
                 )
             )
-//            if(progress == 0f){
-//                riverName //todo when collapsed max name length == 16 characters or maybe change text size?
-//            }
             pathLength.placeRelative(
                 x = androidx.compose.ui.util.lerp(
                     start = riverName.width,
@@ -412,6 +411,10 @@ private fun CollapsingToolbarLayout(
                             pathDescription.height - ExpandedSectionsPadding.toPx().toInt(),
                     fraction = progress
                 )
+            )
+            backArrow.placeRelative(
+                x = 0,
+                y = (MinToolbarHeight.roundToPx() - backArrow.height) / 2,
             )
             buttons.placeRelative(
                 x = constraints.maxWidth - buttons.width,
