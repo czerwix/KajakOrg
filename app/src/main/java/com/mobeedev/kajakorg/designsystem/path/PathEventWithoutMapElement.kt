@@ -3,6 +3,8 @@ package com.mobeedev.kajakorg.designsystem.path
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -34,6 +36,7 @@ import com.mobeedev.kajakorg.domain.model.detail.EventDescription
 
 val pathEventWithoutMapElementHeight = 300.dp
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PathEventWithoutMapElement(item: Event) {
     Column(
@@ -80,22 +83,23 @@ fun PathEventWithoutMapElement(item: Event) {
                         .wrapContentSize()
                         .padding(top = 6.dp)
                 ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                    FlowRow(verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             text = stringResource(id = R.string.event_type) +
                                     String.space +
                                     event.eventType,
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = MaterialTheme.typography.bodyLarge,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier.wrapContentSize()
                         )
 
                         Image(//todo icon of eventType
-                            painter = painterResource(id = R.drawable.outline_place_24),
+                            painter = painterResource(id = event.eventType.getIconResId()),
                             contentDescription = null,
-                            colorFilter = ColorFilter.tint(color = Color.Black),
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier
+                                .size(32.dp)
+                                .padding(start = 4.dp)
                         )
                     }
                     Text(
@@ -103,7 +107,7 @@ fun PathEventWithoutMapElement(item: Event) {
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier
                             .wrapContentSize()
-                            .padding(top = 4.dp)
+                            .padding(top = 4.dp, bottom = 8.dp)
                     )
                 }
             }
@@ -126,7 +130,7 @@ fun PreviewPathEventWithoutElement() {
                 atKilometer = 14.5,
                 eventDescription = listOf(
                     EventDescription(
-                        eventType = EventType.Uwaga,
+                        eventType = EventType.Niebezpieczeństwo,
                         sortOrder = -1,
                         description = "Łąka naprzeciw domu sołtysa. Wygodne miejsce wodowania. Łąka z pewnością jest czyjąś własnością, jednak właściciel nie objawił się."
                     ),

@@ -1,7 +1,7 @@
 package com.mobeedev.kajakorg.designsystem.toolbar
 
 //import androidx.compose.material.icons.rounded.PrivacyTip
-import android.util.Log
+import android.graphics.BitmapFactory
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -29,6 +29,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
@@ -38,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -45,14 +47,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.unit.sp
+import androidx.palette.graphics.Palette
 import com.mobeedev.kajakorg.R
 import com.mobeedev.kajakorg.common.extensions.space
 import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
 import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayEnd
 import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayStart
-import com.mobeedev.kajakorg.designsystem.theme.RiverBlue
+import com.mobeedev.kajakorg.designsystem.theme.Teal700
 import com.mobeedev.kajakorg.ui.model.PathOveriewItem
-import kotlin.math.log
 import kotlin.math.roundToInt
 
 private val ContentPadding = 16.dp
@@ -173,9 +175,13 @@ fun CollapsingToolbar(
 ) {
     val logoPadding = lerp(CollapsedPadding, ExpandedPadding, progress)
     val bottomTitlePadding = lerp(CollapsedPadding, ExpandedBottomPadding, progress)
-
+    val context = LocalContext.current
+    val backgroundColor = remember {
+        Palette.from(BitmapFactory.decodeResource(context.resources, backgroundImageResId))
+            .generate().vibrantSwatch?.let { Color(it.rgb) } ?: Teal700
+    }
     Surface(
-        color = RiverBlue,
+        color = backgroundColor,
         shadowElevation = Elevation,
         modifier = modifier
     ) {

@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -29,6 +31,7 @@ import com.mobeedev.kajakorg.R
 import com.mobeedev.kajakorg.common.extensions.space
 import com.mobeedev.kajakorg.designsystem.theme.Gray
 import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
+import com.mobeedev.kajakorg.designsystem.theme.White
 import com.mobeedev.kajakorg.domain.model.detail.Event
 import com.mobeedev.kajakorg.domain.model.detail.Section
 import kotlin.random.Random
@@ -38,141 +41,152 @@ fun PathSectionElement(
     item: Section,
     onClick: (Int) -> Unit,
     modifier: Modifier,
-    isSectionCollapsed: Boolean = true
+    isSectionCollapsed: Boolean = true,
+    shouldShowExpandToolbar: Boolean
 ) {
     KajakTheme {
-        Box(modifier = modifier
-            .wrapContentHeight()
-            .fillMaxWidth()
-            .clickable { onClick(item.id) }
+        Card(
+            elevation = CardDefaults.cardElevation(10.dp),
+            colors = CardDefaults.cardColors(White),
+            modifier = modifier
+                .wrapContentHeight()
+                .fillMaxWidth()
+                .padding(start = 8.dp, end = 8.dp)
+                .clickable { onClick(item.id) }
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 10.dp)
+            Box(modifier = modifier
+                .wrapContentHeight()
+                .fillMaxWidth()
             ) {
-                //Section title/description
-                Text(
-                    text = stringResource(id = R.string.section_compact, item.name),
-                    style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.Center,
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .wrapContentHeight()
-                        .padding(top = 10.dp)
-                )
-                Text(
-                    text = item.description,
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .padding(top = 8.dp)
-                )
-                //Section length
-                if (item.events.isNotEmpty()) {
-                    Row(
-                        modifier = Modifier,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = stringResource(
-                                id = R.string.section_length,
-                                item.events.first().atKilometer,
-                                item.events.last().atKilometer,
-                                item.events.first().atKilometer - item.events.last().atKilometer
-                            ),
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier
-                                .wrapContentSize()
-                                .padding(top = 8.dp)
-                        )
-                    }
-                }
-                //Section Stats
-                Column(
-                    modifier = Modifier.padding(top = 8.dp),
-                ) {//todo fix this rows alignment with icons maybe? i don't like this look
+                        .padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 10.dp)
+                ) {
+                    //Section title/description
                     Text(
-                        text = stringResource(id = R.string.events_on_section) +
-                                String.space +
-                                item.events.size.toString(),
-                        style = MaterialTheme.typography.bodyMedium,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.wrapContentSize()
-                    )
-                    Text(
-                        text = stringResource(id = R.string.nuisance) +
-                                String.space +
-                                item.nuisance,
-                        style = MaterialTheme.typography.bodyMedium,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .padding(top = 2.dp)
-                    )
-                    if (item.difficulty.isNotBlank()) {
-                        Text(
-                            text = stringResource(id = R.string.difficulty) +
-                                    String.space +
-                                    item.difficulty,
-                            style = MaterialTheme.typography.bodyMedium,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier
-                                .wrapContentSize()
-                                .padding(top = 2.dp)
-                        )
-                    }
-                    if (item.picturesque.isNotBlank()) {
-                        Text(
-                            text = stringResource(id = R.string.picturesque) +
-                                    String.space +
-                                    item.picturesque,
-                            style = MaterialTheme.typography.bodyMedium,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier
-                                .wrapContentSize()
-                                .padding(top = 2.dp)
-                        )
-                    }
-                    if (item.cleanliness.isNotBlank()) {
-                        Text(
-                            text = stringResource(id = R.string.cleanliness) +
-                                    String.space +
-                                    item.cleanliness,
-                            style = MaterialTheme.typography.bodyMedium,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier
-                                .wrapContentSize()
-                                .padding(top = 2.dp)
-                        )
-                    }
-
-                    //Bottom expand indicator
-                    Divider(
-                        color = Gray,
-                        thickness = 1.dp,
-                        modifier = Modifier.padding(top = 16.dp)
-                    )
-
-                    Row(
-                        horizontalArrangement = Arrangement.Center,
+                        text = stringResource(id = R.string.section_compact, item.name),
+                        style = MaterialTheme.typography.titleLarge,
+                        textAlign = TextAlign.Center,
                         modifier = Modifier
                             .fillMaxWidth()
                             .wrapContentHeight()
-                    ) {
-                        Icon(
-                            modifier = Modifier
-                                .size(48.dp)
-                                .rotate(if (isSectionCollapsed.not()) 180f else 0f),
-                            painter = painterResource(R.drawable.outline_expand_more_24),
-                            contentDescription = null,
-                            tint = Gray
+                            .padding(top = 10.dp)
+                    )
+                    Text(
+                        text = item.description,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .padding(top = 8.dp)
+                    )
+                    //Section length
+                    if (item.events.isNotEmpty()) {
+                        Row(
+                            modifier = Modifier,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = stringResource(
+                                    id = R.string.section_length,
+                                    item.events.first().atKilometer,
+                                    item.events.last().atKilometer,
+                                    item.events.first().atKilometer - item.events.last().atKilometer
+                                ),
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(top = 8.dp)
+                            )
+                        }
+                    }
+                    //Section Stats
+                    Column(
+                        modifier = Modifier.padding(top = 8.dp),
+                    ) {//todo fix this rows alignment with icons maybe? i don't like this look
+                        Text(
+                            text = stringResource(id = R.string.events_on_section) +
+                                    String.space +
+                                    item.events.size.toString(),
+                            style = MaterialTheme.typography.bodyMedium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.wrapContentSize()
                         )
+                        Text(
+                            text = stringResource(id = R.string.nuisance) +
+                                    String.space +
+                                    item.nuisance,
+                            style = MaterialTheme.typography.bodyMedium,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .padding(top = 2.dp)
+                        )
+                        if (item.difficulty.isNotBlank()) {
+                            Text(
+                                text = stringResource(id = R.string.difficulty) +
+                                        String.space +
+                                        item.difficulty,
+                                style = MaterialTheme.typography.bodyMedium,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(top = 2.dp)
+                            )
+                        }
+                        if (item.picturesque.isNotBlank()) {
+                            Text(
+                                text = stringResource(id = R.string.picturesque) +
+                                        String.space +
+                                        item.picturesque,
+                                style = MaterialTheme.typography.bodyMedium,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(top = 2.dp)
+                            )
+                        }
+                        if (item.cleanliness.isNotBlank()) {
+                            Text(
+                                text = stringResource(id = R.string.cleanliness) +
+                                        String.space +
+                                        item.cleanliness,
+                                style = MaterialTheme.typography.bodyMedium,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(top = 2.dp)
+                            )
+                        }
+                        if (shouldShowExpandToolbar) {
+                            //Bottom expand indicator
+                            Divider(
+                                color = Gray,
+                                thickness = 1.dp,
+                                modifier = Modifier.padding(top = 16.dp)
+                            )
+
+                            Row(
+                                horizontalArrangement = Arrangement.Center,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentHeight()
+                            ) {
+                                Icon(
+                                    modifier = Modifier
+                                        .size(48.dp)
+                                        .rotate(if (isSectionCollapsed.not()) 180f else 0f),
+                                    painter = painterResource(R.drawable.outline_expand_more_24),
+                                    contentDescription = null,
+                                    tint = Gray
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -207,7 +221,8 @@ fun PreviewPathSectionElement() {
                 )
             ),
             onClick = {},
-            Modifier
+            Modifier,
+            shouldShowExpandToolbar = true
         )
     }
 }

@@ -1,5 +1,7 @@
 package com.mobeedev.kajakorg.data.model.detail
 
+import com.mobeedev.kajakorg.R
+
 /**
  * This enum contains values of different events you can find on your way.
  * the specified names of bridges,Weir etc are names very specific to Polish language,
@@ -21,8 +23,25 @@ enum class EventType(val polishName: String) {
     Bar("bar"),
     sluza("śluza");
 
+    fun getIconResId() = when (this) {
+        Biwak -> R.drawable.campsite_icon
+        Jaz -> R.drawable.weir_icon
+        Most -> R.drawable.bridge_icon
+        Przenoska -> R.drawable.carry_icon
+        Sklep -> R.drawable.shop_icon
+        Stanica -> R.drawable.hostel_icon
+        Ujscie -> R.drawable.information_icon
+        Uwaga -> R.drawable.warning_icon
+        Wyplyw -> R.drawable.information_icon
+        Wypozyczalnia -> R.drawable.rent_icon
+        Niebezpieczeństwo -> R.drawable.danger_icon
+        Lekarz -> R.drawable.doctor_icon
+        Bar -> R.drawable.bar_icon
+        sluza -> R.drawable.information_icon
+    }
+
     companion object {
-        public fun fromValue(value: String): EventType = when (value) {
+        fun fromValue(value: String): EventType = when (value) {
             "biwak" -> Biwak
             "jaz" -> Jaz
             "most" -> Most

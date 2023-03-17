@@ -8,7 +8,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 
-class AndroidKajakApp : MultiDexApplication() {
+class PaddlePalApp : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
@@ -20,7 +20,7 @@ class AndroidKajakApp : MultiDexApplication() {
         val modules = AppModule()
         startKoin {
             androidLogger(Level.NONE)
-            androidContext(this@AndroidKajakApp)
+            androidContext(this@PaddlePalApp)
             modules(
                 modules.dataModule,
                 modules.configModule,

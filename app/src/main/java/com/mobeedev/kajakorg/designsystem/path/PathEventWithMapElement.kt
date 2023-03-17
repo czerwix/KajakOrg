@@ -30,7 +30,7 @@ import com.mobeedev.kajakorg.R
 import com.mobeedev.kajakorg.common.extensions.space
 import com.mobeedev.kajakorg.data.model.detail.EventType
 import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
-import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayEnd
+import com.mobeedev.kajakorg.designsystem.theme.PathEventBackground
 import com.mobeedev.kajakorg.domain.model.detail.Event
 import com.mobeedev.kajakorg.domain.model.detail.EventDescription
 
@@ -104,7 +104,7 @@ fun PathEventWithMapElement(
                         .wrapContentSize()
                         .padding(end = 16.dp)
                         .background(
-                            PathOverviewOverlayEnd,
+                            PathEventBackground,
                             RoundedCornerShape(4.dp)
                         )
                 )
@@ -114,7 +114,7 @@ fun PathEventWithMapElement(
                     modifier = Modifier
                         .padding(end = 16.dp, top = 6.dp)
                         .background(
-                            PathOverviewOverlayEnd,
+                            PathEventBackground,
                             RoundedCornerShape(4.dp)
                         )
                 ) {
@@ -149,7 +149,7 @@ fun PathEventWithMapElement(
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
                                     .background(
-                                        PathOverviewOverlayEnd,
+                                        PathEventBackground,
                                         RoundedCornerShape(4.dp)
                                     )
                             ) {
@@ -181,7 +181,7 @@ fun PathEventWithMapElement(
                                     .wrapContentSize()
                                     .padding(top = 8.dp)
                                     .background(
-                                        PathOverviewOverlayEnd,
+                                        PathEventBackground,
                                         RoundedCornerShape(4.dp)
                                     )
                             )
@@ -228,7 +228,7 @@ fun PreviewPathEventWithElement() {
                 atKilometer = 14.5,
                 eventDescription = listOf(
                     EventDescription(
-                        eventType = EventType.Uwaga,
+                        eventType = EventType.Niebezpieczeństwo,
                         sortOrder = -1,
                         description = "Łąka naprzeciw domu sołtysa. Wygodne miejsce wodowania. Łąka z pewnością jest czyjąś własnością, jednak właściciel nie objawił się."
                     ),

@@ -21,5 +21,5 @@ val PathOverviewOverlayStart = Color(0xB2000000)
 val PathOverviewOverlayMiddle = Color(0xB5000000)
 val PathOverviewOverlayEnd = Color(0x48000000)
 
+val PathEventBackground = Color(0x8C000000)
 
-val RiverBlue = Color(0xFF39A9B8)

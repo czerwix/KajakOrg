@@ -45,12 +45,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mobeedev.kajakorg.R
+import com.mobeedev.kajakorg.ui.model.PathOveriewItem
 import com.mobeedev.kajakorg.ui.model.PathSortOrderItem
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun getPathSearchTopBar(
     uiState: PathOverviewViewModelState.Success,
+    filteredPathList: List<PathOveriewItem>,
     viewModel: PathOverviewViewModel,
     scrollBehavior: TopAppBarScrollBehavior,
     onMapClicked: () -> Unit
@@ -60,7 +62,7 @@ fun getPathSearchTopBar(
     var isSortMenuVisible by remember { mutableStateOf(false) }
 
     CenterAlignedTopAppBar(title = {},
-        scrollBehavior = scrollBehavior,
+        scrollBehavior = if (filteredPathList.size > 5) scrollBehavior else null,
         actions = {
             Row(
                 modifier = Modifier

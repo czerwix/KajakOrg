@@ -22,6 +22,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
@@ -50,6 +51,7 @@ import com.mobeedev.kajakorg.designsystem.map.MapEventCard
 import com.mobeedev.kajakorg.designsystem.map.defaultCameraPosition
 import com.mobeedev.kajakorg.designsystem.map.showMapPathDetailsScreen
 import com.mobeedev.kajakorg.designsystem.path.pathEventWithoutMapElementHeight
+import com.mobeedev.kajakorg.designsystem.theme.White
 import com.mobeedev.kajakorg.domain.model.detail.Event
 import com.mobeedev.kajakorg.domain.model.detail.PathEvent
 import com.mobeedev.kajakorg.domain.model.detail.Section
@@ -247,15 +249,12 @@ fun showEventPager(
             .height(pathEventWithoutMapElementHeight)
     ) { page: Int ->
         Card(
-            Modifier
+            elevation = CardDefaults.cardElevation(10.dp),
+            colors = CardDefaults.cardColors(White),
+            modifier = Modifier
                 .graphicsLayer {
-                    // Calculate the absolute offset for the current page from the
-                    // scroll position. We use the absolute value which allows us to mirror
-                    // any effects for both directions
                     val pageOffset =
                         ((pagerState.currentPage - page) + pagerState.currentPageOffsetFraction).absoluteValue
-
-                    // We animate the scaleX + scaleY, between 85% and 100%
                     lerp(
                         start = 0.85f,
                         stop = 1f,
@@ -264,8 +263,6 @@ fun showEventPager(
                         scaleX = scale
                         scaleY = scale
                     }
-
-                    // We animate the alpha, between 50% and 100%
                     alpha = lerp(
                         start = 0.5f,
                         stop = 1f,
@@ -275,7 +272,10 @@ fun showEventPager(
                 .fillMaxWidth()
                 .aspectRatio(1f)
         ) {
-            MapEventCard(pathSectionsEvents[page])
+            Column(verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxSize()) {
+                MapEventCard(pathSectionsEvents[page])
+
+            }
         }
     }
 }

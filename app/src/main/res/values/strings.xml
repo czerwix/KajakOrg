@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">KajakOrg</string>
+    <string name="app_name">PaddlePal</string>
 
     <string name="retry_data_load">Try again</string>
     <string name="refresh_content_description">refresh</string>
@@ -22,8 +22,8 @@
     <string name="section_length">"From %1.0fkm - %2.0fkm.\nSection length:%3.0fkm"</string>
     <string name="number_of_sections">No. of sections:</string>
     <string name="events_on_section">"No. of events:"</string>
-    <string name="event_title">"Event at %1$s!"</string>
-    <string name="event_title_compact">"Event at\n%1$s!"</string>
+    <string name="event_title">"Event at %1$s."</string>
+    <string name="event_title_compact">"Event at\n%1$s."</string>1
     <string name="event_type">"Event type:"</string>
     <string name="nuisance">"Nuisance:"</string>
     <string name="difficulty">"Difficulty:"</string>

@@ -77,7 +77,7 @@ fun PathOverviewScreen(
 @Composable
 fun showDataList(
     uiState: PathOverviewViewModelState.Success,
-    pathList: List<PathOveriewItem>,
+    filteredPathList: List<PathOveriewItem>,
     modifier: Modifier,
     navigateToPathDetails: (Int) -> Unit,
     navigateToPathMap: () -> Unit,
@@ -86,7 +86,7 @@ fun showDataList(
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
         rememberTopAppBarState(),
         canScroll = {
-            pathList.size > 5
+            filteredPathList.size > 5
         })
 
     Scaffold(
@@ -95,7 +95,7 @@ fun showDataList(
             .fillMaxSize()
             .focusTarget(),
         topBar = {
-            getPathSearchTopBar(uiState, viewModel, scrollBehavior,navigateToPathMap)
+            getPathSearchTopBar(uiState,filteredPathList, viewModel, scrollBehavior,navigateToPathMap)
         }
     ) {
         LazyColumn(
@@ -104,7 +104,7 @@ fun showDataList(
                 .focusTarget(),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            pathOverviewCards(pathList, navigateToPathDetails)
+            pathOverviewCards(filteredPathList, navigateToPathDetails)
         }
     }
 }

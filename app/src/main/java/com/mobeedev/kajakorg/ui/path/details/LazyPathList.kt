@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mobeedev.kajakorg.designsystem.path.PathDescriptionElement
 import com.mobeedev.kajakorg.designsystem.path.PathEventWithMapElement
+import com.mobeedev.kajakorg.designsystem.path.PathEventWithMapSimpler
 import com.mobeedev.kajakorg.designsystem.path.PathSectionElement
 import com.mobeedev.kajakorg.domain.model.detail.Event
 import com.mobeedev.kajakorg.domain.model.detail.PathEvent
@@ -84,7 +85,9 @@ fun LazyListScope.pathDetailsCards(
                     },
                     modifier = Modifier.animateItemPlacement(),
                     isSectionCollapsed = collapsedSectionState
-                        .find { it.first == element.id }?.second ?: true
+                        .find { it.first == element.id }?.second
+                        ?: true,
+                    shouldShowExpandToolbar =  collapsedSectionState.size > 1
                 )
                 Divider(
                     thickness = 10.dp,
@@ -95,7 +98,7 @@ fun LazyListScope.pathDetailsCards(
             if (collapsedSectionState.find { it.first == element.id }?.second != true || collapsedSectionState.size == 1) {
                 items(items = element.events,
                     key = { it.hashCode() }) { nestedSectionEvent ->
-                    PathEventWithMapElement(
+                    PathEventWithMapSimpler(
                         item = nestedSectionEvent,
                         onClick = {},
                         modifier = Modifier.animateItemPlacement()
@@ -109,7 +112,7 @@ fun LazyListScope.pathDetailsCards(
             }
         } else if (element is Event) {
             item(key = element.hashCode()) {
-                PathEventWithMapElement(
+                PathEventWithMapSimpler(
                     item = element,
                     onClick = {},
                     modifier = Modifier.animateItemPlacement()
