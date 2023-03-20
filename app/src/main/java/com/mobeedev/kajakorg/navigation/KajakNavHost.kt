@@ -21,6 +21,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.mobeedev.kajakorg.ui.navigation.checklistGraph
+import com.mobeedev.kajakorg.ui.navigation.navigateToChecklistEdit
 import com.mobeedev.kajakorg.ui.navigation.navigateToPathDetails
 import com.mobeedev.kajakorg.ui.navigation.navigateToPathDetailsMap
 import com.mobeedev.kajakorg.ui.navigation.navigateToPathMap
@@ -65,6 +67,9 @@ fun KajakNavHost(
             },
             onBackClick = { navController.popBackStack() }
         )
+        checklistGraph(
+            navigateToCheckListEdit = { navController.navigateToChecklistEdit() },
+            onBackClick = { navController.popBackStack() })
         //todo add other nav_graph here
     }
 }

@@ -12,6 +12,9 @@
     <string name="path_nuisance">Nuisance: %1$s</string>
     <string name="path_search">Search by name</string>
 
+    <string name="path_google_map_disable">Disable map</string>
+    <string name="path_google_map_enable">Enable map</string>
+
     <string name="path_sort_a_z" translatable="false">A-Z</string>
     <string name="path_sort_z_a" translatable="false">Z-A</string>
     <string name="path_sort_longest_shortest">Longest</string>
@@ -31,10 +34,12 @@
     <string name="cleanliness">"Cleanliness:"</string>
     <string name="at_kilometer" translatable="false">"km"</string>
     <string name="location_rationale">We use location data to handle better navigation on the Path\'s map. this permission is not required.</string>
-    <string name="path_map">Path Map</string>
+    <string name="path_map">Map</string>
     <string name="path_list">Path List</string>
 
     <string name="path_map_location_request">We utilise location data to better portray path\'s events in relation to location information.\nyour location is never sent anywhere and we don\'t saved any location information in our aplication/servers.</string>
     <string name="location_request">Request permission</string>
+    <string name="path_overview">Paths</string>
+    <string name="check_list">Checklist</string>
 
 </resources>

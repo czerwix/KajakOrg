@@ -96,7 +96,7 @@ fun CollapsingToolbarCollapsedPreview() {
                 difficulty = "D1,D2,D3vbvbvcvbvfdsfdsfdsfdsfdsfdsfcbvcbvcb",
                 nuisance = "N1,N2,N3,N4,Ndsfdsfdsfdsfdsfdfdsfdsfdsfsd",
                 description = "Dłuuuuuuuuuusdusndusnadnsad sauidh sauidnsan dsajdi sd sadiosa ds dsoa disnadi said sadi sadio said sadio sadisa dsa doas dosa dosa doas dosa doas d"
-            )
+            ), {}
         )
     }
 }
@@ -126,7 +126,7 @@ fun CollapsingToolbarHalfwayPreview() {
                 difficulty = "D1,D2,D3vbvbvcvbvfdsfdsfdsfdsfdsfdsfcbvcbvcb",
                 nuisance = "N1,N2,N3,N4,Ndsfdsfdsfdsfdsfdfdsfdsfdsfsd",
                 description = "Dłuuuuuuuuuusdusndusnadnsad sauidh sauidnsan dsajdi sd sadiosa ds dsoa disnadi said sadi sadio said sadio sadisa dsa doas dosa dosa doas dosa doas d"
-            )
+            ), {}
         )
     }
 }
@@ -156,7 +156,7 @@ fun CollapsingToolbarExpandedPreview() {
                 difficulty = "D1,D2,D3vbvbvcvbvfdsfdsfdsfdsfdsfdsfcbvcbvcb",
                 nuisance = "N1,N2,N3,N4,Ndsfdsfdsfdsfdsfdfdsfdsfdsfsd",
                 description = "Dłuuuuuuuuuusdusndusnadnsad sauidh sauidnsan dsajdi sd sadiosa ds dsoa disnadi said sadi sadio said sadio sadisa dsa doas dosa dosa doas dosa doas d"
-            )
+            ), {}
         )
     }
 }
@@ -171,7 +171,8 @@ fun CollapsingToolbar(
     onSettingsButtonClicked: () -> Unit,
     onDescriptionClicked: () -> Unit,
     modifier: Modifier = Modifier,
-    path: PathOveriewItem
+    path: PathOveriewItem,
+    settingsButtonContent: @Composable () -> Unit
 ) {
     val logoPadding = lerp(CollapsedPadding, ExpandedPadding, progress)
     val bottomTitlePadding = lerp(CollapsedPadding, ExpandedBottomPadding, progress)
@@ -314,21 +315,24 @@ fun CollapsingToolbar(
                                 tint = Color.White
                             )
                         }
-                        IconButton(
-                            onClick = onSettingsButtonClicked,
-                            modifier = Modifier
-                                .size(ButtonSize)
-                                .background(
-                                    color = LocalContentColor.current.copy(alpha = 0.0f),
-                                    shape = CircleShape
+                        Box(modifier = Modifier.wrapContentSize()) {
+                            IconButton(
+                                onClick = onSettingsButtonClicked,
+                                modifier = Modifier
+                                    .size(ButtonSize)
+                                    .background(
+                                        color = LocalContentColor.current.copy(alpha = 0.0f),
+                                        shape = CircleShape
+                                    )
+                            ) {
+                                Icon(
+                                    modifier = Modifier.fillMaxSize(),
+                                    imageVector = Icons.Rounded.Settings,
+                                    contentDescription = null,
+                                    tint = Color.White
                                 )
-                        ) {
-                            Icon(
-                                modifier = Modifier.fillMaxSize(),
-                                imageVector = Icons.Rounded.Settings,
-                                contentDescription = null,
-                                tint = Color.White
-                            )
+                            }
+                            settingsButtonContent()
                         }
                     }
                 }

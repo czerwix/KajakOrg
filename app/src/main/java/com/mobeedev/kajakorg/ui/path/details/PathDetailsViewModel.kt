@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import com.mobeedev.kajakorg.domain.usecase.GetLocalPathDetailsUseCase
+import com.mobeedev.kajakorg.ui.model.PathDetailsSettingsOrderItem
 import com.mobeedev.kajakorg.ui.model.PathItem
 import com.mobeedev.kajakorg.ui.navigation.PathDetailsArgs
 import com.mobeedev.kajakorg.ui.navigation.pathDetailsIdArg
@@ -49,12 +50,25 @@ class PathDetailsViewModel(
             }
         }
     }
+
+    fun onDisableGoogleMapsClicked(pathDetailsSettingsOrderItem: PathDetailsSettingsOrderItem) {
+        _uiState.update {
+            if (it is PathDetailsViewModelState.Success) {
+                it.copy(googleMapStatus = pathDetailsSettingsOrderItem)
+            } else {
+                it
+            }
+        }
+    }
 }
 
 sealed interface PathDetailsViewModelState {
     data class InitialStart(val pathId: Int) : PathDetailsViewModelState
-    data class Success(val path: PathItem, val shouldShowDescription: Boolean = false) :
-        PathDetailsViewModelState
+    data class Success(
+        val path: PathItem,
+        val shouldShowDescription: Boolean = false,
+        val googleMapStatus: PathDetailsSettingsOrderItem = PathDetailsSettingsOrderItem.EnableMap
+    ) : PathDetailsViewModelState
 
     object Error : PathDetailsViewModelState
 }

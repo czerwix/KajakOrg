@@ -20,13 +20,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mobeedev.kajakorg.designsystem.path.PathDescriptionElement
-import com.mobeedev.kajakorg.designsystem.path.PathEventWithMapElement
 import com.mobeedev.kajakorg.designsystem.path.PathEventWithMapSimpler
 import com.mobeedev.kajakorg.designsystem.path.PathSectionElement
 import com.mobeedev.kajakorg.domain.model.detail.Event
 import com.mobeedev.kajakorg.domain.model.detail.PathEvent
 import com.mobeedev.kajakorg.domain.model.detail.Section
 import com.mobeedev.kajakorg.domain.model.detail.getSections
+import com.mobeedev.kajakorg.ui.model.PathDetailsSettingsOrderItem
 
 @Composable
 fun PathDetailsList(
@@ -34,6 +34,7 @@ fun PathDetailsList(
     description: String? = null,
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
+    googleMapVisibilityState : PathDetailsSettingsOrderItem,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
     val collapsedSectionState: SnapshotStateList<Pair<Int, Boolean>> = remember {
@@ -47,7 +48,7 @@ fun PathDetailsList(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        pathDetailsCards(pathList, description, collapsedSectionState)
+        pathDetailsCards(pathList, description, collapsedSectionState,googleMapVisibilityState)
     }
 }
 
@@ -55,7 +56,8 @@ fun PathDetailsList(
 fun LazyListScope.pathDetailsCards(
     pathList: List<PathEvent>,
     description: String? = null,
-    collapsedSectionState: SnapshotStateList<Pair<Int, Boolean>>
+    collapsedSectionState: SnapshotStateList<Pair<Int, Boolean>>,
+    googleMapVisibilityState: PathDetailsSettingsOrderItem
 ) {//todo add animations to list change with Modifier.animateItemPlacement() sent to each item in list
     item {//todo replace with separators here :D
         Box(
@@ -101,6 +103,7 @@ fun LazyListScope.pathDetailsCards(
                     PathEventWithMapSimpler(
                         item = nestedSectionEvent,
                         onClick = {},
+                        googleMapVisibilityState,
                         modifier = Modifier.animateItemPlacement()
                     )
                     Divider(
@@ -115,6 +118,7 @@ fun LazyListScope.pathDetailsCards(
                 PathEventWithMapSimpler(
                     item = element,
                     onClick = {},
+                    googleMapVisibilityState = googleMapVisibilityState,
                     modifier = Modifier.animateItemPlacement()
                 )
                 Divider(

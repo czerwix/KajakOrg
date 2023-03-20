@@ -49,12 +49,14 @@ import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
 import com.mobeedev.kajakorg.designsystem.theme.White
 import com.mobeedev.kajakorg.domain.model.detail.Event
 import com.mobeedev.kajakorg.domain.model.detail.EventDescription
+import com.mobeedev.kajakorg.ui.model.PathDetailsSettingsOrderItem
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PathEventWithMapSimpler(
     item: Event,
     onClick: (Int) -> Unit,
+    googleMapVisibilityState: PathDetailsSettingsOrderItem = PathDetailsSettingsOrderItem.EnableMap,
     modifier: Modifier
 ) {
     KajakTheme {
@@ -106,40 +108,41 @@ fun PathEventWithMapSimpler(
                         )
                     }
                 }
-
-                var uiSettings by remember {
-                    mutableStateOf(
-                        MapUiSettings(
-                            compassEnabled = false,
-                            indoorLevelPickerEnabled = false,
-                            mapToolbarEnabled = false,
-                            myLocationButtonEnabled = false,
-                            rotationGesturesEnabled = false,
-                            scrollGesturesEnabled = false,
-                            scrollGesturesEnabledDuringRotateOrZoom = false,
-                            tiltGesturesEnabled = false,
-                            zoomControlsEnabled = false
+                if (googleMapVisibilityState == PathDetailsSettingsOrderItem.EnableMap) {
+                    var uiSettings by remember {
+                        mutableStateOf(
+                            MapUiSettings(
+                                compassEnabled = false,
+                                indoorLevelPickerEnabled = false,
+                                mapToolbarEnabled = false,
+                                myLocationButtonEnabled = false,
+                                rotationGesturesEnabled = false,
+                                scrollGesturesEnabled = false,
+                                scrollGesturesEnabledDuringRotateOrZoom = false,
+                                tiltGesturesEnabled = false,
+                                zoomControlsEnabled = false
+                            )
                         )
-                    )
-                }
-                var properties by remember {
-                    mutableStateOf(MapProperties(mapType = MapType.SATELLITE))
-                }
-                var cameraState = rememberCameraPositionState {
-                    position = CameraPosition.fromLatLngZoom(item.position, 18f)
-                }
-                //Google Map
-                GoogleMap(
-                    cameraPositionState = cameraState,
-                    properties = properties,
-                    uiSettings = uiSettings,
-                    googleMapOptionsFactory = { GoogleMapOptions().liteMode(true) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(150.dp)
+                    }
+                    var properties by remember {
+                        mutableStateOf(MapProperties(mapType = MapType.SATELLITE))
+                    }
+                    var cameraState = rememberCameraPositionState {
+                        position = CameraPosition.fromLatLngZoom(item.position, 18f)
+                    }
+                    //Google Map
+                    GoogleMap(
+                        cameraPositionState = cameraState,
+                        properties = properties,
+                        uiSettings = uiSettings,
+                        googleMapOptionsFactory = { GoogleMapOptions().liteMode(true) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(150.dp)
 //                    .clip(RoundedCornerShape(8.dp))
-                ) {
-                    Marker(state = MarkerState(position = item.position))
+                    ) {
+                        Marker(state = MarkerState(position = item.position))
+                    }
                 }
 
                 //Event descriptions
@@ -220,6 +223,7 @@ fun PreviewPathEventWithMapSimpler() {
                 )
             ),
             onClick = {},
+            PathDetailsSettingsOrderItem.EnableMap,
             Modifier
         )
     }
@@ -252,6 +256,39 @@ fun PreviewPathEventWithMapSimplerLong() {
                 )
             ),
             onClick = {},
+            PathDetailsSettingsOrderItem.EnableMap,
+            Modifier
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewPathEventWithMapMapDIsable() {
+    KajakTheme {
+        PathEventWithMapSimpler(
+            item = Event(
+                0,
+                townName = "Bolimów gdzies tam w polu płynie rzeka niewielka",
+                position = LatLng(52.08174002, 20.17178617),
+                label = "",
+                sortOrder = -1,
+                atKilometer = 14.5,
+                eventDescription = listOf(
+                    EventDescription(
+                        eventType = EventType.Niebezpieczeństwo,
+                        sortOrder = -1,
+                        description = "Łąka naprzeciw domu sołtysa. Wygodne miejsce wodowania. Łąka z pewnością jest czyjąś własnością, jednak właściciel nie objawił się."
+                    ),
+                    EventDescription(
+                        eventType = EventType.Most,
+                        sortOrder = -1,
+                        description = "Łąka naprzeciw domu sołtysa. Wygodne miejsce wodowania. Łąka z pewnością jest czyjąś własnością, jednak właściciel nie objawił się."
+                    )
+                )
+            ),
+            onClick = {},
+            PathDetailsSettingsOrderItem.DisableMap,
             Modifier
         )
     }
