@@ -6,11 +6,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.mobeedev.kajakorg.data.datasource.local.KajakPathDao
-import com.mobeedev.kajakorg.data.datasource.local.db.overview.PathOverviewDB
-import com.mobeedev.kajakorg.data.datasource.local.db.path.EventDB
-import com.mobeedev.kajakorg.data.datasource.local.db.path.EventDescriptionDB
-import com.mobeedev.kajakorg.data.datasource.local.db.path.PathDB
-import com.mobeedev.kajakorg.data.datasource.local.db.path.SectionDB
+import com.mobeedev.kajakorg.data.datasource.db.overview.PathOverviewDB
+import com.mobeedev.kajakorg.data.datasource.db.path.EventDB
+import com.mobeedev.kajakorg.data.datasource.db.path.EventDescriptionDB
+import com.mobeedev.kajakorg.data.datasource.db.path.PathDB
+import com.mobeedev.kajakorg.data.datasource.db.path.SectionDB
 import com.mobeedev.kajakorg.data.db.KajakDB.Companion.DATABASE_VERSION
 
 

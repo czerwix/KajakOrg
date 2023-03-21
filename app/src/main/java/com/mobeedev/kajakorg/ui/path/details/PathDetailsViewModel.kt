@@ -4,7 +4,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import com.mobeedev.kajakorg.domain.usecase.GetLocalPathDetailsUseCase
-import com.mobeedev.kajakorg.ui.model.PathDetailsSettingsOrderItem
+import com.mobeedev.kajakorg.domain.usecase.GetPathDetailsScreenInfoUseCase
+import com.mobeedev.kajakorg.domain.usecase.UpdateGoogleMapStatusUSeCase
+import com.mobeedev.kajakorg.ui.model.GoogleMapsStatusItem
 import com.mobeedev.kajakorg.ui.model.PathItem
 import com.mobeedev.kajakorg.ui.navigation.PathDetailsArgs
 import com.mobeedev.kajakorg.ui.navigation.pathDetailsIdArg
@@ -15,7 +17,8 @@ import kotlinx.coroutines.flow.update
 class PathDetailsViewModel(
     application: Application,
     savedStateHandle: SavedStateHandle,
-    private val getPathDetailsUseCase: GetLocalPathDetailsUseCase
+    private val getPathDetailsUseCase: GetPathDetailsScreenInfoUseCase,
+    private val updateGoogleMapStatusUSeCase: UpdateGoogleMapStatusUSeCase
 ) : AndroidViewModel(application) {
 
     private val pathArgs = PathDetailsArgs(checkNotNull(savedStateHandle[pathDetailsIdArg]))
@@ -32,8 +35,13 @@ class PathDetailsViewModel(
         with(_uiState.value) {
             if (this !is PathDetailsViewModelState.InitialStart) return
             getPathDetailsUseCase.invoke(params = GetLocalPathDetailsUseCase.Params(pathId)) { resul ->
-                resul.onSuccess { pathItem ->
-                    _uiState.update { PathDetailsViewModelState.Success(pathItem) }
+                resul.onSuccess { data ->
+                    _uiState.update {
+                        PathDetailsViewModelState.Success(
+                            path = data.path,
+                            googleMapStatus = data.googleMapStatus
+                        )
+                    }
                 }.onFailure {
                     _uiState.update { PathDetailsViewModelState.Error }
                 }
@@ -51,10 +59,15 @@ class PathDetailsViewModel(
         }
     }
 
-    fun onDisableGoogleMapsClicked(pathDetailsSettingsOrderItem: PathDetailsSettingsOrderItem) {
+    fun onDisableGoogleMapsClicked(googleMapsStatus: GoogleMapsStatusItem) {
         _uiState.update {
             if (it is PathDetailsViewModelState.Success) {
-                it.copy(googleMapStatus = pathDetailsSettingsOrderItem)
+                updateGoogleMapStatusUSeCase.invoke(
+                    params = UpdateGoogleMapStatusUSeCase.Params(
+                        googleMapsStatus
+                    )
+                )
+                it.copy(googleMapStatus = googleMapsStatus)
             } else {
                 it
             }
@@ -67,7 +80,7 @@ sealed interface PathDetailsViewModelState {
     data class Success(
         val path: PathItem,
         val shouldShowDescription: Boolean = false,
-        val googleMapStatus: PathDetailsSettingsOrderItem = PathDetailsSettingsOrderItem.EnableMap
+        val googleMapStatus: GoogleMapsStatusItem = GoogleMapsStatusItem.EnableMap
     ) : PathDetailsViewModelState
 
     object Error : PathDetailsViewModelState

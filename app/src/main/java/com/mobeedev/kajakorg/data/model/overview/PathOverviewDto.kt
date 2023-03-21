@@ -1,6 +1,6 @@
 package com.mobeedev.kajakorg.data.model.overview
 
-import com.mobeedev.kajakorg.data.datasource.local.db.overview.PathOverviewDB
+import com.mobeedev.kajakorg.data.datasource.db.overview.PathOverviewDB
 
 data class PathOverviewDto(
     val id: Int,

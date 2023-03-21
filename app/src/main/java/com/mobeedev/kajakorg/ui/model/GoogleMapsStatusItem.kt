@@ -1,5 +1,5 @@
 package com.mobeedev.kajakorg.ui.model
 
-enum class  PathDetailsSettingsOrderItem {
+enum class  GoogleMapsStatusItem {
     EnableMap,DisableMap
 }

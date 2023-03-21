@@ -26,7 +26,7 @@ import com.mobeedev.kajakorg.domain.model.detail.Event
 import com.mobeedev.kajakorg.domain.model.detail.PathEvent
 import com.mobeedev.kajakorg.domain.model.detail.Section
 import com.mobeedev.kajakorg.domain.model.detail.getSections
-import com.mobeedev.kajakorg.ui.model.PathDetailsSettingsOrderItem
+import com.mobeedev.kajakorg.ui.model.GoogleMapsStatusItem
 
 @Composable
 fun PathDetailsList(
@@ -34,7 +34,7 @@ fun PathDetailsList(
     description: String? = null,
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
-    googleMapVisibilityState : PathDetailsSettingsOrderItem,
+    googleMapVisibilityState : GoogleMapsStatusItem,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
     val collapsedSectionState: SnapshotStateList<Pair<Int, Boolean>> = remember {
@@ -57,7 +57,7 @@ fun LazyListScope.pathDetailsCards(
     pathList: List<PathEvent>,
     description: String? = null,
     collapsedSectionState: SnapshotStateList<Pair<Int, Boolean>>,
-    googleMapVisibilityState: PathDetailsSettingsOrderItem
+    googleMapVisibilityState: GoogleMapsStatusItem
 ) {//todo add animations to list change with Modifier.animateItemPlacement() sent to each item in list
     item {//todo replace with separators here :D
         Box(

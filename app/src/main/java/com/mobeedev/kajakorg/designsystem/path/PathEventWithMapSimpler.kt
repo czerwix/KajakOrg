@@ -49,14 +49,14 @@ import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
 import com.mobeedev.kajakorg.designsystem.theme.White
 import com.mobeedev.kajakorg.domain.model.detail.Event
 import com.mobeedev.kajakorg.domain.model.detail.EventDescription
-import com.mobeedev.kajakorg.ui.model.PathDetailsSettingsOrderItem
+import com.mobeedev.kajakorg.ui.model.GoogleMapsStatusItem
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PathEventWithMapSimpler(
     item: Event,
     onClick: (Int) -> Unit,
-    googleMapVisibilityState: PathDetailsSettingsOrderItem = PathDetailsSettingsOrderItem.EnableMap,
+    googleMapVisibilityState: GoogleMapsStatusItem = GoogleMapsStatusItem.EnableMap,
     modifier: Modifier
 ) {
     KajakTheme {
@@ -108,7 +108,7 @@ fun PathEventWithMapSimpler(
                         )
                     }
                 }
-                if (googleMapVisibilityState == PathDetailsSettingsOrderItem.EnableMap) {
+                if (googleMapVisibilityState == GoogleMapsStatusItem.EnableMap) {
                     var uiSettings by remember {
                         mutableStateOf(
                             MapUiSettings(
@@ -223,7 +223,7 @@ fun PreviewPathEventWithMapSimpler() {
                 )
             ),
             onClick = {},
-            PathDetailsSettingsOrderItem.EnableMap,
+            GoogleMapsStatusItem.EnableMap,
             Modifier
         )
     }
@@ -256,7 +256,7 @@ fun PreviewPathEventWithMapSimplerLong() {
                 )
             ),
             onClick = {},
-            PathDetailsSettingsOrderItem.EnableMap,
+            GoogleMapsStatusItem.EnableMap,
             Modifier
         )
     }
@@ -288,7 +288,7 @@ fun PreviewPathEventWithMapMapDIsable() {
                 )
             ),
             onClick = {},
-            PathDetailsSettingsOrderItem.DisableMap,
+            GoogleMapsStatusItem.DisableMap,
             Modifier
         )
     }

@@ -2,11 +2,11 @@ package com.mobeedev.kajakorg.data.datasource.local
 
 import androidx.room.*
 import com.mobeedev.kajakorg.common.extensions.empty
-import com.mobeedev.kajakorg.data.datasource.local.db.overview.PathOverviewDB
-import com.mobeedev.kajakorg.data.datasource.local.db.path.EventDB
-import com.mobeedev.kajakorg.data.datasource.local.db.path.EventDescriptionDB
-import com.mobeedev.kajakorg.data.datasource.local.db.path.PathDB
-import com.mobeedev.kajakorg.data.datasource.local.db.path.SectionDB
+import com.mobeedev.kajakorg.data.datasource.db.overview.PathOverviewDB
+import com.mobeedev.kajakorg.data.datasource.db.path.EventDB
+import com.mobeedev.kajakorg.data.datasource.db.path.EventDescriptionDB
+import com.mobeedev.kajakorg.data.datasource.db.path.PathDB
+import com.mobeedev.kajakorg.data.datasource.db.path.SectionDB
 import com.mobeedev.kajakorg.data.model.detail.PathDto
 import com.mobeedev.kajakorg.data.model.detail.toDB
 import com.mobeedev.kajakorg.data.model.detail.toPathDB

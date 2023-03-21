@@ -2,7 +2,7 @@ package com.mobeedev.kajakorg.data.model.detail
 
 import com.google.android.gms.maps.model.LatLng
 import com.mobeedev.kajakorg.common.extensions.empty
-import com.mobeedev.kajakorg.data.datasource.local.db.path.EventDB
+import com.mobeedev.kajakorg.data.datasource.db.path.EventDB
 import com.tickaroo.tikxml.annotation.Attribute
 import com.tickaroo.tikxml.annotation.Element
 import com.tickaroo.tikxml.annotation.Xml

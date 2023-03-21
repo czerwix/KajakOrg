@@ -49,7 +49,7 @@ import com.mobeedev.kajakorg.designsystem.toolbar.MaxToolbarHeight
 import com.mobeedev.kajakorg.designsystem.toolbar.MinToolbarHeight
 import com.mobeedev.kajakorg.designsystem.toolbar.ToolbarState
 import com.mobeedev.kajakorg.designsystem.toolbar.scrollflags.ExitUntilCollapsedState
-import com.mobeedev.kajakorg.ui.model.PathDetailsSettingsOrderItem
+import com.mobeedev.kajakorg.ui.model.GoogleMapsStatusItem
 import com.mobeedev.kajakorg.ui.path.load.showLoadingState
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
@@ -200,7 +200,7 @@ fun showPathDetails(
 fun showPathSettings(
     uiState: PathDetailsViewModelState.Success,
     isSettingsMenuVisible: Boolean,
-    onSelected: (PathDetailsSettingsOrderItem) -> Unit,
+    onSelected: (GoogleMapsStatusItem) -> Unit,
     onDismiss: () -> Unit
 ) {
     DropdownMenu(
@@ -215,7 +215,7 @@ fun showPathSettings(
     ) {
         DropdownMenuItem(
             leadingIcon = {
-                if (uiState.googleMapStatus == PathDetailsSettingsOrderItem.DisableMap) {
+                if (uiState.googleMapStatus == GoogleMapsStatusItem.DisableMap) {
                     Icon(
                         painter = painterResource(id = R.drawable.done_icon),
                         contentDescription = null,
@@ -236,14 +236,14 @@ fun showPathSettings(
                 )
             },
             onClick = {
-                onSelected(PathDetailsSettingsOrderItem.DisableMap)
+                onSelected(GoogleMapsStatusItem.DisableMap)
             },
-            enabled = uiState.googleMapStatus == PathDetailsSettingsOrderItem.EnableMap,
+            enabled = uiState.googleMapStatus == GoogleMapsStatusItem.EnableMap,
             modifier = Modifier.wrapContentSize()
         )
         DropdownMenuItem(
             leadingIcon = {
-                if (uiState.googleMapStatus == PathDetailsSettingsOrderItem.EnableMap) {
+                if (uiState.googleMapStatus == GoogleMapsStatusItem.EnableMap) {
                     Icon(
                         painter = painterResource(id = R.drawable.done_icon),
                         contentDescription = null,
@@ -263,9 +263,9 @@ fun showPathSettings(
                 )
             },
             onClick = {
-                onSelected(PathDetailsSettingsOrderItem.EnableMap)
+                onSelected(GoogleMapsStatusItem.EnableMap)
             },
-            enabled = uiState.googleMapStatus == PathDetailsSettingsOrderItem.DisableMap,
+            enabled = uiState.googleMapStatus == GoogleMapsStatusItem.DisableMap,
             modifier = Modifier.wrapContentSize()
         )
     }

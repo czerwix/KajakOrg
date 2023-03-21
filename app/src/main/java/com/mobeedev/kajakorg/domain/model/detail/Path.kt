@@ -1,7 +1,7 @@
 package com.mobeedev.kajakorg.domain.model.detail
 
 import com.mobeedev.kajakorg.common.extensions.empty
-import com.mobeedev.kajakorg.data.datasource.local.db.path.PathDB
+import com.mobeedev.kajakorg.data.datasource.db.path.PathDB
 import com.mobeedev.kajakorg.data.model.detail.PathDto
 import com.mobeedev.kajakorg.ui.model.PathItem
 import com.mobeedev.kajakorg.ui.model.PathOveriewItem

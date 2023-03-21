@@ -1,7 +1,7 @@
 package com.mobeedev.kajakorg.domain.model.detail
 
 import com.mobeedev.kajakorg.common.extensions.empty
-import com.mobeedev.kajakorg.data.datasource.local.db.path.EventDescriptionDB
+import com.mobeedev.kajakorg.data.datasource.db.path.EventDescriptionDB
 import com.mobeedev.kajakorg.data.model.detail.EventDescriptionDto
 import com.mobeedev.kajakorg.data.model.detail.EventType
 

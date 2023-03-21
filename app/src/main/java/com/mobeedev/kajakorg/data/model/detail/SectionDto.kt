@@ -1,7 +1,7 @@
 package com.mobeedev.kajakorg.data.model.detail
 
 import com.mobeedev.kajakorg.common.extensions.empty
-import com.mobeedev.kajakorg.data.datasource.local.db.path.SectionDB
+import com.mobeedev.kajakorg.data.datasource.db.path.SectionDB
 import com.tickaroo.tikxml.annotation.Attribute
 import com.tickaroo.tikxml.annotation.Element
 import com.tickaroo.tikxml.annotation.PropertyElement

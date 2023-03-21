@@ -1,10 +1,21 @@
 package com.mobeedev.kajakorg.ui.di
 
 import com.mobeedev.kajakorg.data.KayakPathRepositoryImpl
+import com.mobeedev.kajakorg.data.SharedPreferencesRepositoryImpl
 import com.mobeedev.kajakorg.data.datasource.local.LocalPathSource
 import com.mobeedev.kajakorg.data.datasource.remote.RemotePathSource
 import com.mobeedev.kajakorg.domain.repository.KayakPathRepository
-import com.mobeedev.kajakorg.domain.usecase.*
+import com.mobeedev.kajakorg.domain.repository.SharedPreferencesRepository
+import com.mobeedev.kajakorg.domain.usecase.GetLastUpdateDateUseCase
+import com.mobeedev.kajakorg.domain.usecase.GetLocalAllPathDetailsUseCase
+import com.mobeedev.kajakorg.domain.usecase.GetLocalMapPathsUseCase
+import com.mobeedev.kajakorg.domain.usecase.GetLocalPathDetailsUseCase
+import com.mobeedev.kajakorg.domain.usecase.GetLocalPathOverviewItemUseCase
+import com.mobeedev.kajakorg.domain.usecase.GetLocalPathsOverviewUseCase
+import com.mobeedev.kajakorg.domain.usecase.GetPathDetailsScreenInfoUseCase
+import com.mobeedev.kajakorg.domain.usecase.LoadAllAvailablePathsUseCase
+import com.mobeedev.kajakorg.domain.usecase.LoadAllPathsDetailsUseCase
+import com.mobeedev.kajakorg.domain.usecase.UpdateGoogleMapStatusUSeCase
 import com.mobeedev.kajakorg.ui.MainDataLoadingViewModel
 import com.mobeedev.kajakorg.ui.common.ModuleLoader
 import com.mobeedev.kajakorg.ui.path.details.PathDetailsViewModel
@@ -50,7 +61,8 @@ private val viewModelModule = module {
         PathDetailsViewModel(
             application = get(),
             savedStateHandle = it.get(),
-            getPathDetailsUseCase = get()
+            getPathDetailsUseCase = get(),
+            updateGoogleMapStatusUSeCase = get()
         )
     }
 
@@ -81,6 +93,13 @@ private val useCaseModule = module {
     factory { GetLastUpdateDateUseCase(kayakPathRepository = get()) }
     factory { GetLocalPathDetailsUseCase(kayakPathRepository = get()) }
     factory { GetLocalMapPathsUseCase(kayakPathRepository = get()) }
+    factory {
+        GetPathDetailsScreenInfoUseCase(
+            kayakPathRepository = get(),
+            sharedPreferencesRepository = get()
+        )
+    }
+    factory { UpdateGoogleMapStatusUSeCase(sharedPreferencesRepository = get()) }
 }
 
 private val repositoryModule = module {
@@ -90,6 +109,11 @@ private val repositoryModule = module {
             localPathSource = get(),
             context = get()
 
+        )
+    }
+    single<SharedPreferencesRepository> {
+        SharedPreferencesRepositoryImpl(
+            context = get()
         )
     }
 }
