@@ -110,16 +110,16 @@ fun getPathSearchTopBar(
                     }),
                 )
 
-                IconButton(
-                    modifier = Modifier.wrapContentSize(),
-                    onClick = onMapClicked
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.outline_map_24),
-                        null,
-                        modifier = Modifier.size(30.dp),
-                    )
-                }
+//                IconButton(
+//                    modifier = Modifier.wrapContentSize(),
+//                    onClick = onMapClicked
+//                ) {
+//                    Icon(
+//                        painter = painterResource(id = R.drawable.outline_map_24),
+//                        null,
+//                        modifier = Modifier.size(30.dp),
+//                    )
+//                }
 
                 Box(modifier = Modifier.wrapContentSize()) {
                     IconButton(

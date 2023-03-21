@@ -7,20 +7,12 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -29,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -179,22 +170,22 @@ fun showPathMapScreen(
             }
         }
 
-        IconButton(
-            onClick = onBackClick,
-            modifier = Modifier
-                .size(48.dp)
-                .padding(start = 16.dp, top = 16.dp)
-                .background(
-                    color = LocalContentColor.current.copy(alpha = 0.0f),
-                    shape = CircleShape
-                )
-        ) {
-            Icon(
-                modifier = Modifier.fillMaxSize(),
-                imageVector = Icons.Rounded.ArrowBack,
-                contentDescription = null,
-                tint = Color.White
-            )
-        }
+//        IconButton(
+//            onClick = onBackClick,
+//            modifier = Modifier
+//                .size(48.dp)
+//                .padding(start = 16.dp, top = 16.dp)
+//                .background(
+//                    color = LocalContentColor.current.copy(alpha = 0.0f),
+//                    shape = CircleShape
+//                )
+//        ) {
+//            Icon(
+//                modifier = Modifier.fillMaxSize(),
+//                imageVector = Icons.Rounded.ArrowBack,
+//                contentDescription = null,
+//                tint = Color.White
+//            )
+//        }
     }
 }

@@ -94,9 +94,8 @@ fun KajakApp(
                                                 route = item.route,
                                                 navOptions = NavOptions.Builder()
                                                     .setPopUpTo(
-                                                        route = item.route,
-                                                        inclusive = false,
-                                                        saveState = true
+                                                        route = backStackEntry.value?.destination?.route,
+                                                        inclusive = true
                                                     ).build()
                                             )
                                         }
