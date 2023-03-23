@@ -28,8 +28,8 @@ class MainDataLoadingViewModel(
 ) : AndroidViewModel(application) {
 
     init {
-//        onCreated()
-        getPathsOverview()
+        onCreated()
+//        getPathsOverview()
     }
 
     private val _uiState: MutableStateFlow<MainViewModelState> =
@@ -51,7 +51,8 @@ class MainDataLoadingViewModel(
                             getPathsOverview()
                         }
                     }
-                    DataDownloadState.PARTIAL -> TODO()
+
+                    DataDownloadState.PARTIAL -> loadPathsData()
                     DataDownloadState.EMPTY -> loadPathsData()
                 }
             }.onFailure {
@@ -92,7 +93,9 @@ class MainDataLoadingViewModel(
         viewModelScope.launch {
             loadAllPathsDetailsUseCase.workStatus.collect { loadedPaths ->
                 if (pathIds.size == loadedPaths) {
-                    getPathsOverview()
+//                    getPathsOverview()
+                    //loaded all data
+                    _uiState.update { MainViewModelState.LoadedAllDataSuccessfully }
                 } else {
                     _uiState.update {
                         MainViewModelState.Loading(
@@ -123,6 +126,8 @@ sealed interface MainViewModelState {
 
     data class SuccessDetail(val pathList: Path) : MainViewModelState
     data class SuccessOverview(val pathList: List<PathOverview>) : MainViewModelState
+
+    object LoadedAllDataSuccessfully : MainViewModelState
 
     object ConfirmDataReload : MainViewModelState
     object Error : MainViewModelState

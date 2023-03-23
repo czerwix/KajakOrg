@@ -20,14 +20,17 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import com.mobeedev.kajakorg.ui.navigation.checklistGraph
 import com.mobeedev.kajakorg.ui.navigation.navigateToChecklistEdit
 import com.mobeedev.kajakorg.ui.navigation.navigateToPathDetails
 import com.mobeedev.kajakorg.ui.navigation.navigateToPathDetailsMap
+import com.mobeedev.kajakorg.ui.navigation.navigateToPathLoading
 import com.mobeedev.kajakorg.ui.navigation.navigateToPathMap
 import com.mobeedev.kajakorg.ui.navigation.navigateToPathOverview
 import com.mobeedev.kajakorg.ui.navigation.pathGraph
+import com.mobeedev.kajakorg.ui.navigation.pathLoadingRoute
 import com.mobeedev.kajakorg.ui.navigation.pathOverviewRoute
 
 
@@ -53,6 +56,22 @@ fun KajakNavHost(
         modifier = modifier,
     ) {
         pathGraph(
+            navigateToPathLoading = {
+                navController.navigateToPathLoading(
+                    navOptions = NavOptions.Builder()
+                        .setPopUpTo(
+                            route = pathOverviewRoute,
+                            inclusive = true
+                        ).build()
+                )
+            },
+            navigateToPathOverviewFromLoading = {
+                navController.navigateToPathOverview( navOptions = NavOptions.Builder()
+                    .setPopUpTo(
+                        route = pathLoadingRoute,
+                        inclusive = true
+                    ).build())
+            },
             navigateToPathOverview = {
                 navController.navigateToPathOverview()
             },

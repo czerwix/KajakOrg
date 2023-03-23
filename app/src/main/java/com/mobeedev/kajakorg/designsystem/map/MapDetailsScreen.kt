@@ -23,6 +23,7 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.Polyline
 import com.mobeedev.kajakorg.domain.model.detail.Event
+import com.mobeedev.kajakorg.domain.model.detail.isLocationNonZero
 import com.mobeedev.kajakorg.ui.model.PathItem
 import com.mobeedev.kajakorg.ui.model.toPathEventsList
 import com.mobeedev.kajakorg.ui.path.map.UserLocationSource
@@ -85,22 +86,22 @@ fun showMapPathDetailsScreen(
         ) {
             val eventList = path.pathSectionsEvents.toPathEventsList()
             Polyline(//sorting should be good here
-                points = eventList.map { it.position }
-                    .filterNot { it.latitude == 0.0 || it.longitude == 0.0 },
+                points = eventList.filter { it.isLocationNonZero() }.map { it.position },
                 clickable = false,
                 Color.Blue//todo think about adding some transparency here since we do not know how exactly the river flows
             )
 
             eventList.forEach { event ->
-                Marker(
-                    state = MarkerState(position = event.position),
-                    title = event.label,
-                    draggable = false,
-                    onClick = {
-                        onMarkerClicked(event)
-                        true
-                    }
-                )
+                if (event.isLocationNonZero())
+                    Marker(
+                        state = MarkerState(position = event.position),
+                        title = event.label,
+                        draggable = false,
+                        onClick = {
+                            onMarkerClicked(event)
+                            true
+                        }
+                    )
             }
         }
     }

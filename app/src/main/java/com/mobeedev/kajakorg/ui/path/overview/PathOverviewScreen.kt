@@ -6,18 +6,23 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusTarget
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mobeedev.kajakorg.R
 import com.mobeedev.kajakorg.designsystem.path.PathOverViewElement
 import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
 import com.mobeedev.kajakorg.ui.model.PathOveriewItem
@@ -30,7 +35,8 @@ fun PathOverviewRoute(
     modifier: Modifier = Modifier,
     viewModel: PathOverviewViewModel = getViewModel(),
     navigateToPathDetails: (Int) -> Unit,
-    navigateToPathMap: () -> Unit
+    navigateToPathMap: () -> Unit,
+    navigateToLoading: () -> Unit
 ) {
     val uiState: PathOverviewViewModelState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -39,6 +45,7 @@ fun PathOverviewRoute(
         modifier = modifier,
         navigateToPathDetails = navigateToPathDetails,
         navigateToPathMap = navigateToPathMap,
+        navigateToLoading,
         viewModel = viewModel
     )
 }
@@ -49,6 +56,7 @@ fun PathOverviewScreen(
     modifier: Modifier = Modifier,
     navigateToPathDetails: (Int) -> Unit,
     navigateToPathMap: () -> Unit,
+    navigateToLoading: () -> Unit,
     viewModel: PathOverviewViewModel
 ) {
     when (uiState) {
@@ -63,6 +71,7 @@ fun PathOverviewScreen(
                 modifier,
                 navigateToPathDetails,
                 navigateToPathMap,
+                navigateToLoading,
                 viewModel
             )
         }
@@ -78,6 +87,7 @@ fun showDataList(
     modifier: Modifier,
     navigateToPathDetails: (Int) -> Unit,
     navigateToPathMap: () -> Unit,
+    navigateToLoading: () -> Unit,
     viewModel: PathOverviewViewModel
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
@@ -108,6 +118,20 @@ fun showDataList(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             pathOverviewCards(filteredPathList, navigateToPathDetails)
+            if (uiState.pathOverviewList.isEmpty()) {
+                item() {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                    ) {
+                        OutlinedButton(onClick = { navigateToLoading() }) {
+                            Text(text = stringResource(id = R.string.download_data))
+                        }
+                    }
+                }
+            }
         }
     }
 }

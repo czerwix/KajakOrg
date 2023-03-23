@@ -15,6 +15,8 @@ data class Event(
     var eventDescription: List<EventDescription> = mutableListOf()
 ) : PathEvent
 
+fun Event.isLocationNonZero() = (position.latitude > 0 && position.longitude > 0)
+
 fun EventDB.toDomain(eventDescription: List<EventDescription>) = Event(
     eventId,
     townName,

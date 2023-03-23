@@ -52,12 +52,12 @@ class AppModule {
                 .apply {
                     connectTimeout(timeout, TimeUnit.SECONDS).readTimeout(timeout, TimeUnit.SECONDS)
                 }
-                .addInterceptor(
-                    HttpLoggingInterceptor()
-                        .apply {
-                            //todo remove if not in debug flavour
-                            level = HttpLoggingInterceptor.Level.BODY
-                        })
+//                .addInterceptor(
+//                    HttpLoggingInterceptor()
+//                        .apply {
+//                            //todo remove if not in debug flavour
+//                            level = HttpLoggingInterceptor.Level.BODY
+//                        })
                 .build()
         }
 

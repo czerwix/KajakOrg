@@ -44,6 +44,8 @@ fun NavController.navigateToPathDetailsMap(pathId: Int, navOptions: NavOptions? 
 }
 
 fun NavGraphBuilder.pathGraph(
+    navigateToPathLoading: () -> Unit,
+    navigateToPathOverviewFromLoading: () -> Unit,
     navigateToPathOverview: () -> Unit,
     navigateToPathDetails: (Int) -> Unit,
     navigateToPathMap: () -> Unit,
@@ -52,12 +54,14 @@ fun NavGraphBuilder.pathGraph(
 ) {
     //Loading
     composable(route = pathLoadingRoute) {
-        LoadKajakDataRoute(navigateToPathOverview = navigateToPathOverview)
+        LoadKajakDataRoute(navigateToPathOverview = navigateToPathOverviewFromLoading)
     }
     //Path
     composable(route = pathOverviewRoute) {
         PathOverviewRoute(
-            navigateToPathDetails = navigateToPathDetails, navigateToPathMap = navigateToPathMap
+            navigateToPathDetails = navigateToPathDetails,
+            navigateToPathMap = navigateToPathMap,
+            navigateToLoading = navigateToPathLoading
         )
     }
     composable(

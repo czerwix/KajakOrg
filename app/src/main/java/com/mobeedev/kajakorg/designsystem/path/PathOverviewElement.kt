@@ -81,7 +81,7 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: (Int) -> Unit) {
             ) {
                 Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = item.name,
+                        text = item.name + item.id,
                         color = Color.White,
                         style = MaterialTheme.typography.titleMedium,
                         modifier = Modifier

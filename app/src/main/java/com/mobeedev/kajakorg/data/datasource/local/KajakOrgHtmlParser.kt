@@ -33,9 +33,6 @@ object KajakOrgHtmlParser {
                 .toMutableList()
                 .apply {
                     removeFirst()
-                    removeFirst()
-                    removeFirst()
-                    removeFirst()
                 }
         val pathsParsed = mutableListOf<PathOverviewDto>()
 

@@ -57,6 +57,7 @@ import com.mobeedev.kajakorg.domain.model.detail.PathEvent
 import com.mobeedev.kajakorg.domain.model.detail.Section
 import com.mobeedev.kajakorg.domain.model.detail.eventId
 import com.mobeedev.kajakorg.domain.model.detail.flatPathMapSectionEventList
+import com.mobeedev.kajakorg.domain.model.detail.isLocationNonZero
 import com.mobeedev.kajakorg.ui.model.PathItem
 import com.mobeedev.kajakorg.ui.path.load.showLoadingState
 import com.mobeedev.kajakorg.ui.path.map.getCameraPositionWithOffset
@@ -153,7 +154,8 @@ fun showSuccessMapDetailsScreen(
     val cameraPositionState = rememberCameraPositionState {
         position =
             getCameraPosition(
-                path.pathSectionsEvents.first(),
+                path.pathSectionsEvents.find { it is Event && it.isLocationNonZero() }
+                    ?: path.pathSectionsEvents.first(),
                 EVENT_ZOOM_LEVEL,
                 context,
                 mapOffset.dp
@@ -236,7 +238,19 @@ fun showEventPager(
     LaunchedEffect(pagerState) {
         // Collect from the pager state a snapshotFlow reading the currentPage
         snapshotFlow { pagerState.currentPage }.collect { page ->
-            onPathEventSelected(pathSectionsEvents[page])
+            when (val selectedItem = pathSectionsEvents[page]) {
+                is Section -> {
+                    if (selectedItem.events.first().isLocationNonZero()) {
+                        onPathEventSelected(pathSectionsEvents[page])
+                    }
+                }
+
+                is Event -> {
+                    if (selectedItem.isLocationNonZero()) {
+                        onPathEventSelected(pathSectionsEvents[page])
+                    }
+                }
+            }
         }
     }
 
@@ -274,7 +288,6 @@ fun showEventPager(
         ) {
             Column(verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxSize()) {
                 MapEventCard(pathSectionsEvents[page])
-
             }
         }
     }

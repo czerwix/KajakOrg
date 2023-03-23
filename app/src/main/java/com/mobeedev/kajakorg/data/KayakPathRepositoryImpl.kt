@@ -48,23 +48,14 @@ class KayakPathRepositoryImpl(
         val pathDetails = mutableListOf<PathDto>()
 
         paths.forEach { pathId ->
-            //todo for now removing a badly formatted XML path with id 91 and 72...
-            //todo in the future extend xmlParser library and allow badly formatted xml files.
-            if (pathId == 91 || pathId == 72) {
-                Log.d(
-                    "--Debug--",
-                    "Path pathId: $pathId is excluded from the app due to badly formatted XML"
-                )
-            } else {
-                Log.d("--Debug--", "started pathId: $pathId")
-                val result = remotePathSource.getPath(pathId)
-                pathDetails.add(result.pathDto)
-                Log.d(
-                    "--Debug--",
-                    "parsed pathId: ${result.pathDto.id} name:${result.pathDto.name}"
-                )
-                workStatusFlow.emit(pathDetails.size)
-            }
+            Log.d("--Debug--", "started pathId: $pathId")
+            val result = remotePathSource.getPath(pathId)
+            pathDetails.add(result.pathDto)
+            Log.d(
+                "--Debug--",
+                "parsed pathId: ${result.pathDto.id} name:${result.pathDto.name}"
+            )
+            workStatusFlow.emit(pathDetails.size)
         }
 
         pathDetails
@@ -97,6 +88,7 @@ class KayakPathRepositoryImpl(
             null -> DataDownloadStatus()
             DataDownloadState.PARTIAL.toString() ->
                 DataDownloadStatus(status = DataDownloadState.PARTIAL)
+
             else -> {
                 DataDownloadStatus(ZonedDateTime.parse(lastUpdateAt), DataDownloadState.DONE)
             }

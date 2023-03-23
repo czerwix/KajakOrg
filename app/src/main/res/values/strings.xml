@@ -41,5 +41,6 @@
     <string name="location_request">Request permission</string>
     <string name="path_overview">Paths</string>
     <string name="check_list">Checklist</string>
+    <string name="download_data">Download Paths data!</string>
 
 </resources>

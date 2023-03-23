@@ -58,6 +58,8 @@ fun LoadKajakDataScreen(
                 DownloadErrorRetry(onError)
             }
 
+            MainViewModelState.LoadedAllDataSuccessfully -> navigateToPathOverview.invoke()
+
             is MainViewModelState.SuccessOverview, is MainViewModelState.SuccessDetail -> {
                 navigateToPathOverview.invoke()
             }
