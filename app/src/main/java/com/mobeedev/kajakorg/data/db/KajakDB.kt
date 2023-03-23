@@ -1,17 +1,19 @@
 package com.mobeedev.kajakorg.data.db
 
 import android.content.Context
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.mobeedev.kajakorg.data.datasource.local.ChecklistDao
 import com.mobeedev.kajakorg.data.datasource.local.KajakPathDao
-import com.mobeedev.kajakorg.data.datasource.db.overview.PathOverviewDB
-import com.mobeedev.kajakorg.data.datasource.db.path.EventDB
-import com.mobeedev.kajakorg.data.datasource.db.path.EventDescriptionDB
-import com.mobeedev.kajakorg.data.datasource.db.path.PathDB
-import com.mobeedev.kajakorg.data.datasource.db.path.SectionDB
 import com.mobeedev.kajakorg.data.db.KajakDB.Companion.DATABASE_VERSION
+import com.mobeedev.kajakorg.data.db.overview.PathOverviewDB
+import com.mobeedev.kajakorg.data.db.path.EventDB
+import com.mobeedev.kajakorg.data.db.path.EventDescriptionDB
+import com.mobeedev.kajakorg.data.db.path.PathDB
+import com.mobeedev.kajakorg.data.db.path.SectionDB
 
 
 @Database(
@@ -20,7 +22,8 @@ import com.mobeedev.kajakorg.data.db.KajakDB.Companion.DATABASE_VERSION
         PathDB::class,
         SectionDB::class,
         EventDB::class,
-        EventDescriptionDB::class
+        EventDescriptionDB::class,
+        CheckListDB::class
     ],
     version = DATABASE_VERSION
 )
@@ -28,10 +31,11 @@ import com.mobeedev.kajakorg.data.db.KajakDB.Companion.DATABASE_VERSION
 abstract class KajakDB() : RoomDatabase() {
 
     abstract fun kajakPathDao(): KajakPathDao
+    abstract fun checklistDao(): ChecklistDao
 
     companion object {
         const val DATABASE_NAME = "kajak_db"
-        const val DATABASE_VERSION = 1
+        const val DATABASE_VERSION = 2
 
         @Volatile
         private var INSTANCE: KajakDB? = null

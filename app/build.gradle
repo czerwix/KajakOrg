@@ -108,9 +108,9 @@ dependencies {
     implementation "io.insert-koin:koin-androidx-compose:3.4.1"
 
     //DB
-    implementation "androidx.room:room-runtime:2.4.3"
-    implementation("androidx.room:room-ktx:2.4.3")
-    kapt "androidx.room:room-compiler:2.4.3"
+    implementation "androidx.room:room-runtime:2.5.0"
+    implementation("androidx.room:room-ktx:2.5.0")
+    kapt "androidx.room:room-compiler:2.5.0"
 
     //dataStore
     implementation "androidx.datastore:datastore-preferences:1.0.0"
@@ -144,8 +144,11 @@ dependencies {
     kapt "androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha07"
 
     implementation "androidx.palette:palette-ktx:1.0.0"
-
     implementation "com.google.accompanist:accompanist-flowlayout:0.29.2-rc"
+
+    implementation 'com.google.code.gson:gson:2.9.0'
+
+    implementation "org.burnoutcrew.composereorderable:reorderable:0.9.6"
 
 
     //test

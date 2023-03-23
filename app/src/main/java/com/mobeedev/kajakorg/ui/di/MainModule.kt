@@ -1,11 +1,14 @@
 package com.mobeedev.kajakorg.ui.di
 
+import com.mobeedev.kajakorg.data.ChecklistRepositoryImpl
 import com.mobeedev.kajakorg.data.KayakPathRepositoryImpl
 import com.mobeedev.kajakorg.data.SharedPreferencesRepositoryImpl
 import com.mobeedev.kajakorg.data.datasource.local.LocalPathSource
 import com.mobeedev.kajakorg.data.datasource.remote.RemotePathSource
+import com.mobeedev.kajakorg.domain.repository.ChecklistRepository
 import com.mobeedev.kajakorg.domain.repository.KayakPathRepository
 import com.mobeedev.kajakorg.domain.repository.SharedPreferencesRepository
+import com.mobeedev.kajakorg.domain.usecase.GetChecklistUseCase
 import com.mobeedev.kajakorg.domain.usecase.GetLastUpdateDateUseCase
 import com.mobeedev.kajakorg.domain.usecase.GetLocalAllPathDetailsUseCase
 import com.mobeedev.kajakorg.domain.usecase.GetLocalMapPathsUseCase
@@ -15,8 +18,10 @@ import com.mobeedev.kajakorg.domain.usecase.GetLocalPathsOverviewUseCase
 import com.mobeedev.kajakorg.domain.usecase.GetPathDetailsScreenInfoUseCase
 import com.mobeedev.kajakorg.domain.usecase.LoadAllAvailablePathsUseCase
 import com.mobeedev.kajakorg.domain.usecase.LoadAllPathsDetailsUseCase
+import com.mobeedev.kajakorg.domain.usecase.UpdateChecklistUseCase
 import com.mobeedev.kajakorg.domain.usecase.UpdateGoogleMapStatusUSeCase
 import com.mobeedev.kajakorg.ui.MainDataLoadingViewModel
+import com.mobeedev.kajakorg.ui.checklist.ChecklistViewModel
 import com.mobeedev.kajakorg.ui.common.ModuleLoader
 import com.mobeedev.kajakorg.ui.path.details.PathDetailsViewModel
 import com.mobeedev.kajakorg.ui.path.map.details.PathDetailMapViewModel
@@ -81,6 +86,14 @@ private val viewModelModule = module {
             getPathDetailsUseCase = get()
         )
     }
+
+    viewModel {
+        ChecklistViewModel(
+            application = get(),
+            getChecklistUseCase = get(),
+            updateChecklistUseCase = get()
+        )
+    }
 }
 
 private val useCaseModule = module {
@@ -100,6 +113,8 @@ private val useCaseModule = module {
         )
     }
     factory { UpdateGoogleMapStatusUSeCase(sharedPreferencesRepository = get()) }
+    factory { GetChecklistUseCase(checklistRepository = get()) }
+    factory { UpdateChecklistUseCase(checklistRepository = get()) }
 }
 
 private val repositoryModule = module {
@@ -116,6 +131,7 @@ private val repositoryModule = module {
             context = get()
         )
     }
+    single<ChecklistRepository> { ChecklistRepositoryImpl(checklistDao = get()) }
 }
 
 private val dataSourceModule = module {

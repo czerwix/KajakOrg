@@ -4,6 +4,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import com.mobeedev.kajakorg.ui.checklist.ChecklistRoute
+import com.mobeedev.kajakorg.ui.checklist.ChecklistScreen
 
 val checklistRoute = "check_list_route"
 fun NavController.navigateToChecklist(navOptions: NavOptions? = null) {
@@ -20,7 +22,7 @@ fun NavGraphBuilder.checklistGraph(
     onBackClick: () -> Unit
 ) {
     composable(route = checklistRoute) {
-//todo add route destination here
+        ChecklistRoute(navigateToChecklistEdit = navigateToCheckListEdit)
     }
     composable(route = checklistEditRoute) {//todo add arguments
 

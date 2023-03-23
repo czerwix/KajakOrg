@@ -1,7 +1,7 @@
 package com.mobeedev.kajakorg.data.model.detail
 
 import com.mobeedev.kajakorg.common.extensions.empty
-import com.mobeedev.kajakorg.data.datasource.db.path.EventDescriptionDB
+import com.mobeedev.kajakorg.data.db.path.EventDescriptionDB
 import com.tickaroo.tikxml.annotation.Attribute
 import com.tickaroo.tikxml.annotation.TextContent
 import com.tickaroo.tikxml.annotation.Xml

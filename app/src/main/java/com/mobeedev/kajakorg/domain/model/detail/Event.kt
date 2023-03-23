@@ -1,7 +1,7 @@
 package com.mobeedev.kajakorg.domain.model.detail
 
 import com.google.android.gms.maps.model.LatLng
-import com.mobeedev.kajakorg.data.datasource.db.path.EventDB
+import com.mobeedev.kajakorg.data.db.path.EventDB
 import com.mobeedev.kajakorg.data.model.detail.EventDto
 
 data class Event(

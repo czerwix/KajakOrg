@@ -11,7 +11,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusTarget
@@ -52,22 +51,20 @@ fun PathOverviewScreen(
     navigateToPathMap: () -> Unit,
     viewModel: PathOverviewViewModel
 ) {
-    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-        when (uiState) {
-            PathOverviewViewModelState.Error -> {}
-            PathOverviewViewModelState.InitialStart,
-            PathOverviewViewModelState.Loading -> showLoadingState()
+    when (uiState) {
+        PathOverviewViewModelState.Error -> {}
+        PathOverviewViewModelState.InitialStart,
+        PathOverviewViewModelState.Loading -> showLoadingState()
 
-            is PathOverviewViewModelState.Success -> {
-                showDataList(
-                    uiState,
-                    getFilteredPathList(uiState),
-                    modifier,
-                    navigateToPathDetails,
-                    navigateToPathMap,
-                    viewModel
-                )
-            }
+        is PathOverviewViewModelState.Success -> {
+            showDataList(
+                uiState,
+                getFilteredPathList(uiState),
+                modifier,
+                navigateToPathDetails,
+                navigateToPathMap,
+                viewModel
+            )
         }
     }
 }
@@ -95,7 +92,13 @@ fun showDataList(
             .fillMaxSize()
             .focusTarget(),
         topBar = {
-            getPathSearchTopBar(uiState,filteredPathList, viewModel, scrollBehavior,navigateToPathMap)
+            getPathSearchTopBar(
+                uiState,
+                filteredPathList,
+                viewModel,
+                scrollBehavior,
+                navigateToPathMap
+            )
         }
     ) {
         LazyColumn(

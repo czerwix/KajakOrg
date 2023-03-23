@@ -3,7 +3,6 @@ package com.mobeedev.kajakorg.ui.di
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.security.crypto.EncryptedSharedPreferences
 import com.mobeedev.kajakorg.common.config.EnvironmentConfiguration
 import com.mobeedev.kajakorg.common.extensions.dataStore
@@ -24,6 +23,7 @@ class AppModule {
         single { KajakDB.getInstance(androidContext()) }
 
         single { get<KajakDB>().kajakPathDao() }
+        single { get<KajakDB>().checklistDao() }
 
         single<DataStore<Preferences>> { get<Context>().dataStore }
     }

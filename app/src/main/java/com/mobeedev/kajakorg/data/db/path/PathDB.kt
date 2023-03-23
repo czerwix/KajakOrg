@@ -1,4 +1,4 @@
-package com.mobeedev.kajakorg.data.datasource.db.path
+package com.mobeedev.kajakorg.data.db.path
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

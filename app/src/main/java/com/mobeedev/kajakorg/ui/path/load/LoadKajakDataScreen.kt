@@ -1,7 +1,14 @@
 package com.mobeedev.kajakorg.ui.path.load
 
 import android.util.Log
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -44,19 +51,22 @@ fun LoadKajakDataScreen(
     navigateToPathOverview: () -> Unit,
     onError: () -> Unit
 ) {
-    Log.d("---Screen---","State changed to $pathState")
+    Log.d("---Screen---", "State changed to $pathState")
     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
         when (pathState) {
             MainViewModelState.Error -> {
-               DownloadErrorRetry(onError)
+                DownloadErrorRetry(onError)
             }
+
             is MainViewModelState.SuccessOverview, is MainViewModelState.SuccessDetail -> {
                 navigateToPathOverview.invoke()
             }
+
             is MainViewModelState.Loading -> {
-                showLoadingState(pathState.loadingItemNumber,pathState.itemCount)
+                showLoadingState(pathState.loadingItemNumber, pathState.itemCount)
             }
-           else -> showLoadingState()
+
+            else -> showLoadingState()
         }
     }
 }
@@ -68,7 +78,7 @@ fun showLoadingState(loadingNow: Int = -1, numberOfPaths: Int = -1) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.loading_paperplane))
+        val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.kayak_paddle))
         LottieAnimation(
             composition,
             iterations = LottieConstants.IterateForever,
@@ -88,7 +98,7 @@ fun showLoadingState(loadingNow: Int = -1, numberOfPaths: Int = -1) {
         )
         if (numberOfPaths > 0) {
             Text(
-                text = stringResource(R.string.loading_path_data,loadingNow,numberOfPaths),
+                text = stringResource(R.string.loading_path_data, loadingNow, numberOfPaths),
                 color = Color.Black,
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier
