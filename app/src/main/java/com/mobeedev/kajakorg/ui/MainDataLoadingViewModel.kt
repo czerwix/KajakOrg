@@ -8,6 +8,7 @@ import com.mobeedev.kajakorg.domain.model.DataDownloadState
 import com.mobeedev.kajakorg.domain.model.detail.Path
 import com.mobeedev.kajakorg.domain.model.overview.PathOverview
 import com.mobeedev.kajakorg.domain.usecase.*
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -92,8 +93,9 @@ class MainDataLoadingViewModel(
     private fun loadPaths(pathIds: List<Int>) {
         viewModelScope.launch {
             loadAllPathsDetailsUseCase.workStatus.collect { loadedPaths ->
-                if (pathIds.size == loadedPaths) {
+                if (Int.MAX_VALUE == loadedPaths) {
 //                    getPathsOverview()
+//                    delay(2000)
                     //loaded all data
                     _uiState.update { MainViewModelState.LoadedAllDataSuccessfully }
                 } else {

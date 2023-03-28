@@ -10,7 +10,6 @@ import com.mobeedev.kajakorg.data.db.path.SectionDB
 import com.mobeedev.kajakorg.data.model.detail.PathDto
 import com.mobeedev.kajakorg.data.model.detail.toDB
 import com.mobeedev.kajakorg.data.model.detail.toPathDB
-import com.mobeedev.kajakorg.data.model.detail.toSectionDB
 import com.mobeedev.kajakorg.domain.model.detail.Event
 import com.mobeedev.kajakorg.domain.model.detail.Path
 import com.mobeedev.kajakorg.domain.model.detail.Section
@@ -48,7 +47,7 @@ abstract class KajakPathDao {
         path.sections?.forEach { sectionDto ->
             insert(sectionDto.toDB(path.id))
             sectionDto.events.forEach { eventDto ->
-                insert(eventDto.toSectionDB(sectionDto.id))
+                insert(eventDto.toDB(sectionDto.id))
                 eventDto.eventDescription.forEach { eventDescriptionDto ->
                     insert(eventDescriptionDto.toDB(eventDto.id))
                 }

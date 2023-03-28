@@ -2,8 +2,8 @@ package com.mobeedev.kajakorg.ui.path.details
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
@@ -34,7 +34,7 @@ fun PathDetailsList(
     description: String? = null,
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
-    googleMapVisibilityState : GoogleMapsStatusItem,
+    googleMapVisibilityState: GoogleMapsStatusItem,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
     val collapsedSectionState: SnapshotStateList<Pair<Int, Boolean>> = remember {
@@ -48,7 +48,7 @@ fun PathDetailsList(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        pathDetailsCards(pathList, description, collapsedSectionState,googleMapVisibilityState)
+        pathDetailsCards(pathList, description, collapsedSectionState, googleMapVisibilityState)
     }
 }
 
@@ -59,8 +59,8 @@ fun LazyListScope.pathDetailsCards(
     collapsedSectionState: SnapshotStateList<Pair<Int, Boolean>>,
     googleMapVisibilityState: GoogleMapsStatusItem
 ) {//todo add animations to list change with Modifier.animateItemPlacement() sent to each item in list
-    item {//todo replace with separators here :D
-        Box(
+    item(key = "TopPadding") {
+        Spacer(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(16.dp)
@@ -89,7 +89,7 @@ fun LazyListScope.pathDetailsCards(
                     isSectionCollapsed = collapsedSectionState
                         .find { it.first == element.id }?.second
                         ?: true,
-                    shouldShowExpandToolbar =  collapsedSectionState.size > 1
+                    shouldShowExpandToolbar = collapsedSectionState.size > 1
                 )
                 Divider(
                     thickness = 10.dp,
@@ -129,11 +129,11 @@ fun LazyListScope.pathDetailsCards(
             }
         }
     }
-    item {
-        Box(//todo replace with separators here :D
+    item(key = "BottomPadding") {
+        Spacer(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(16.dp)
+                .height(32.dp)
                 .animateItemPlacement()
         )
     }

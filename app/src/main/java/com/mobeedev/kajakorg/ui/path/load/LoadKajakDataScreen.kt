@@ -98,15 +98,27 @@ fun showLoadingState(loadingNow: Int = -1, numberOfPaths: Int = -1) {
                 .padding(start = 16.dp, end = 16.dp)
                 .wrapContentSize()
         )
-        if (numberOfPaths > 0) {
-            Text(
-                text = stringResource(R.string.loading_path_data, loadingNow, numberOfPaths),
-                color = Color.Black,
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier
-                    .padding(start = 16.dp, end = 16.dp)
-                    .wrapContentSize()
-            )
+        if(numberOfPaths > 0 ){
+            if ( loadingNow != numberOfPaths) {
+                Text(
+                    text = stringResource(R.string.loading_path_data, loadingNow, numberOfPaths),
+                    color = Color.Black,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier
+                        .padding(start = 16.dp, end = 16.dp)
+                        .wrapContentSize()
+                )
+            }
+            if (loadingNow == numberOfPaths) {
+                Text(
+                    text = stringResource(R.string.local_save_path_data),
+                    color = Color.Black,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier
+                        .padding(start = 16.dp, end = 16.dp)
+                        .wrapContentSize()
+                )
+            }
         }
     }
 }

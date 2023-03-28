@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
+import com.mobeedev.kajakorg.ui.checklist.ChecklistViewModel
 import com.mobeedev.kajakorg.ui.navigation.checklistGraph
 import com.mobeedev.kajakorg.ui.navigation.navigateToChecklistEdit
 import com.mobeedev.kajakorg.ui.navigation.navigateToPathDetails
@@ -32,6 +33,7 @@ import com.mobeedev.kajakorg.ui.navigation.navigateToPathOverview
 import com.mobeedev.kajakorg.ui.navigation.pathGraph
 import com.mobeedev.kajakorg.ui.navigation.pathLoadingRoute
 import com.mobeedev.kajakorg.ui.navigation.pathOverviewRoute
+import org.koin.androidx.compose.getViewModel
 
 
 /**
@@ -50,6 +52,7 @@ fun KajakNavHost(
     modifier: Modifier = Modifier,
     startDestination: String = pathOverviewRoute
 ) {
+    val checkListViewModel: ChecklistViewModel = getViewModel()
     NavHost(
         navController = navController,
         startDestination = startDestination,
@@ -66,11 +69,13 @@ fun KajakNavHost(
                 )
             },
             navigateToPathOverviewFromLoading = {
-                navController.navigateToPathOverview( navOptions = NavOptions.Builder()
-                    .setPopUpTo(
-                        route = pathLoadingRoute,
-                        inclusive = true
-                    ).build())
+                navController.navigateToPathOverview(
+                    navOptions = NavOptions.Builder()
+                        .setPopUpTo(
+                            route = pathLoadingRoute,
+                            inclusive = true
+                        ).build()
+                )
             },
             navigateToPathOverview = {
                 navController.navigateToPathOverview()
@@ -87,6 +92,7 @@ fun KajakNavHost(
             onBackClick = { navController.popBackStack() }
         )
         checklistGraph(
+            checkListViewModel,
             navigateToCheckListEdit = { navController.navigateToChecklistEdit() },
             onBackClick = { navController.popBackStack() })
         //todo add other nav_graph here

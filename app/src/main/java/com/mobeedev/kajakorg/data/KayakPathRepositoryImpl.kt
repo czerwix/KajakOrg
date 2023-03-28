@@ -65,6 +65,7 @@ class KayakPathRepositoryImpl(
             prefs[PreferencesKeys.lastUpdateDate] = ZonedDateTime.now().toString()
             prefs[PreferencesKeys.dataDownloadState] = DataDownloadState.DONE.toString()
         }
+        workStatusFlow.emit(Int.MAX_VALUE)
     }.map { pathList -> pathList.map { it.toDomain() } }
 
     override suspend fun getPathsOverviewDetails(): Result<List<PathOverview>> =

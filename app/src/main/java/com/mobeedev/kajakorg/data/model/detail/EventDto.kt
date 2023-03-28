@@ -28,7 +28,7 @@ data class EventDto(
     var eventDescription: MutableList<EventDescriptionDto> = mutableListOf()
 )
 
-fun EventDto.toSectionDB(sectionId: Int): EventDB = EventDB(
+fun EventDto.toDB(sectionId: Int): EventDB = EventDB(
     eventId = id,
     sectionId = sectionId,
     townName = townName,

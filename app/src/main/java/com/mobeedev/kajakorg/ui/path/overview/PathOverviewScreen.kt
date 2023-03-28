@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -102,13 +103,15 @@ fun showDataList(
             .fillMaxSize()
             .focusTarget(),
         topBar = {
-            getPathSearchTopBar(
-                uiState,
-                filteredPathList,
-                viewModel,
-                scrollBehavior,
-                navigateToPathMap
-            )
+            Surface(shadowElevation = 4.dp) {
+                getPathSearchTopBar(
+                    uiState,
+                    filteredPathList,
+                    viewModel,
+                    scrollBehavior,
+                    navigateToPathMap
+                )
+            }
         }
     ) {
         LazyColumn(

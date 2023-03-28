@@ -1,3 +1,10 @@
 package com.mobeedev.kajakorg.ui.model
 
-data class ChecklistValueItem(val isDone: Boolean, val value: String)
+import com.mobeedev.kajakorg.common.extensions.empty
+import java.util.UUID
+
+data class ChecklistValueItem(
+    val id: UUID = UUID.randomUUID(),
+    val isDone: Boolean = false,
+    val value: String = String.empty
+)

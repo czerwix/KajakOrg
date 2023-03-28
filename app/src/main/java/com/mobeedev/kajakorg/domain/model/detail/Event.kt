@@ -1,5 +1,6 @@
 package com.mobeedev.kajakorg.domain.model.detail
 
+import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import com.mobeedev.kajakorg.data.db.path.EventDB
 import com.mobeedev.kajakorg.data.model.detail.EventDto
@@ -31,7 +32,13 @@ fun EventDto.toDomain() = Event(
     id,
     townName,
     position = LatLng(lat.toDouble(), lng.toDouble()),
-    atKilometer.toDouble(),
+    if (atKilometer.isNullOrEmpty()) {
+        Log.w("cosik", "error with atKilometer for $this")
+        0.0
+    } else atKilometer.toDouble(),
     label,
-    sortOrder.toInt(),
+    if (sortOrder.isNullOrEmpty()) {
+        Log.w("cosik", "error with sortOrder for $this")
+        -1
+    } else sortOrder.toInt(),
     eventDescription.map { it.toDomain() })

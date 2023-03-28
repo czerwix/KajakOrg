@@ -192,10 +192,6 @@ fun showSuccessMapDetailsScreen(
                     modifier = Modifier
                         .size(48.dp)
                         .padding(start = 16.dp, top = 16.dp)
-                        .background(
-                            color = LocalContentColor.current.copy(alpha = 0.0f),
-                            shape = CircleShape
-                        )
                 ) {
                     Icon(
                         modifier = Modifier.fillMaxSize(),

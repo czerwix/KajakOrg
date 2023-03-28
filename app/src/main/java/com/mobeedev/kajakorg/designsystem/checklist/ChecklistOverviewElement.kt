@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -20,10 +21,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.isUnspecified
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mobeedev.kajakorg.R
 import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
 import com.mobeedev.kajakorg.designsystem.theme.White
 import com.mobeedev.kajakorg.ui.model.ChecklistItem
@@ -33,15 +38,20 @@ import java.util.UUID
 private const val MAX_CHECKLIST_ELEMENTS = 8
 
 @Composable
-fun ChecklistOverviewElement(checklistItem: ChecklistItem, onClick: (UUID) -> Unit) {
+fun ChecklistOverviewElement(
+    checklistItem: ChecklistItem,
+    modifier: Modifier = Modifier,
+    onDeleteClick: (UUID) -> Unit,
+    onClick: (UUID) -> Unit
+) {
     KajakTheme {
         val contentColor = remember {
-            if (checklistItem.color.isUnspecified) Color.Black else Color.White
+            if (checklistItem.color.isUnspecified || checklistItem.color == Color(0)) Color.Black else Color.White
         }
         Card(
             elevation = CardDefaults.cardElevation(10.dp),
             colors = CardDefaults.cardColors(White),
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .clickable { onClick(checklistItem.id) }
@@ -52,16 +62,35 @@ fun ChecklistOverviewElement(checklistItem: ChecklistItem, onClick: (UUID) -> Un
                     .wrapContentHeight()
                     .background(if (checklistItem.color.isUnspecified) Color.White else checklistItem.color)
             ) {
-                if (checklistItem.title.isNotEmpty()) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                ) {
                     Text(
-                        text = checklistItem.title,
+                        text = if (checklistItem.title.isNotEmpty()) checklistItem.title else stringResource(
+                            id = R.string.checklist_empty_title
+                        ),
                         color = contentColor,
                         style = MaterialTheme.typography.titleSmall,
                         maxLines = 2,
+                        textAlign = TextAlign.Start,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier
-                            .wrapContentSize()
-                            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+                            .fillMaxWidth()
+                            .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp)
+                            .weight(1f)
+                    )
+                    Icon(
+                        modifier = Modifier
+                            .padding(end = 16.dp, top = 16.dp)
+                            .size(24.dp)
+                            .clickable {
+                                onDeleteClick(checklistItem.id)
+                            },
+                        painter = painterResource(id = R.drawable.round_delete_20),
+                        contentDescription = null,
+                        tint = contentColor
                     )
                 }
                 if (checklistItem.description.isNotEmpty()) {
@@ -135,22 +164,22 @@ fun PreviewChecklistElementNormal() {
                 checklistItem = ChecklistItem(
                     title = "Spływ kajakiem po baryczy",
                     description = "Shor description here",
-                    checklist = listOf(
-                        ChecklistValueItem(true, "Item1"),
-                        ChecklistValueItem(true, "Item2"),
-                        ChecklistValueItem(false, "Item3"),
+                    checklist = mutableListOf(
+                        ChecklistValueItem(UUID.randomUUID(), true, "Item1"),
+                        ChecklistValueItem(UUID.randomUUID(), true, "Item2"),
+                        ChecklistValueItem(UUID.randomUUID(), false, "Item3"),
                         ChecklistValueItem(
+                            UUID.randomUUID(),
                             true,
                             "Item4 very long Item very long Item very long Item very long Item very long Item  very long Item"
                         ),
-                        ChecklistValueItem(false, "Item5"),
-                        ChecklistValueItem(true, "Item6"),
-                        ChecklistValueItem(false, "Item7"),
-                        ChecklistValueItem(false, "Item8")
+                        ChecklistValueItem(UUID.randomUUID(), false, "Item5"),
+                        ChecklistValueItem(UUID.randomUUID(), true, "Item6"),
+                        ChecklistValueItem(UUID.randomUUID(), false, "Item7"),
+                        ChecklistValueItem(UUID.randomUUID(), false, "Item8")
                     ),
                     color = Color.Unspecified
-                )
-            ) {}
+                ), onDeleteClick = {}, onClick = {})
         }
     }
 }
@@ -164,20 +193,19 @@ fun PreviewChecklistElementLong() {
                 checklistItem = ChecklistItem(
                     title = "Spływ kajakiem po baryczy, Spływ kajakiem po baryczy,kajakiem po baryczy, Spływ kajakiem po baryczy,kajakiem po baryczy, Spływ kajakiem po baryczy, Spływ kajakiem po baryczy",
                     description = "Shor description hereShor description hereShor description hereShor description hereShor description hereShor description hereShor description hereShor description hereShor description hereShor description hereShor description here",
-                    checklist = listOf(
-                        ChecklistValueItem(true, "Item1"),
-                        ChecklistValueItem(true, "Item2"),
-                        ChecklistValueItem(false, "Item3"),
-                        ChecklistValueItem(true, "Item4"),
-                        ChecklistValueItem(false, "Item5"),
-                        ChecklistValueItem(true, "Item6"),
-                        ChecklistValueItem(false, "Item7"),
-                        ChecklistValueItem(false, "Item8"),
-                        ChecklistValueItem(false, "Item9 ")
+                    checklist = mutableListOf(
+                        ChecklistValueItem(UUID.randomUUID(), true, "Item1"),
+                        ChecklistValueItem(UUID.randomUUID(), true, "Item2"),
+                        ChecklistValueItem(UUID.randomUUID(), false, "Item3"),
+                        ChecklistValueItem(UUID.randomUUID(), true, "Item4"),
+                        ChecklistValueItem(UUID.randomUUID(), false, "Item5"),
+                        ChecklistValueItem(UUID.randomUUID(), true, "Item6"),
+                        ChecklistValueItem(UUID.randomUUID(), false, "Item7"),
+                        ChecklistValueItem(UUID.randomUUID(), false, "Item8"),
+                        ChecklistValueItem(UUID.randomUUID(), false, "Item9 ")
                     ),
-                    color = Color.Blue
-                )
-            ) {}
+                    color = Color.Blue,
+                ), onDeleteClick = {}, onClick = {})
         }
     }
 }

@@ -8,6 +8,7 @@ import com.mobeedev.kajakorg.data.datasource.remote.RemotePathSource
 import com.mobeedev.kajakorg.domain.repository.ChecklistRepository
 import com.mobeedev.kajakorg.domain.repository.KayakPathRepository
 import com.mobeedev.kajakorg.domain.repository.SharedPreferencesRepository
+import com.mobeedev.kajakorg.domain.usecase.DeleteChecklistUseCase
 import com.mobeedev.kajakorg.domain.usecase.GetChecklistUseCase
 import com.mobeedev.kajakorg.domain.usecase.GetLastUpdateDateUseCase
 import com.mobeedev.kajakorg.domain.usecase.GetLocalAllPathDetailsUseCase
@@ -91,7 +92,8 @@ private val viewModelModule = module {
         ChecklistViewModel(
             application = get(),
             getChecklistUseCase = get(),
-            updateChecklistUseCase = get()
+            updateChecklistUseCase = get(),
+            deleteChecklistUseCase = get()
         )
     }
 }
@@ -115,6 +117,7 @@ private val useCaseModule = module {
     factory { UpdateGoogleMapStatusUSeCase(sharedPreferencesRepository = get()) }
     factory { GetChecklistUseCase(checklistRepository = get()) }
     factory { UpdateChecklistUseCase(checklistRepository = get()) }
+    factory { DeleteChecklistUseCase(checklistRepository = get()) }
 }
 
 private val repositoryModule = module {

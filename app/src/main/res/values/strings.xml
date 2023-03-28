@@ -6,6 +6,7 @@
     <string name="could_not_load_path_data">Could not load path data, please check if kajak.org.pl is active and your internet is working.</string>
     <string name="loading_data">Please wait, loading data from kajak.org.pl</string>
     <string name="loading_path_data">Loading path %1$d out of %2$d</string>
+    <string name="local_save_path_data">Saving data to local storage</string>
 
     <string name="path_length_km">%.0f km</string>
     <string name="path_difficulty">Difficulty: %1$s</string>
@@ -42,5 +43,10 @@
     <string name="path_overview">Paths</string>
     <string name="check_list">Checklist</string>
     <string name="download_data">Download Paths data!</string>
+    <string name="checklist_overview_title">Don\'t forget a thing\n on your next Adventure!!!</string>
+    <string name="add_checklist_item">List item</string>
+    <string name="checklist_empty_description">Note</string>
+    <string name="checklist_empty_title">Title</string>
+    <string name="checklist_empty_checkList">Checklist Item</string>
 
 </resources>
