@@ -8,4 +8,5 @@ sealed class BottomNavigationScreen(val route: String, @StringRes val titleRes: 
     object PathOverviewList : BottomNavigationScreen(pathOverviewRoute, R.string.path_overview,R.drawable.conversion_path)
     object CheckList : BottomNavigationScreen(checklistRoute, R.string.check_list,R.drawable.outline_checklist_24)
     object MapOverview : BottomNavigationScreen(pathMapOverviewRoute, R.string.path_map,R.drawable.outline_map_24)
+    object About : BottomNavigationScreen(aboutRoute, R.string.about_menu,R.drawable.round_account_circle_24)
 }

@@ -150,7 +150,6 @@ dependencies {
 
     implementation "org.burnoutcrew.composereorderable:reorderable:0.9.6"
 
-
     //test
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.4.0-alpha03"
     testImplementation 'junit:junit:4.13.2'

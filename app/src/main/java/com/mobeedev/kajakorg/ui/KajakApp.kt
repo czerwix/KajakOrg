@@ -50,7 +50,8 @@ fun KajakApp(
     val bottomNavItems = listOf(
         BottomNavigationScreen.PathOverviewList,
         BottomNavigationScreen.CheckList,
-        BottomNavigationScreen.MapOverview
+        BottomNavigationScreen.MapOverview,
+        BottomNavigationScreen.About
     )
     val backStackEntry = appState.navController.currentBackStackEntryAsState()
     val isBottomNavVisible = appState.navController

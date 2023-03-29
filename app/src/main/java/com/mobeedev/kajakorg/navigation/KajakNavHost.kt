@@ -23,6 +23,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import com.mobeedev.kajakorg.ui.checklist.ChecklistViewModel
+import com.mobeedev.kajakorg.ui.navigation.aboutGraph
 import com.mobeedev.kajakorg.ui.navigation.checklistGraph
 import com.mobeedev.kajakorg.ui.navigation.navigateToChecklistEdit
 import com.mobeedev.kajakorg.ui.navigation.navigateToPathDetails
@@ -58,43 +59,34 @@ fun KajakNavHost(
         startDestination = startDestination,
         modifier = modifier,
     ) {
-        pathGraph(
-            navigateToPathLoading = {
-                navController.navigateToPathLoading(
-                    navOptions = NavOptions.Builder()
-                        .setPopUpTo(
-                            route = pathOverviewRoute,
-                            inclusive = true
-                        ).build()
-                )
-            },
-            navigateToPathOverviewFromLoading = {
-                navController.navigateToPathOverview(
-                    navOptions = NavOptions.Builder()
-                        .setPopUpTo(
-                            route = pathLoadingRoute,
-                            inclusive = true
-                        ).build()
-                )
-            },
-            navigateToPathOverview = {
-                navController.navigateToPathOverview()
-            },
-            navigateToPathDetails = {
-                navController.navigateToPathDetails(it)
-            },
-            navigateToPathMap = {
-                navController.navigateToPathMap()
-            },
-            navigateToPathDetailsMap = {
-                navController.navigateToPathDetailsMap(it)
-            },
-            onBackClick = { navController.popBackStack() }
-        )
-        checklistGraph(
-            checkListViewModel,
+        checklistGraph(checkListViewModel,
             navigateToCheckListEdit = { navController.navigateToChecklistEdit() },
             onBackClick = { navController.popBackStack() })
-        //todo add other nav_graph here
+
+        aboutGraph(navigateToExplain = {
+            //todo
+        }, onBackClick = { navController.popBackStack() })
+
+        pathGraph(navigateToPathLoading = {
+            navController.navigateToPathLoading(
+                navOptions = NavOptions.Builder().setPopUpTo(
+                        route = pathOverviewRoute, inclusive = true
+                    ).build()
+            )
+        }, navigateToPathOverviewFromLoading = {
+            navController.navigateToPathOverview(
+                navOptions = NavOptions.Builder().setPopUpTo(
+                        route = pathLoadingRoute, inclusive = true
+                    ).build()
+            )
+        }, navigateToPathOverview = {
+            navController.navigateToPathOverview()
+        }, navigateToPathDetails = {
+            navController.navigateToPathDetails(it)
+        }, navigateToPathMap = {
+            navController.navigateToPathMap()
+        }, navigateToPathDetailsMap = {
+            navController.navigateToPathDetailsMap(it)
+        }, onBackClick = { navController.popBackStack() })
     }
 }

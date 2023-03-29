@@ -51,4 +51,14 @@
     <string name="checklist_settings_check_all">Check all items</string>
     <string name="checklist_settings_uncheck_all">Uncheck all items</string>
 
+    <string name="about_menu">About</string>
+    <string name="about_title">About this App!</string>
+    <string name="about_app">This application aims to recreate kajak.org.pl functionality that contained several river path descriptions throughout Poland.\nall data was provided by original owner.\n\nOpenSource for the win!!!\nif you want to contribute go to github.com/czerwix/KajakOrg or contact me via email provided below\n\nif you want to update paths or edit any mistakes please contact me via email below or github/linkedin.</string>
+    <string name="about_explain_description">I have no clue what ZWA,ZWB...,WWII or U1,U2...,U6 and *,**,*** mean! </string>
+    <string name="about_explain_button">Learn more here</string>
+    <string name="about_codebase_author">Application created by:\nSzymon Kraus\nemail: czerwiiii@gmail.com</string>
+    <string name="about_photos_author">All Photos created by:\nBartek Szaro</string>
+    <string name="about_database">All path data is direct copy of www.kajak.org.pl</string>
+
+
 </resources>
