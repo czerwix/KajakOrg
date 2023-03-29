@@ -48,5 +48,7 @@
     <string name="checklist_empty_description">Note</string>
     <string name="checklist_empty_title">Title</string>
     <string name="checklist_empty_checkList">Checklist Item</string>
+    <string name="checklist_settings_check_all">Check all items</string>
+    <string name="checklist_settings_uncheck_all">Uncheck all items</string>
 
 </resources>

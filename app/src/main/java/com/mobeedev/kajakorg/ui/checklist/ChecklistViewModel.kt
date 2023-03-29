@@ -11,6 +11,7 @@ import com.mobeedev.kajakorg.domain.usecase.UpdateChecklistUseCase
 import com.mobeedev.kajakorg.ui.checklist.ChecklistViewModelState.Error.doOnEdit
 import com.mobeedev.kajakorg.ui.checklist.ChecklistViewModelState.Loading.doOnSuccess
 import com.mobeedev.kajakorg.ui.model.ChecklistItem
+import com.mobeedev.kajakorg.ui.model.ChecklistSettingsMenu
 import com.mobeedev.kajakorg.ui.model.ChecklistValueItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -125,6 +126,7 @@ class ChecklistViewModel(
                 }
             )
         }
+        _uiState.update { prevValue -> prevValue.doOnEdit { it.copy(editCheckList = editUpdateFlow.value) } }
     }
 
     fun onChecklistValueTextChange(index: Int, text: String) {
@@ -152,6 +154,23 @@ class ChecklistViewModel(
                 }
             }
         }
+    }
+
+    fun onCheckSetting(checkSettingSelected: ChecklistSettingsMenu) {
+        if (checkSettingSelected == ChecklistSettingsMenu.CheckAll) {
+            editUpdateFlow.update { prevValue ->
+                prevValue.copy(
+                    checklist = prevValue.checklist.map { it.copy(isDone = true) }
+                )
+            }
+        } else {
+            editUpdateFlow.update { prevValue ->
+                prevValue.copy(
+                    checklist = prevValue.checklist.map { it.copy(isDone = false) }
+                )
+            }
+        }
+        _uiState.update { prevValue -> prevValue.doOnEdit { it.copy(editCheckList = editUpdateFlow.value) } }
     }
 }
 

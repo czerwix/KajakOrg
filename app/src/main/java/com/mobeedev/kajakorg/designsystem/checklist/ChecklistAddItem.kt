@@ -1,6 +1,5 @@
 package com.mobeedev.kajakorg.designsystem.checklist
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,7 +14,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.focus.focusTarget
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,14 +30,17 @@ import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
 fun ChecklistAddItem(
     onAddClicked: () -> Unit,
     isCustomColorSelected: Boolean = false,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    focusManager: FocusManager = LocalFocusManager.current,
 ) {
     KajakTheme {
         Row(
             modifier = modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
+                .focusTarget()
                 .clickable { onAddClicked() }
+
         ) {
             val contentColor = remember {
                 if (isCustomColorSelected) Color.White else Color.Black
