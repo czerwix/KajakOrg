@@ -57,8 +57,11 @@
     <string name="about_explain_description">I have no clue what ZWA,ZWB...,WWII or U1,U2...,U6 and *,**,*** mean! </string>
     <string name="about_explain_button">Learn more here</string>
     <string name="about_codebase_author">Application created by:\nSzymon Kraus\nemail: czerwiiii@gmail.com</string>
-    <string name="about_photos_author">All Photos created by:\nBartek Szaro</string>
     <string name="about_database">All path data is direct copy of www.kajak.org.pl</string>
+    <string name="check_out_my_other_stuff">Check out my other stuff!</string>
+    <string name="find_out_more_here">Find out more here!</string>
+    <string name="check_out_amazing_photos">check out Amazing Photos!</string>
+    <string name="join_the_project">join the project!</string>
 
 
 </resources>

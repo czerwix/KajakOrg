@@ -3,11 +3,13 @@ package com.mobeedev.kajakorg.ui.about.info
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -19,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -39,9 +42,12 @@ fun AboutAppRoute(
 
 @Composable
 fun AboutAppScreen(modifier: Modifier, navigateToExplain: () -> Unit) {
-    Column(modifier = modifier
-        .fillMaxSize()
-        .verticalScroll(rememberScrollState())) {
+    val uriHandler = LocalUriHandler.current
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+    ) {
         Text(
             text = stringResource(id = R.string.about_title),
             textAlign = TextAlign.Center,
@@ -77,10 +83,10 @@ fun AboutAppScreen(modifier: Modifier, navigateToExplain: () -> Unit) {
         ) {
             BrandedButton(
                 brandedButtonType = BrandedButtonType.Github.DarkGithubButton,
-                label = "join the project!",//todo move to strings
-                onClick = {//todo move user to github project
+                label = stringResource(R.string.join_the_project),
+                onClick = {
+                    uriHandler.openUri("https://github.com/czerwix/KajakOrg")
                 },
-                modifier = Modifier.height(20.dp)
             )
         }
         Divider(
@@ -107,14 +113,20 @@ fun AboutAppScreen(modifier: Modifier, navigateToExplain: () -> Unit) {
                 .fillMaxWidth()
                 .padding(top = 16.dp)
         ) {
-            Button(onClick = navigateToExplain) {
+            Button(
+                onClick = { uriHandler.openUri("https://pl.wikipedia.org/wiki/Szlak_kajakowy") },
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .height(40.dp)
+            ) {
                 Icon(
                     painter = painterResource(id = R.drawable.round_school_24),
                     contentDescription = null,
                 )
                 Text(
                     text = stringResource(id = R.string.about_explain_button),
-                    modifier = Modifier.padding(start = 8.dp)
+                    modifier = Modifier
+                        .padding(start = 8.dp)
                 )
             }
         }
@@ -123,7 +135,6 @@ fun AboutAppScreen(modifier: Modifier, navigateToExplain: () -> Unit) {
             thickness = 1.dp,
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp)
         )
-
         Text(
             text = stringResource(id = R.string.about_codebase_author),
             textAlign = TextAlign.Center,
@@ -135,7 +146,6 @@ fun AboutAppScreen(modifier: Modifier, navigateToExplain: () -> Unit) {
                     top = 32.dp, start = 16.dp, end = 16.dp
                 ),
         )
-        //todo add github/linedin button
         Row(
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier
@@ -144,37 +154,20 @@ fun AboutAppScreen(modifier: Modifier, navigateToExplain: () -> Unit) {
         ) {
             BrandedButton(
                 brandedButtonType = BrandedButtonType.Github.DarkGithubButton,
-                label = "Check out my other stuff!",//todo move to strings
-                onClick = {//todo move user to github project
+                label = stringResource(R.string.check_out_my_other_stuff),
+                onClick = {
+                    uriHandler.openUri("https://github.com/czerwix")
                 },
-                modifier = Modifier.height(20.dp)
             )
         }
-        Text(
-            text = stringResource(id = R.string.about_photos_author),
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodyMedium,
+
+
+
+        Spacer(
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(
-                    top = 32.dp, start = 16.dp, end = 16.dp
-                ),
+                .height(32.dp)
         )
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp)
-        ) {
-            BrandedButton(
-                brandedButtonType = BrandedButtonType.Instagram.DarkInstagramButton,
-                label = "check out my Photos!",//todo move to strings //fix shiet here
-                onClick = {//todo move user to github project
-                },
-                modifier = Modifier.height(20.dp)
-            )
-        }
     }
 }
 

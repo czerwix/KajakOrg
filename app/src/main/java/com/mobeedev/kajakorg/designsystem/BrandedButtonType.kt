@@ -60,8 +60,8 @@ sealed class BrandedButtonType(
     object Instagram {
         object DarkInstagramButton : BrandedButtonType(
             iconResId = R.drawable.instagram_logo_gradient,
-            iconHeight = 60.dp,
-            backgroundColor = Color(0xFF1877f2),
+            iconHeight = 20.dp,
+            backgroundColor = Color(0xFF333333),
             textColor = Color.White
         )
 
