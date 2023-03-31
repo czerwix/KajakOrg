@@ -165,8 +165,8 @@ val pathIdToPicture = mapOf(
     201 to R.drawable.path_201,
     202 to R.drawable.path_202,
     203 to R.drawable.path_203,
-    204 to R.drawable.path_104,
-    205 to R.drawable.path_103,
-    206 to R.drawable.path_100,
-    207 to R.drawable.path_101,
+    204 to R.drawable.path_204,
+    205 to R.drawable.path_205,
+    206 to R.drawable.path_206,
+    207 to R.drawable.path_207,
 )
