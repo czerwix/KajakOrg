@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.mobeedev.kajakorg.designsystem.theme.Blue
+import com.mobeedev.kajakorg.designsystem.theme.PrimaryColor
 
 @Composable
 fun VamaFilledButton(
@@ -97,10 +97,10 @@ object VamaButtonDefaults {
 
     @Composable
     fun filledButtonColors(
-        containerColor: Color = Blue,
-        contentColor: Color = Blue,
-        disabledContainerColor: Color = Blue,
-        disabledContentColor: Color = Blue
+        containerColor: Color = PrimaryColor,
+        contentColor: Color = PrimaryColor,
+        disabledContainerColor: Color = PrimaryColor,
+        disabledContentColor: Color = PrimaryColor
     ) = ButtonDefaults.buttonColors(
         containerColor = containerColor,
         contentColor = contentColor,
@@ -112,8 +112,8 @@ object VamaButtonDefaults {
     fun outlinedButtonBorder(
         enabled: Boolean,
         width: Dp = 1.dp,
-        color: Color = Blue,
-        disabledColor: Color = Blue
+        color: Color = PrimaryColor,
+        disabledColor: Color = PrimaryColor
     ): BorderStroke = BorderStroke(
         width = width,
         color = if (enabled) color else disabledColor

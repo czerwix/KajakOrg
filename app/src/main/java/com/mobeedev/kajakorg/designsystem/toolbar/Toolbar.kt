@@ -53,7 +53,8 @@ import com.mobeedev.kajakorg.common.extensions.space
 import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
 import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayEnd
 import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayStart
-import com.mobeedev.kajakorg.designsystem.theme.Teal700
+import com.mobeedev.kajakorg.designsystem.theme.PrimaryColor
+import com.mobeedev.kajakorg.designsystem.theme.SecondaryColor
 import com.mobeedev.kajakorg.ui.model.PathOveriewItem
 import kotlin.math.roundToInt
 
@@ -61,7 +62,7 @@ private val ContentPadding = 16.dp
 private val TitleStartPadding = 8.dp
 private val Elevation = 4.dp
 private val ButtonSize = 34.dp
-private const val Alpha = 0.75f
+private const val Alpha = 1f
 
 private val ExpandedPadding = 1.dp
 private val ExpandedSectionsPadding = 4.dp
@@ -179,22 +180,21 @@ fun CollapsingToolbar(
     val context = LocalContext.current
     val backgroundColor = remember {
         Palette.from(BitmapFactory.decodeResource(context.resources, backgroundImageResId))
-            .generate().vibrantSwatch?.let { Color(it.rgb) } ?: Teal700
+            .generate().vibrantSwatch?.let { Color(it.rgb) } ?: PrimaryColor
     }
     Surface(
-        color = backgroundColor,
-        shadowElevation = Elevation,
+        color = SecondaryColor.copy(alpha = 1 - progress),
         modifier = modifier
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Image(
                 painter = painterResource(id = backgroundImageResId),
                 contentDescription = null,
-                contentScale = ContentScale.FillWidth,
+                contentScale = ContentScale.FillBounds,
                 modifier = Modifier
                     .fillMaxSize()
                     .graphicsLayer {
-                        alpha = progress * Alpha
+                        alpha = progress
                     }
                     .drawWithCache {
                         val gradient = Brush.verticalGradient(

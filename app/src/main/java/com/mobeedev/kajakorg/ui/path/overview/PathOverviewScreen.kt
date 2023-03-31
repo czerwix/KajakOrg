@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
@@ -18,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusTarget
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,6 +29,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mobeedev.kajakorg.R
 import com.mobeedev.kajakorg.designsystem.path.PathOverViewElement
 import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
+import com.mobeedev.kajakorg.designsystem.theme.PrimaryColor
+import com.mobeedev.kajakorg.designsystem.theme.SecondaryColor
+import com.mobeedev.kajakorg.designsystem.theme.White
 import com.mobeedev.kajakorg.ui.model.PathOveriewItem
 import com.mobeedev.kajakorg.ui.model.PathSortOrderItem
 import com.mobeedev.kajakorg.ui.path.load.showLoadingState
@@ -129,8 +135,8 @@ fun showDataList(
                             .fillMaxWidth()
                             .wrapContentHeight()
                     ) {
-                        OutlinedButton(onClick = { navigateToLoading() }) {
-                            Text(text = stringResource(id = R.string.download_data))
+                        OutlinedButton(onClick =navigateToLoading, colors = ButtonDefaults.outlinedButtonColors(containerColor = SecondaryColor)) {
+                            Text(text = stringResource(id = R.string.download_data), color = White)
                         }
                     }
                 }

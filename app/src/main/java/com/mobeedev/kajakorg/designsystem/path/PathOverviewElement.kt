@@ -35,7 +35,6 @@ import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
 import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayEnd
 import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayMiddle
 import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayStart
-import com.mobeedev.kajakorg.designsystem.theme.White
 import com.mobeedev.kajakorg.ui.model.PathOveriewItem
 
 val PathOverviewElementHeight = 140.dp
@@ -95,7 +94,7 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: (Int) -> Unit) {
                         modifier = Modifier
                             .padding(start = 6.dp)
                             .size(20.dp),
-                        colorFilter = ColorFilter.tint(White)
+                        colorFilter = ColorFilter.tint(Color.White)
                     )
                     Text(
                         text = stringResource(id = R.string.path_length_km, item.length),

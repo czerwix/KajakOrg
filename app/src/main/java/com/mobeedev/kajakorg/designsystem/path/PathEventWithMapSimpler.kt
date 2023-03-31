@@ -46,7 +46,6 @@ import com.mobeedev.kajakorg.R
 import com.mobeedev.kajakorg.common.extensions.space
 import com.mobeedev.kajakorg.data.model.detail.EventType
 import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
-import com.mobeedev.kajakorg.designsystem.theme.White
 import com.mobeedev.kajakorg.domain.model.detail.Event
 import com.mobeedev.kajakorg.domain.model.detail.EventDescription
 import com.mobeedev.kajakorg.ui.model.GoogleMapsStatusItem
@@ -62,7 +61,7 @@ fun PathEventWithMapSimpler(
     KajakTheme {
         Card(
             elevation = CardDefaults.cardElevation(10.dp),
-            colors = CardDefaults.cardColors(White),
+            colors = CardDefaults.cardColors(Color.White),
             modifier = modifier
                 .wrapContentHeight()
                 .fillMaxWidth()

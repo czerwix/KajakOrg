@@ -32,7 +32,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mobeedev.kajakorg.R
 import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
-import com.mobeedev.kajakorg.designsystem.theme.White
 import com.mobeedev.kajakorg.ui.model.ChecklistItem
 import com.mobeedev.kajakorg.ui.model.ChecklistValueItem
 import java.util.UUID
@@ -52,7 +51,7 @@ fun ChecklistOverviewElement(
         }
         Card(
             elevation = CardDefaults.cardElevation(10.dp),
-            colors = CardDefaults.cardColors(White),
+            colors = CardDefaults.cardColors(Color.White),
             modifier = modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
