@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -19,10 +20,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.isUnspecified
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -36,7 +35,7 @@ import com.mobeedev.kajakorg.ui.model.ChecklistItem
 import com.mobeedev.kajakorg.ui.model.ChecklistValueItem
 import java.util.UUID
 
-private const val MAX_CHECKLIST_ELEMENTS = 8
+private const val MAX_CHECKLIST_ELEMENTS = 10
 
 @Composable
 fun ChecklistOverviewElement(
@@ -117,40 +116,61 @@ fun ChecklistOverviewElement(
                             0,
                             checklistItem.checklist.size.coerceAtMost(MAX_CHECKLIST_ELEMENTS)
                         ).forEach { item ->
-                            Row(
-                                verticalAlignment = Alignment.Top,
-                                modifier = Modifier
-                                    .wrapContentHeight()
-                                    .padding(start = 16.dp, end = 16.dp, bottom = 2.dp)
-                            ) {
-                                KajakCheckbox(
-                                    checked = item.isDone,
-                                    onCheckedChange = null,
-                                    enabled = false,
-                                    checkedColor = contentColor,
-                                    uncheckedColor = contentColor,
-                                    checkmarkColor = contentColor,
+                            if (item.value != ChecklistValueItem.SEPARATOR_VALUE) {
+                                Row(
+                                    verticalAlignment = Alignment.Top,
                                     modifier = Modifier
-                                        .padding(top = 3.dp)
-                                        .size(10.dp),
-                                    cornerRadius = 2.dp
-                                )
+                                        .wrapContentHeight()
+                                        .padding(start = 16.dp, end = 16.dp, bottom = 2.dp)
+                                ) {
+                                    KajakCheckbox(
+                                        checked = item.isDone,
+                                        onCheckedChange = null,
+                                        enabled = false,
+                                        checkedColor = contentColor,
+                                        uncheckedColor = contentColor,
+                                        checkmarkColor = contentColor,
+                                        modifier = Modifier
+                                            .padding(top = 3.dp)
+                                            .size(10.dp),
+                                        cornerRadius = 2.dp
+                                    )
 
-                                Text(
-                                    text = item.value,
-                                    color = contentColor,
-                                    style = MaterialTheme.typography.bodySmall
-                                        .copy(textDecoration = if (item.isDone) TextDecoration.LineThrough else null),
-                                    modifier = Modifier
-                                        .wrapContentSize()
-                                        .padding(start = 4.dp)
+                                    Text(
+                                        text = item.value,
+                                        color = contentColor,
+                                        style = MaterialTheme.typography.bodySmall
+                                            .copy(textDecoration = if (item.isDone) TextDecoration.LineThrough else null),
+                                        modifier = Modifier
+                                            .wrapContentSize()
+                                            .padding(start = 4.dp)
+                                    )
+                                }
+                            } else {
+                                Divider(
+                                    color = Color.Black,
+                                    thickness = 1.dp,
+                                    modifier = Modifier.padding(
+                                        start = 32.dp,
+                                        end = 32.dp,
+                                        top = 2.dp,
+                                        bottom = 2.dp
+                                    )
                                 )
                             }
                         }
-
+                        if (checklistItem.checklist.size > MAX_CHECKLIST_ELEMENTS) {
+                            Text(
+                                text = "...",
+                                color = contentColor,
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(start = 32.dp)
+                            )
+                        }
                     }
                 }
-
             }
         }
     }
@@ -174,10 +194,18 @@ fun PreviewChecklistElementNormal() {
                             true,
                             "Item4 very long Item very long Item very long Item very long Item very long Item  very long Item"
                         ),
+                        ChecklistValueItem(
+                            UUID.randomUUID(),
+                            false,
+                            ChecklistValueItem.SEPARATOR_VALUE
+                        ),
                         ChecklistValueItem(UUID.randomUUID(), false, "Item5"),
                         ChecklistValueItem(UUID.randomUUID(), true, "Item6"),
                         ChecklistValueItem(UUID.randomUUID(), false, "Item7"),
-                        ChecklistValueItem(UUID.randomUUID(), false, "Item8")
+                        ChecklistValueItem(UUID.randomUUID(), false, "Item8"),
+                        ChecklistValueItem(UUID.randomUUID(), false, "Item9"),
+                        ChecklistValueItem(UUID.randomUUID(), false, "Item10"),
+                        ChecklistValueItem(UUID.randomUUID(), false, "Item11")
                     ),
                     color = Color.Unspecified
                 ), onDeleteClick = {}, onClick = {})

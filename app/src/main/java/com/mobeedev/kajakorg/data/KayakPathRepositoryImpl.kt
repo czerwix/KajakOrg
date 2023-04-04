@@ -20,7 +20,7 @@ import com.mobeedev.kajakorg.domain.model.overview.toDomain
 import com.mobeedev.kajakorg.domain.repository.KayakPathRepository
 import com.mobeedev.kajakorg.ui.model.PathItem
 import com.mobeedev.kajakorg.ui.model.PathMapItem
-import com.mobeedev.kajakorg.ui.model.PathOveriewItem
+import com.mobeedev.kajakorg.ui.model.PathOverviewItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import java.time.ZonedDateTime
@@ -96,7 +96,7 @@ class KayakPathRepositoryImpl(
         }
     }
 
-    override suspend fun getPathsOverviewItem(): Result<List<PathOveriewItem>> =
+    override suspend fun getPathsOverviewItem(): Result<List<PathOverviewItem>> =
         runRecoverCatching {
             localPathSource.getPathsOverviewItem()
         }

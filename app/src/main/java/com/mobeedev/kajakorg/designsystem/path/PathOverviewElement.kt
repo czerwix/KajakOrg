@@ -35,12 +35,12 @@ import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
 import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayEnd
 import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayMiddle
 import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayStart
-import com.mobeedev.kajakorg.ui.model.PathOveriewItem
+import com.mobeedev.kajakorg.ui.model.PathOverviewItem
 
 val PathOverviewElementHeight = 140.dp
 
 @Composable
-fun PathOverViewElement(item: PathOveriewItem, onClick: (Int) -> Unit) {
+fun PathOverViewElement(item: PathOverviewItem, onClick: (Int) -> Unit) {
     KajakTheme {
         Box(modifier = Modifier
             .wrapContentHeight()
@@ -80,7 +80,7 @@ fun PathOverViewElement(item: PathOveriewItem, onClick: (Int) -> Unit) {
             ) {
                 Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = item.name + item.id,
+                        text = item.name,
                         color = Color.White,
                         style = MaterialTheme.typography.titleMedium,
                         modifier = Modifier
@@ -165,7 +165,7 @@ fun PreviewPathOverViewElement() {
     KajakTheme {
         Surface {
             PathOverViewElement(
-                PathOveriewItem( //extract to PreviewParameter. do teh same for othe rmodels
+                PathOverviewItem( //extract to PreviewParameter. do teh same for othe rmodels
                     id = 1,
                     name = "Bystrzyca kłodzka",
                     versionCode = 1,

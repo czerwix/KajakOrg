@@ -3,7 +3,7 @@ package com.mobeedev.kajakorg.ui.model
 import com.google.android.gms.maps.model.LatLngBounds
 
 data class PathMapItem(
-    var overview: PathOveriewItem,
+    var overview: PathOverviewItem,
     var eventList: List<EventMapItem>
 )
 

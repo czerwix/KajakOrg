@@ -107,11 +107,25 @@ class ChecklistViewModel(
         _uiState.update { prevValue -> prevValue.doOnEdit { it.copy(editCheckList = editUpdateFlow.value) } }
     }
 
+    fun onAddIteSeparatorClicked() {
+        editUpdateFlow.update { prevValue ->
+            prevValue.copy(
+                checklist = prevValue.checklist.toMutableList().apply {
+                    add(ChecklistValueItem(value = ChecklistValueItem.SEPARATOR_VALUE))
+                }
+            )
+        }
+        _uiState.update { prevValue -> prevValue.doOnEdit { it.copy(editCheckList = editUpdateFlow.value) } }
+    }
+
     fun onDeleteValueItem(deleteAt: Int) {
         editUpdateFlow.update { prevValue ->
             prevValue.copy(
                 checklist = prevValue.checklist.toMutableList().apply {
                     remove(prevValue.checklist[deleteAt])
+                    if (lastOrNull()?.value == ChecklistValueItem.SEPARATOR_VALUE) {
+                        removeLast()
+                    }
                 }
             )
         }

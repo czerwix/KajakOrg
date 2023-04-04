@@ -4,7 +4,7 @@ import com.mobeedev.kajakorg.common.extensions.empty
 import com.mobeedev.kajakorg.data.db.path.PathDB
 import com.mobeedev.kajakorg.data.model.detail.PathDto
 import com.mobeedev.kajakorg.ui.model.PathItem
-import com.mobeedev.kajakorg.ui.model.PathOveriewItem
+import com.mobeedev.kajakorg.ui.model.PathOverviewItem
 
 data class Path(
     var id: Int = 0,
@@ -29,7 +29,7 @@ fun PathDto.toDomain() = Path(
     events?.map { it.toDomain() } ?: mutableListOf()
 )
 
-fun Path.toItem(overview: PathOveriewItem): PathItem = PathItem(
+fun Path.toItem(overview: PathOverviewItem): PathItem = PathItem(
     overview = overview,
     pathSectionsEvents = (sections + events).sortedBy { it.sortOrder }
 ).apply {

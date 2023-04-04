@@ -55,7 +55,7 @@ import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayEnd
 import com.mobeedev.kajakorg.designsystem.theme.PathOverviewOverlayStart
 import com.mobeedev.kajakorg.designsystem.theme.PrimaryColor
 import com.mobeedev.kajakorg.designsystem.theme.SecondaryColor
-import com.mobeedev.kajakorg.ui.model.PathOveriewItem
+import com.mobeedev.kajakorg.ui.model.PathOverviewItem
 import kotlin.math.roundToInt
 
 private val ContentPadding = 16.dp
@@ -87,7 +87,7 @@ fun CollapsingToolbarCollapsedPreview() {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(MinToolbarHeight),
-            path = PathOveriewItem(
+            path = PathOverviewItem(
                 id = 1,
                 name = "Bystrzyca kłodzka",
                 versionCode = 1,
@@ -117,7 +117,7 @@ fun CollapsingToolbarHalfwayPreview() {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(120.dp),
-            path = PathOveriewItem(
+            path = PathOverviewItem(
                 id = 1,
                 name = "Bystrzyca kłodzka",
                 versionCode = 1,
@@ -147,7 +147,7 @@ fun CollapsingToolbarExpandedPreview() {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(MaxToolbarHeight),
-            path = PathOveriewItem(
+            path = PathOverviewItem(
                 id = 1,
                 name = "Bystrzyca kłodzka",
                 versionCode = 1,
@@ -172,7 +172,7 @@ fun CollapsingToolbar(
     onSettingsButtonClicked: () -> Unit,
     onDescriptionClicked: () -> Unit,
     modifier: Modifier = Modifier,
-    path: PathOveriewItem,
+    path: PathOverviewItem,
     settingsButtonContent: @Composable () -> Unit
 ) {
     val logoPadding = lerp(CollapsedPadding, ExpandedPadding, progress)

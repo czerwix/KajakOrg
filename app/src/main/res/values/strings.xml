@@ -6,9 +6,8 @@
     <string name="could_not_load_path_data">Could not load path data, please check if kajak.org.pl is active and your internet is working.</string>
     <string name="loading_data">Please wait, loading data from kajak.org.pl</string>
     <string name="loading_path_data">Loading path %1$d out of %2$d</string>
-    <string name="local_save_path_data">Saving data to local storage</string>
+    <string name="local_save_path_data">Saving data to local data storage</string>
 
-    <string name="path_length_km">%.0f km</string>
     <string name="path_difficulty">Difficulty: %1$s</string>
     <string name="path_nuisance">Nuisance: %1$s</string>
     <string name="path_search">Search by name</string>
@@ -16,35 +15,35 @@
     <string name="path_google_map_disable">Disable map</string>
     <string name="path_google_map_enable">Enable map</string>
 
-    <string name="path_sort_a_z" translatable="false">A-Z</string>
-    <string name="path_sort_z_a" translatable="false">Z-A</string>
+    <string name="path_sort_a_z">A-Z</string>
+    <string name="path_sort_z_a">Z-A</string>
     <string name="path_sort_longest_shortest">Longest</string>
     <string name="path_sort_shortest_longest">Shortest</string>
 
     <string name="section">"Section - %1$s"</string>
-    <string name="section_compact">"Section\n%1$s"</string>
-    <string name="section_length">"From %1.0fkm - %2.0fkm.\nSection length:%3.0fkm"</string>
+    <string name="section_compact">Section %1$s</string>
     <string name="number_of_sections">No. of sections:</string>
     <string name="events_on_section">"No. of events:"</string>
     <string name="event_title">"Event at %1$s."</string>
     <string name="event_title_compact">"Event at\n%1$s."</string>1
-    <string name="event_type">"Event type:"</string>
+    <string name="event_type">"Type:"</string>
     <string name="nuisance">"Nuisance:"</string>
     <string name="difficulty">"Difficulty:"</string>
     <string name="picturesque">"Picturesque:"</string>
     <string name="cleanliness">"Cleanliness:"</string>
-    <string name="at_kilometer" translatable="false">"km"</string>
+    <string name="at_kilometer">"km"</string>
     <string name="location_rationale">We use location data to handle better navigation on the Path\'s map. this permission is not required.</string>
     <string name="path_map">Map</string>
     <string name="path_list">Path List</string>
 
-    <string name="path_map_location_request">We utilise location data to better portray path\'s events in relation to location information.\nyour location is never sent anywhere and we don\'t saved any location information in our aplication/servers.</string>
+    <string name="path_map_location_request">We utilise location data to better portray path\'s events in relation to location information. your location is never sent anywhere and we don\'t saved any location information in our aplication/servers.</string>
     <string name="location_request">Request permission</string>
     <string name="path_overview">Paths</string>
     <string name="check_list">Checklist</string>
     <string name="download_data">Download Paths data!</string>
-    <string name="checklist_overview_title">Don\'t forget a thing\n on your next Adventure!!!</string>
+    <string name="checklist_overview_title">Don\'t forget a thing  on your next Adventure!!!</string>
     <string name="add_checklist_item">List item</string>
+    <string name="add_checklist_separator">Separator</string>
     <string name="checklist_empty_description">Note</string>
     <string name="checklist_empty_title">Title</string>
     <string name="checklist_empty_checkList">Checklist Item</string>
@@ -53,15 +52,21 @@
 
     <string name="about_menu">About</string>
     <string name="about_title">About this App!</string>
-    <string name="about_app">This application aims to recreate kajak.org.pl functionality that contained several river path descriptions throughout Poland.\nall data was provided by original owner.\n\nOpenSource for the win!!!\nif you want to contribute go to github.com/czerwix/KajakOrg or contact me via email provided below\n\nif you want to update paths or edit any mistakes please contact me via email below or github/linkedin.</string>
+    <string name="about_app">This application aims to recreate kajak.org.pl functionality that contained several river path descriptions throughout Poland. all data was provided by original owner.  OpenSource for the win!!! if you want to contribute go to github.com/czerwix/KajakOrg or contact me via email provided below  if you want to update paths or edit any mistakes please contact me via email below or github/linkedin.</string>
     <string name="about_explain_description">I have no clue what ZWA,ZWB...,WWII or U1,U2...,U6 and *,**,*** mean! </string>
     <string name="about_explain_button">Learn more here</string>
-    <string name="about_codebase_author">Application created by:\nSzymon Kraus\nemail: czerwiiii@gmail.com</string>
+    <string name="about_codebase_author">Application created by: Szymon Kraus email: czerwiiii@gmail.com</string>
     <string name="about_database">All path data is direct copy of www.kajak.org.pl</string>
     <string name="check_out_my_other_stuff">Check out my other stuff!</string>
     <string name="find_out_more_here">Find out more here!</string>
-    <string name="check_out_amazing_photos">check out Amazing Photos!</string>
+    <string name="check_out_amazing_photos" translatable="false">check out Amazing Photos!</string>
     <string name="join_the_project">join the project!</string>
+    <string name="path_length_km">%.0f km</string>
+    <string name="section_length">From %1.0fkm - %2.0fkm. Section length:%3.0fkm</string>
+
+    <string name="delete_confirmation">Do you want to delete item?</string>
+    <string name="delete_yes">Yes</string>
+    <string name="delete_no">Cancel</string>
 
 
 </resources>

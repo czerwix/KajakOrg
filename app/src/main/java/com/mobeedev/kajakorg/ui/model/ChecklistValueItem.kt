@@ -7,4 +7,9 @@ data class ChecklistValueItem(
     val id: UUID = UUID.randomUUID(),
     val isDone: Boolean = false,
     val value: String = String.empty
-)
+){
+    companion object{
+        const val SEPARATOR_VALUE = "---- ---- ----"
+    }
+}
+

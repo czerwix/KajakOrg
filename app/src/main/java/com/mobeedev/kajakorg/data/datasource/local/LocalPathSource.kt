@@ -7,7 +7,7 @@ import com.mobeedev.kajakorg.domain.model.detail.Path
 import com.mobeedev.kajakorg.domain.model.overview.PathOverview
 import com.mobeedev.kajakorg.domain.model.overview.toDomain
 import com.mobeedev.kajakorg.ui.model.PathMapItem
-import com.mobeedev.kajakorg.ui.model.PathOveriewItem
+import com.mobeedev.kajakorg.ui.model.PathOverviewItem
 
 class LocalPathSource(
     private val kajakPathDao: KajakPathDao
@@ -25,10 +25,10 @@ class LocalPathSource(
     suspend fun getPathsOverview(): List<PathOverview> =
         kajakPathDao.getAllPathsOverview().map { it.toDomain() }
 
-    suspend fun getPathsOverviewItem(): List<PathOveriewItem> =
+    suspend fun getPathsOverviewItem(): List<PathOverviewItem> =
         kajakPathDao.getPathsOverviewItem()
 
-    suspend fun getPathOverviewItem(pathId: Int): PathOveriewItem =
+    suspend fun getPathOverviewItem(pathId: Int): PathOverviewItem =
         kajakPathDao.getPathOverviewItem(pathId)
 
     suspend fun getPaths(): List<Path> = kajakPathDao.getAllPathsIds().map {

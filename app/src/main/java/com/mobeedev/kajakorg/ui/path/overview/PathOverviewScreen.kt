@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedButton
@@ -20,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusTarget
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,10 +27,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mobeedev.kajakorg.R
 import com.mobeedev.kajakorg.designsystem.path.PathOverViewElement
 import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
-import com.mobeedev.kajakorg.designsystem.theme.PrimaryColor
 import com.mobeedev.kajakorg.designsystem.theme.SecondaryColor
 import com.mobeedev.kajakorg.designsystem.theme.White
-import com.mobeedev.kajakorg.ui.model.PathOveriewItem
+import com.mobeedev.kajakorg.ui.model.PathOverviewItem
 import com.mobeedev.kajakorg.ui.model.PathSortOrderItem
 import com.mobeedev.kajakorg.ui.path.load.showLoadingState
 import org.koin.androidx.compose.getViewModel
@@ -90,7 +87,7 @@ fun PathOverviewScreen(
 @Composable
 fun showDataList(
     uiState: PathOverviewViewModelState.Success,
-    filteredPathList: List<PathOveriewItem>,
+    filteredPathList: List<PathOverviewItem>,
     modifier: Modifier,
     navigateToPathDetails: (Int) -> Unit,
     navigateToPathMap: () -> Unit,
@@ -146,7 +143,7 @@ fun showDataList(
 }
 
 private fun LazyListScope.pathOverviewCards(
-    pathList: List<PathOveriewItem>,
+    pathList: List<PathOverviewItem>,
     navigateToPathDetails: (Int) -> Unit
 ) {
     item {
@@ -168,7 +165,7 @@ private fun LazyListScope.pathOverviewCards(
     }
 }
 
-private fun getFilteredPathList(uiState: PathOverviewViewModelState.Success): List<PathOveriewItem> {
+private fun getFilteredPathList(uiState: PathOverviewViewModelState.Success): List<PathOverviewItem> {
     val filteredList = if (uiState.textFilter.isNotBlank()) {
         uiState.pathOverviewList.filter {
             it.name.contains(uiState.textFilter, true)

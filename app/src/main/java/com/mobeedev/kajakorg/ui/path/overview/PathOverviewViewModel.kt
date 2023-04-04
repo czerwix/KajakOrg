@@ -6,7 +6,7 @@ import com.mobeedev.kajakorg.common.extensions.empty
 import com.mobeedev.kajakorg.domain.model.detail.Path
 import com.mobeedev.kajakorg.domain.model.overview.PathOverview
 import com.mobeedev.kajakorg.domain.usecase.GetLocalPathOverviewItemUseCase
-import com.mobeedev.kajakorg.ui.model.PathOveriewItem
+import com.mobeedev.kajakorg.ui.model.PathOverviewItem
 import com.mobeedev.kajakorg.ui.model.PathSortOrderItem
 import com.mobeedev.kajakorg.ui.model.toItem
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -78,7 +78,7 @@ sealed interface PathOverviewViewModelState {
     object Loading : PathOverviewViewModelState
 
     data class Success(
-        val pathOverviewList: List<PathOveriewItem>,
+        val pathOverviewList: List<PathOverviewItem>,
         val textFilter: String = String.empty,
         val sortOrder: PathSortOrderItem = PathSortOrderItem.AToZ
     ) : PathOverviewViewModelState

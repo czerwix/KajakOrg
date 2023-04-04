@@ -17,7 +17,7 @@ import com.mobeedev.kajakorg.domain.model.detail.toDomain
 import com.mobeedev.kajakorg.domain.model.overview.toItem
 import com.mobeedev.kajakorg.ui.model.EventMapItem
 import com.mobeedev.kajakorg.ui.model.PathMapItem
-import com.mobeedev.kajakorg.ui.model.PathOveriewItem
+import com.mobeedev.kajakorg.ui.model.PathOverviewItem
 
 @Dao
 abstract class KajakPathDao {
@@ -109,8 +109,8 @@ abstract class KajakPathDao {
     }
 
     @Transaction
-    open suspend fun getPathsOverviewItem(): List<PathOveriewItem> =
-        mutableListOf<PathOveriewItem>().apply {
+    open suspend fun getPathsOverviewItem(): List<PathOverviewItem> =
+        mutableListOf<PathOverviewItem>().apply {
             getAllPathsOverview().forEach { path ->
                 add(path.toItem(getPathDescription(path.pathOverviewId) ?: String.empty))
             }

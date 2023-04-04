@@ -15,21 +15,27 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusTarget
 import androidx.compose.ui.graphics.Color
@@ -38,16 +44,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mobeedev.kajakorg.R
 import com.mobeedev.kajakorg.designsystem.checklist.ChecklistAddItem
 import com.mobeedev.kajakorg.designsystem.checklist.ChecklistDescriptionItem
 import com.mobeedev.kajakorg.designsystem.checklist.ChecklistEditItem
+import com.mobeedev.kajakorg.designsystem.checklist.ChecklistSeparatorElement
 import com.mobeedev.kajakorg.designsystem.checklist.ChecklistTitleItem
 import com.mobeedev.kajakorg.designsystem.scrollToOnFocus
 import com.mobeedev.kajakorg.ui.checklist.ChecklistViewModel
 import com.mobeedev.kajakorg.ui.checklist.ChecklistViewModelState
 import com.mobeedev.kajakorg.ui.model.ChecklistSettingsMenu
+import com.mobeedev.kajakorg.ui.model.ChecklistValueItem
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -103,8 +112,13 @@ fun showChecklistEditScreen(
     modifier: Modifier
 ) {
     Column {
-        //navigation/icons
         var isCheckListMenuVisible by remember { mutableStateOf(false) }
+        var isDeletePopupVisible by remember { mutableStateOf(false) }
+        var deleteIndex by remember { mutableStateOf(-1) }
+
+        val checklistValueList = uiState.editCheckList.checklist
+        val focusManager = LocalFocusManager.current
+        //navigation/icons
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -158,9 +172,73 @@ fun showChecklistEditScreen(
             }
         }
 
+        if (isDeletePopupVisible) {
+            Popup(
+                alignment = Alignment.CenterStart,
+                onDismissRequest = { isDeletePopupVisible = false },
+            ) {
+                Card(
+                    elevation = CardDefaults.cardElevation(10.dp),
+                    colors = CardDefaults.cardColors(Color.White),
+                    modifier = modifier
+                        .wrapContentSize()
+                        .padding(start = 8.dp, end = 8.dp)
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            text = stringResource(id = R.string.delete_confirmation),
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .padding(
+                                    top = 32.dp, start = 16.dp, end = 16.dp
+                                ),
+                        )
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 8.dp, bottom = 16.dp)
+                        ) {
+                            Button(
+                                onClick = {
+                                    isDeletePopupVisible = false
+                                },
+                                modifier = Modifier
+                                    .wrapContentWidth()
+                                    .height(40.dp)
+                            ) {
+                                Text(
+                                    text = stringResource(id = R.string.delete_no),
+                                    modifier = Modifier
+                                        .padding(start = 8.dp)
+                                )
+                            }
+                            Button(
+                                onClick = {
+                                    viewModel.onDeleteValueItem(deleteIndex)
+                                    isDeletePopupVisible = false
+                                },
+                                modifier = Modifier
+                                    .wrapContentWidth()
+                                    .height(40.dp)
+                                    .padding(start = 16.dp)
+                            ) {
+                                Text(
+                                    text = stringResource(id = R.string.delete_yes),
+                                    modifier = Modifier
+                                        .padding(start = 8.dp)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         //Edit checklist
-        val checklistValueList = uiState.editCheckList.checklist
-        val focusManager = LocalFocusManager.current
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(0.dp),
             modifier = Modifier
@@ -201,30 +279,47 @@ fun showChecklistEditScreen(
             items(
                 count = checklistValueList.size,
                 key = { checklistValueList[it].id }) { index ->
-                ChecklistEditItem(
-                    item = checklistValueList[index],
-                    index = index,
-                    onCheckListener = { index, isChecked ->
-                        viewModel.onValueItemCheck(index, isChecked)
-                    },
-                    onTextChange = { index, text ->
-                        viewModel.onChecklistValueTextChange(index, text)
-                    },
-                    onDeleteClicked = {
-                        viewModel.onDeleteValueItem(it)
-                    },
-                    modifier = modifier
-                        .animateItemPlacement()
-                        .scrollToOnFocus(),
-                    focusManager = focusManager
+                val item = checklistValueList[index]
+                if (item.value == ChecklistValueItem.SEPARATOR_VALUE) {
+                    ChecklistSeparatorElement(
+                        index = index,
+                        onDeleteClicked = {
+                            deleteIndex = it
+                            isDeletePopupVisible = true
+                        },
+                        modifier = modifier
+                            .animateItemPlacement()
+                    )
+                } else {
+                    ChecklistEditItem(
+                        item = item,
+                        index = index,
+                        onCheckListener = { index, isChecked ->
+                            viewModel.onValueItemCheck(index, isChecked)
+                        },
+                        onTextChange = { index, text ->
+                            viewModel.onChecklistValueTextChange(index, text)
+                        },
+                        onDeleteClicked = {
+                            viewModel.onDeleteValueItem(it)
+                        },
+                        modifier = modifier
+                            .animateItemPlacement()
+                            .scrollToOnFocus(),
+                        focusManager = focusManager
 //                            isCustomColorSelected //todo add color when is selected
-                )
+                    )
+
+                }
             }
             //Add checkList item
             item(key = "AddItem") {
                 ChecklistAddItem(
-                    {
+                    onAddClicked = {
                         viewModel.onAddItemClicked()
+                    },
+                    onAddSeparatorClicked = {
+                        viewModel.onAddIteSeparatorClicked()
                     },
                     modifier = Modifier
                         .animateItemPlacement()

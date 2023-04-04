@@ -1,9 +1,8 @@
 package com.mobeedev.kajakorg.ui.model
 
-import com.mobeedev.kajakorg.common.extensions.empty
 import com.mobeedev.kajakorg.domain.model.overview.PathOverview
 
-data class PathOveriewItem(
+data class PathOverviewItem(
     val id: Int,
 
     val name: String,
@@ -13,11 +12,9 @@ data class PathOveriewItem(
     val numberOfSections: Int,
     val difficulty: String,
     val nuisance: String,
-    val description: String,
-    var pictureID: String = String.empty
-)
+    val description: String)
 
-fun PathOverview.toItem(description: String) = PathOveriewItem(
+fun PathOverview.toItem(description: String) = PathOverviewItem(
     id,
     name,
     versionCode,

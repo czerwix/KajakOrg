@@ -2,7 +2,7 @@ package com.mobeedev.kajakorg.domain.model.overview
 
 import com.mobeedev.kajakorg.data.db.overview.PathOverviewDB
 import com.mobeedev.kajakorg.data.model.overview.PathOverviewDto
-import com.mobeedev.kajakorg.ui.model.PathOveriewItem
+import com.mobeedev.kajakorg.ui.model.PathOverviewItem
 
 
 data class PathOverview(
@@ -61,7 +61,7 @@ fun PathOverviewDB.toDomain() = PathOverview(
     nuisance
 )
 
-fun PathOverviewDB.toItem(description: String) = PathOveriewItem(
+fun PathOverviewDB.toItem(description: String) = PathOverviewItem(
     pathOverviewId,
     name,
     versionCode,
