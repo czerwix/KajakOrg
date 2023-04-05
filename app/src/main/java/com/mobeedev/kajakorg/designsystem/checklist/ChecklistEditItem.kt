@@ -77,15 +77,16 @@ fun ChecklistEditItem(
             TextField( //todo add hint
                 value = note,
                 onValueChange = {
-                    onTextChange.invoke(index, it.text.trim())
-                    note = it.copy(text = it.text.trim())
+                    onTextChange.invoke(index, it.text)
+                    note = it
                 },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(
                     onNext = { focusManager.moveFocus(FocusDirection.Down) }
                 ),
                 colors = TextFieldDefaults.textFieldColors(
-                    textColor = contentColor,
+                    focusedTextColor = contentColor,
+                    unfocusedTextColor = contentColor,
                     containerColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,

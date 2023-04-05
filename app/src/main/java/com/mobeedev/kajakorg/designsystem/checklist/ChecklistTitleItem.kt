@@ -53,7 +53,8 @@ fun ChecklistTitleItem(
                 },
                 textStyle = MaterialTheme.typography.titleMedium,
                 colors = TextFieldDefaults.textFieldColors(
-                    textColor = contentColor,
+                    focusedTextColor = contentColor,
+                    unfocusedTextColor = contentColor,
                     containerColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,

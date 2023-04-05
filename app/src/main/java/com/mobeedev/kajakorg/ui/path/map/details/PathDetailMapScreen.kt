@@ -167,6 +167,7 @@ fun showSuccessMapDetailsScreen(
             getCameraPosition(path.pathSectionsEvents.find { it is Event && it.isLocationNonZero() }
                 ?: path.pathSectionsEvents.first(), EVENT_ZOOM_LEVEL, context, mapOffset.dp)
     }
+
     var bottomLayoutVisibility by remember { mutableStateOf(false) }
 
     if (isFirstStartUp) {

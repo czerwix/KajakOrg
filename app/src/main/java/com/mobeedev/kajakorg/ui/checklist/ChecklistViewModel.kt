@@ -184,7 +184,14 @@ class ChecklistViewModel(
                 )
             }
         }
-        _uiState.update { prevValue -> prevValue.doOnEdit { it.copy(editCheckList = editUpdateFlow.value) } }
+        _uiState.update { prevValue ->
+            prevValue.doOnEdit {
+                val newState = it.copy(editCheckList = editUpdateFlow.value)
+                updateChecklistUseCase.invoke(params = UpdateChecklistUseCase.Params(newState.editCheckList))
+
+                newState
+            }
+        }
     }
 }
 

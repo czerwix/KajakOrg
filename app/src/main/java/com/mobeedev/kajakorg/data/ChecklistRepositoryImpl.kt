@@ -17,7 +17,7 @@ class ChecklistRepositoryImpl(val checklistDao: ChecklistDao) : ChecklistReposit
             checklistDao.upsertChecklistDB(checklistItem.toDB())
         }
 
-    override suspend fun deleteChecklists(checklistItem: ChecklistItem): Result<Unit>  =
+    override suspend fun deleteChecklists(checklistItem: ChecklistItem): Result<Unit> =
         runRecoverCatching {
             checklistDao.deleteChecklist(checklistItem.toDB())
         }

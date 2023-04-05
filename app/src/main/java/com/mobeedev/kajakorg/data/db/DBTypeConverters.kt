@@ -44,7 +44,10 @@ class DBTypeConverters {
         if (checklistList.isNullOrEmpty()) {
             return null
         }
-        return Gson().toJson(checklistList, object : TypeToken<List<ChecklistValueItem?>?>() {}.type)
+        return Gson().toJson(
+            checklistList,
+            object : TypeToken<List<ChecklistValueItem?>?>() {}.type
+        )
     }
 
     @TypeConverter
@@ -52,6 +55,10 @@ class DBTypeConverters {
         if (checklistString.isNullOrEmpty()) {
             return emptyList()
         }
-        return Gson().fromJson(checklistString, object : TypeToken<List<ChecklistValueItem>>() {}.type)
+        return Gson().fromJson<List<ChecklistValueItem>>(
+            checklistString,
+            object : TypeToken<List<ChecklistValueItem>>() {}.type
+        )
+
     }
 }

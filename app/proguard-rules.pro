@@ -25,3 +25,30 @@
 -keepclassmembers class * extends androidx.datastore.preferences.protobuf.GeneratedMessageLite {
     <fields>;
     }
+
+-keep class * extends androidx.room.RoomDatabase
+-keep @androidx.room.Entity class *
+-dontwarn androidx.room.paging.**
+
+-keep class com.google.gson.examples.android.model.** { *; }
+
+
+-keepclassmembers class com.mobeedev.kajakorg.ui.model.** {
+private <fields>;
+public protected *;
+}
+
+-keepclassmembers class com.mobeedev.kajakorg.domain.model.** {
+private <fields>;
+public protected *;
+}
+
+-keepclassmembers class com.mobeedev.kajakorg.data.model.** {
+private <fields>;
+public protected *;
+}
+
+-keepclassmembers class com.mobeedev.kajakorg.data.db.** {
+private <fields>;
+public protected *;
+}

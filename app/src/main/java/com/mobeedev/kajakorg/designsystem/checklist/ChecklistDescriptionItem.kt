@@ -53,7 +53,8 @@ fun ChecklistDescriptionItem(
                 },
                 textStyle = MaterialTheme.typography.bodyMedium,
                 colors = TextFieldDefaults.textFieldColors(
-                    textColor = contentColor,
+                    focusedTextColor = contentColor,
+                    unfocusedTextColor = contentColor,
                     containerColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,

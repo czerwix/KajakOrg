@@ -1,7 +1,6 @@
 package com.mobeedev.kajakorg.data.db
 
 import android.content.Context
-import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -52,7 +51,7 @@ abstract class KajakDB() : RoomDatabase() {
 //                        .build()
 
                     instance = Room.databaseBuilder(context, KajakDB::class.java, DATABASE_NAME)
-//                        .createFromAsset("database/kajak_db.db")
+                        .createFromAsset("database/kajak_db.db")
                         .fallbackToDestructiveMigration()
                         .build()
                     INSTANCE = instance
