@@ -47,6 +47,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
@@ -55,6 +56,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.mobeedev.kajakorg.R
 import com.mobeedev.kajakorg.common.view.checkLocationPermissions
@@ -80,6 +82,7 @@ import com.mobeedev.kajakorg.ui.model.getBounds
 import com.mobeedev.kajakorg.ui.model.toMapItem
 import com.mobeedev.kajakorg.ui.path.load.showLoadingState
 import com.mobeedev.kajakorg.ui.path.map.getCameraPositionWithOffset
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 import kotlin.math.absoluteValue
@@ -161,13 +164,15 @@ fun showSuccessMapDetailsScreen(
     val configuration = LocalConfiguration.current
     val scope = rememberCoroutineScope()
     val mapOffset = remember { configuration.screenHeightDp / 16 }
-    val pagerState = rememberPagerState()
     val cameraPositionState = rememberCameraPositionState {
         position =
             getCameraPosition(path.pathSectionsEvents.find { it is Event && it.isLocationNonZero() }
                 ?: path.pathSectionsEvents.first(), EVENT_ZOOM_LEVEL, context, mapOffset.dp)
     }
 
+    val pagerState = rememberPagerState()
+    //fixed a bug in pager that resets position
+    var currentlySelectedPager by remember { mutableStateOf(0) }
     var bottomLayoutVisibility by remember { mutableStateOf(false) }
 
     if (isFirstStartUp) {
@@ -194,9 +199,8 @@ fun showSuccessMapDetailsScreen(
                             getCameraPosition(event, EVENT_ZOOM_LEVEL, context, mapOffset.dp)
                         ), durationMs = DEFAULT_CAMERA_UPDATE_ANIMATION_LENGTH
                     )
-                }
-                scope.launch {
-                    pagerState.animateScrollToPage(mapEventFlatList.indexOfFirst { it.eventId() == event.id })
+                    currentlySelectedPager =
+                        mapEventFlatList.indexOfFirst { it.eventId() == event.id }
                 }
             },
             cameraPositionState
@@ -269,26 +273,45 @@ fun showSuccessMapDetailsScreen(
                         .wrapContentHeight()
                         .padding(bottom = 16.dp)
                 ) {
-                    showEventPager(mapEventFlatList, pagerState) { event, index ->
-                        scope.launch {
-                            if (index == 0) {
-                                cameraPositionState.animate(
-                                    update = CameraUpdateFactory.newLatLngBounds(path.toMapItem()
-                                        .getBounds(),
-                                        with(density) { 26.dp.roundToPx() }),
-                                    durationMs = DEFAULT_CAMERA_UPDATE_ANIMATION_LENGTH
+                    showEventPager(mapEventFlatList, pagerState, currentlySelectedPager)
+                }
+            }
+
+            LaunchedEffect(pagerState) {
+                // Collect from the pager state a snapshotFlow reading the currentPage
+                snapshotFlow { pagerState.currentPage }.collect { page ->
+                    when (val selectedItem = mapEventFlatList[page]) {
+                        is Section -> {
+                            if (selectedItem.events.first().isLocationNonZero()) {
+                                onPathEventSelected(
+                                    path,
+                                    mapEventFlatList[page],
+                                    page,
+                                    scope,
+                                    cameraPositionState,
+                                    context,
+                                    mapOffset,
+                                    density
                                 )
-                            } else {
-                                cameraPositionState.animate(
-                                    update = CameraUpdateFactory.newCameraPosition(
-                                        getCameraPosition(
-                                            event, EVENT_ZOOM_LEVEL, context, mapOffset.dp
-                                        )
-                                    ), durationMs = DEFAULT_CAMERA_UPDATE_ANIMATION_LENGTH
+                            }
+                        }
+
+                        is Event -> {
+                            if (selectedItem.isLocationNonZero()) {
+                                onPathEventSelected(
+                                    path,
+                                    mapEventFlatList[page],
+                                    page,
+                                    scope,
+                                    cameraPositionState,
+                                    context,
+                                    mapOffset,
+                                    density
                                 )
                             }
                         }
                     }
+                    currentlySelectedPager = page
                 }
             }
         }
@@ -300,30 +323,15 @@ fun showSuccessMapDetailsScreen(
 fun showEventPager(
     pathSectionsEvents: List<PathEvent>,
     pagerState: PagerState,
-    onPathEventSelected: (PathEvent, index: Int) -> Unit
+    currentlySelectedPager: Int
 ) {
-    LaunchedEffect(pagerState) {
-        // Collect from the pager state a snapshotFlow reading the currentPage
-        snapshotFlow { pagerState.currentPage }.collect { page ->
-            when (val selectedItem = pathSectionsEvents[page]) {
-                is Section -> {
-                    if (selectedItem.events.first().isLocationNonZero()) {
-                        onPathEventSelected(pathSectionsEvents[page], page)
-                    }
-                }
-
-                is Event -> {
-                    if (selectedItem.isLocationNonZero()) {
-                        onPathEventSelected(pathSectionsEvents[page], page)
-                    }
-                }
-            }
-        }
-    }
-
     HorizontalPager(
         pageCount = pathSectionsEvents.size,
-        state = pagerState,
+        state = pagerState.apply {
+            LaunchedEffect(key1 = "Pager_bug_fix") {
+                scrollToPage(currentlySelectedPager)
+            }
+        },
         contentPadding = PaddingValues(horizontal = 32.dp),
         modifier = Modifier
             .fillMaxWidth()
@@ -350,6 +358,36 @@ fun showEventPager(
             Column(verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxSize()) {
                 MapEventCard(pathSectionsEvents[page])
             }
+        }
+    }
+}
+
+fun onPathEventSelected(
+    path: PathItem,
+    event: PathEvent,
+    index: Int,
+    scope: CoroutineScope,
+    cameraPositionState: CameraPositionState,
+    context: Context,
+    mapOffset: Int,
+    density: Density,
+) {
+    scope.launch {
+        if (index == 0) {
+            cameraPositionState.animate(
+                update = CameraUpdateFactory.newLatLngBounds(path.toMapItem()
+                    .getBounds(),
+                    with(density) { 26.dp.roundToPx() }),
+                durationMs = DEFAULT_CAMERA_UPDATE_ANIMATION_LENGTH
+            )
+        } else {
+            cameraPositionState.animate(
+                update = CameraUpdateFactory.newCameraPosition(
+                    getCameraPosition(
+                        event, EVENT_ZOOM_LEVEL, context, mapOffset.dp
+                    )
+                ), durationMs = DEFAULT_CAMERA_UPDATE_ANIMATION_LENGTH
+            )
         }
     }
 }
