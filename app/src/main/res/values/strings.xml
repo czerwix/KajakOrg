@@ -24,8 +24,8 @@
     <string name="section_compact">Section %1$s</string>
     <string name="number_of_sections">No. of sections:</string>
     <string name="events_on_section">"No. of events:"</string>
-    <string name="event_title">"Event at %1$s."</string>
-    <string name="event_title_compact">"Event at\n%1$s."</string>1
+    <string name="event_title">"Point at %1$s."</string>
+    <string name="event_title_compact">"Point at\n%1$s."</string>1
     <string name="event_type">"Type:"</string>
     <string name="nuisance">"Nuisance:"</string>
     <string name="difficulty">"Difficulty:"</string>
