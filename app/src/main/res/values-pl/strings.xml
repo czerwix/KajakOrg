@@ -59,4 +59,5 @@
     <string name="delete_confirmation">Czy chcesz usunać element?</string>
     <string name="delete_yes">Tak</string>
     <string name="delete_no">Cancel</string>
+    <string name="about_path_authors">Autorzy opisów:</string>
 </resources>

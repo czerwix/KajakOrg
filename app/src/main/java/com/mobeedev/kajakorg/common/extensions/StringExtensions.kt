@@ -5,3 +5,6 @@ val String.Companion.empty
 
 val String.Companion.space
     get() = " "
+
+val String.Companion.dash
+    get() = "-"

@@ -160,9 +160,33 @@ fun AboutAppScreen(modifier: Modifier, navigateToExplain: () -> Unit) {
                 },
             )
         }
-
-
-
+        Divider(
+            color = Color.Black,
+            thickness = 1.dp,
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp)
+        )
+        Text(
+            text = stringResource(id = R.string.about_path_authors),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(
+                    top = 32.dp, start = 16.dp, end = 16.dp
+                ),
+        )
+        Text(
+            text = stringResource(id = R.string.about_path_authors_list),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(
+                    top = 4.dp, start = 16.dp, end = 16.dp
+                ),
+        )
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()

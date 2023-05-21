@@ -32,6 +32,7 @@
     <string name="picturesque">"Picturesque:"</string>
     <string name="cleanliness">"Cleanliness:"</string>
     <string name="at_kilometer">"km"</string>
+    <string name="path_total_lenght">"Total length"</string>
     <string name="location_rationale">We use location data to handle better navigation on the Path\'s map. this permission is not required.</string>
     <string name="path_map">Map</string>
     <string name="path_list">Path List</string>
@@ -52,10 +53,12 @@
 
     <string name="about_menu">About</string>
     <string name="about_title">About this App!</string>
-    <string name="about_app">This application aims to recreate kajak.org.pl functionality that contained several river path descriptions throughout Poland. all data was provided by original owner.  OpenSource for the win!!! if you want to contribute go to github.com/czerwix/KajakOrg or contact me via email provided below  if you want to update paths or edit any mistakes please contact me via email below or github/linkedin.</string>
+    <string name="about_app">This application aims to recreate kajak.org.pl functionality that contained several river path descriptions throughout Poland. all data was provided by original owner.\n\n  OpenSource for the win!!!\n\n if you want to contribute go to github.com/czerwix/KajakOrg or contact me via email provided below\n\n  if you want to update paths or edit any mistakes please contact me via email below or github/linkedin.</string>
     <string name="about_explain_description">I have no clue what ZWA,ZWB...,WWII or U1,U2...,U6 and *,**,*** mean! </string>
     <string name="about_explain_button">Learn more here</string>
     <string name="about_codebase_author">Application created by: Szymon Kraus email: czerwiiii@gmail.com</string>
+    <string name="about_path_authors">Big Thanks to all of the path description authors!!!</string>
+    <string name="path_about_path_authors">Path description authors:</string>
     <string name="about_database">All path data is direct copy of www.kajak.org.pl</string>
     <string name="check_out_my_other_stuff">Check out my other stuff!</string>
     <string name="find_out_more_here">Find out more here!</string>
@@ -68,5 +71,63 @@
     <string name="delete_yes">Yes</string>
     <string name="delete_no">Cancel</string>
 
+    <string name="about_path_authors_list" translatable="false"> - Andrzej "atomikpl"\n
+ - Andrzej Galikowski\n
+ - Andrzej Kadlec\n
+ - Andrzej Łaptaś\n
+ - Andrzej Łaptaś, Kraków\n
+ - andy galikowski\n
+ - ANIAK71@O2.PL\n
+ - Anna Sawicka\n
+ - Artur Maj oraz inni\n
+ - Bartosz Sawicki\n
+ - Bogdan Rudnik\n
+ - Bogdan Wojsa\n
+ - drzazga przemek\n
+ - Dworak H\n
+ - Gimli1\n
+ - GRUBY\n
+ - *j\n
+ - Janusz Filipecki (GRUBY)\n
+ - Janusz Kulecki\n
+ - Janusz Michalski (JaMi)\n
+ - jerzybart@...\n
+ - Jolanta Loster\n
+ - Krzysztof Hancewicz\n
+ - Leszek Opyrchał\n
+ - Łukasz Marcinkowski\n
+ - Maciej Odrowąż-Mieszkowski\n
+ - Maciej Urbaniak\n
+ - Maciek Mieszkowski\n
+ - Maciek Mieszkowski na podstawie informacji od "Adamus"\n
+ - Maciek Mieszkowski na podstawie informacji od Janusza Kulińskiego\n
+ - Maciek Mieszkowski na podstawie informacji od (pseudonim - marianna)\n
+ - Maciek Mieszkowski na podstawie informacji od Pawła\n
+ - Maciek Mieszkowski na podstawie informacji uzyskanych od "Sorpet"\n
+ - Marcin\n
+ - Marcin Knyps\n
+ - Marcin Mikulski\n
+ - Marek Baranowski\n
+ - Marek Werner (marucha)\n
+ - Marta Adamska i Maati\n
+ - Paweł Woźniak\n
+ - Paweł Zetkowski\n
+ - piast\n
+ - Piotr Eichler z Suchego Lasu\n
+ - Piotrek\n
+ - Piotrek Knyps\n
+ - Piotr Kaliszek\n
+ - pjas (at) op.pl\n
+ - Przewodnik_XL\n
+ - Rafał Tomczyk\n
+ - rrokicki\n
+ - Sebastian -Gizbern- Lipiejko\n
+ - Sebastian Lipiejko\n
+ - Ślimak\n
+ - Tomasz Toczyski\n
+ - www.browarek.org.pl\n
+ - yeti\n
+ - Zbigniew Leszczyński\n
+</string>
 
 </resources>
