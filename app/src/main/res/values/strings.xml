@@ -33,6 +33,7 @@
     <string name="cleanliness">"Cleanliness:"</string>
     <string name="at_kilometer">"km"</string>
     <string name="path_total_lenght">"Total length"</string>
+    <string name="path_about_path_authors">Path description authors:</string>
     <string name="location_rationale">We use location data to handle better navigation on the Path\'s map. this permission is not required.</string>
     <string name="path_map">Map</string>
     <string name="path_list">Path List</string>
@@ -58,7 +59,6 @@
     <string name="about_explain_button">Learn more here</string>
     <string name="about_codebase_author">Application created by: Szymon Kraus email: czerwiiii@gmail.com</string>
     <string name="about_path_authors">Big Thanks to all of the path description authors!!!</string>
-    <string name="path_about_path_authors">Path description authors:</string>
     <string name="about_database">All path data is direct copy of www.kajak.org.pl</string>
     <string name="check_out_my_other_stuff">Check out my other stuff!</string>
     <string name="find_out_more_here">Find out more here!</string>
@@ -70,6 +70,12 @@
     <string name="delete_confirmation">Do you want to delete item?</string>
     <string name="delete_yes">Yes</string>
     <string name="delete_no">Cancel</string>
+
+
+    <string name="change_language_polish">Polish!</string>
+    <string name="change_language_english">English!</string>
+    <string name="details">Details</string>
+    <string name="about_path">About</string>
 
     <string name="about_path_authors_list" translatable="false"> - Andrzej "atomikpl"\n
  - Andrzej Galikowski\n

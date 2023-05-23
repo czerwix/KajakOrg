@@ -5,7 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import com.mobeedev.kajakorg.domain.usecase.GetLocalPathDetailsUseCase
 import com.mobeedev.kajakorg.domain.usecase.GetPathDetailsScreenInfoUseCase
-import com.mobeedev.kajakorg.domain.usecase.UpdateGoogleMapStatusUSeCase
+import com.mobeedev.kajakorg.domain.usecase.UpdateGoogleMapStatusUseCase
 import com.mobeedev.kajakorg.ui.model.GoogleMapsStatusItem
 import com.mobeedev.kajakorg.ui.model.PathItem
 import com.mobeedev.kajakorg.ui.navigation.PathDetailsArgs
@@ -18,7 +18,7 @@ class PathDetailsViewModel(
     application: Application,
     savedStateHandle: SavedStateHandle,
     private val getPathDetailsUseCase: GetPathDetailsScreenInfoUseCase,
-    private val updateGoogleMapStatusUSeCase: UpdateGoogleMapStatusUSeCase
+    private val updateGoogleMapStatusUSeCase: UpdateGoogleMapStatusUseCase
 ) : AndroidViewModel(application) {
 
     private val pathArgs = PathDetailsArgs(checkNotNull(savedStateHandle[pathDetailsIdArg]))
@@ -63,7 +63,7 @@ class PathDetailsViewModel(
         _uiState.update {
             if (it is PathDetailsViewModelState.Success) {
                 updateGoogleMapStatusUSeCase.invoke(
-                    params = UpdateGoogleMapStatusUSeCase.Params(
+                    params = UpdateGoogleMapStatusUseCase.Params(
                         googleMapsStatus
                     )
                 )

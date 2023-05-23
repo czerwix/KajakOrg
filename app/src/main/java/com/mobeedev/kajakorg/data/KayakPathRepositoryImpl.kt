@@ -3,11 +3,13 @@ package com.mobeedev.kajakorg.data
 import android.content.Context
 import android.util.Log
 import androidx.datastore.preferences.core.edit
+import com.google.android.gms.maps.model.CameraPosition
 import com.mobeedev.kajakorg.common.extensions.dataStore
 import com.mobeedev.kajakorg.data.datasource.local.KajakOrgHtmlParser.parsePathHTML
 import com.mobeedev.kajakorg.data.datasource.local.LocalPathSource
 import com.mobeedev.kajakorg.data.datasource.local.PreferencesKeys
 import com.mobeedev.kajakorg.data.datasource.remote.RemotePathSource
+import com.mobeedev.kajakorg.data.db.PathMapDetailScreenState
 import com.mobeedev.kajakorg.data.model.detail.PathDto
 import com.mobeedev.kajakorg.domain.error.runRecoverCatching
 import com.mobeedev.kajakorg.domain.model.DataDownloadState
@@ -113,5 +115,30 @@ class KayakPathRepositoryImpl(
         } else {
             listOf(localPathSource.getPathMapData(pathId))
         }
+    }
+
+    override suspend fun getMapDetailsState(pathId: Int): Result<PathMapDetailScreenState> =
+        runRecoverCatching {
+            localPathSource.getPathDetailScreenState(pathId)
+        }
+
+    override suspend fun saveMapDetailsState(
+        position: CameraPosition,
+        currentPage: Int,
+        bottomLayoutVisibility: Boolean,
+        pathId: Int
+    ): Result<Unit> = runRecoverCatching {
+        localPathSource.savePathDetailScreenState(
+            PathMapDetailScreenState(
+                pathId = pathId,
+                cameraPositionLat = position.target.latitude,
+                cameraPositionLng = position.target.longitude,
+                cameraPositionZoom = position.zoom,
+                cameraPositionTilt = position.tilt,
+                cameraPositionBearing = position.bearing,
+                currentPage = currentPage,
+                bottomLayoutVisibility = bottomLayoutVisibility,
+            )
+        )
     }
 }

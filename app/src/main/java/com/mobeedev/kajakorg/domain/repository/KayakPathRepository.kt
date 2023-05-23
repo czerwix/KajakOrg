@@ -1,5 +1,7 @@
 package com.mobeedev.kajakorg.domain.repository
 
+import com.google.android.gms.maps.model.CameraPosition
+import com.mobeedev.kajakorg.data.db.PathMapDetailScreenState
 import com.mobeedev.kajakorg.domain.model.DataDownloadStatus
 import com.mobeedev.kajakorg.domain.model.detail.Path
 import com.mobeedev.kajakorg.domain.model.overview.PathOverview
@@ -28,5 +30,14 @@ interface KayakPathRepository {
 
     suspend fun getPathItemById(pathId: Int): Result<PathItem>
 
-    suspend fun getPathMap(pathId: Int?):Result<List<PathMapItem>>
+    suspend fun getPathMap(pathId: Int?): Result<List<PathMapItem>>
+
+    suspend fun saveMapDetailsState(
+        position: CameraPosition,
+        currentPage: Int,
+        bottomLayoutVisibility: Boolean,
+        pathId: Int
+    ): Result<Unit>
+
+    suspend fun getMapDetailsState(pathId: Int): Result<PathMapDetailScreenState>
 }

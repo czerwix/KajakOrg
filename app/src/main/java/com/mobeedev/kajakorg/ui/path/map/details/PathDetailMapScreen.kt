@@ -1,5 +1,6 @@
 package com.mobeedev.kajakorg.ui.path.map.details
 
+import android.app.Application
 import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -31,6 +32,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,6 +40,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
@@ -51,6 +54,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -60,6 +64,7 @@ import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.mobeedev.kajakorg.R
 import com.mobeedev.kajakorg.common.view.checkLocationPermissions
+import com.mobeedev.kajakorg.data.db.PathMapDetailScreenState
 import com.mobeedev.kajakorg.data.model.detail.EventType
 import com.mobeedev.kajakorg.designsystem.map.DEFAULT_CAMERA_UPDATE_ANIMATION_LENGTH
 import com.mobeedev.kajakorg.designsystem.map.EVENT_ZOOM_LEVEL
@@ -76,6 +81,8 @@ import com.mobeedev.kajakorg.domain.model.detail.Section
 import com.mobeedev.kajakorg.domain.model.detail.eventId
 import com.mobeedev.kajakorg.domain.model.detail.flatPathMapSectionEventList
 import com.mobeedev.kajakorg.domain.model.detail.isLocationNonZero
+import com.mobeedev.kajakorg.domain.usecase.GetLocalPathDetailsUseCase
+import com.mobeedev.kajakorg.domain.usecase.SaveMapDetailsStateUseCase
 import com.mobeedev.kajakorg.ui.model.PathItem
 import com.mobeedev.kajakorg.ui.model.PathOverviewItem
 import com.mobeedev.kajakorg.ui.model.getBounds
@@ -97,11 +104,11 @@ fun PathDetailsMapRoute(
 
     checkLocationPermissions(onPermissionGranted = {
         PathDetailsMapScreen(
-            uiState, onBackClick, true, modifier
+            uiState, onBackClick, true, modifier, viewModel
         )
     }, onPermissionDenied = {
         PathDetailsMapScreen(
-            uiState, onBackClick, false, modifier
+            uiState, onBackClick, false, modifier, viewModel
         )
     })
 }
@@ -111,14 +118,15 @@ fun PathDetailsMapScreen(
     uiState: PathDetailsMapViewModelState,
     onBackClick: () -> Unit,
     locationStatus: Boolean,
-    modifier: Modifier
+    modifier: Modifier,
+    viewModel: PathDetailMapViewModel
 ) {
     when (uiState) {
         PathDetailsMapViewModelState.Error -> TODO()
         is PathDetailsMapViewModelState.InitialStart, PathDetailsMapViewModelState.Loading -> showLoadingState()
         is PathDetailsMapViewModelState.Success -> {
             showSuccessMapDetailsScreen(
-                uiState.path, onBackClick, locationStatus, modifier
+                uiState.path, uiState?.savedState, onBackClick, locationStatus, modifier, viewModel
             )
         }
     }
@@ -152,9 +160,11 @@ private fun getCameraPosition(
 @Composable
 fun showSuccessMapDetailsScreen(
     path: PathItem,
+    savedSate: PathMapDetailScreenState?,
     onBackClick: () -> Unit,
     isLocationPermissionGranted: Boolean,
-    modifier: Modifier
+    modifier: Modifier,
+    viewModel: PathDetailMapViewModel
 ) {
     var isFirstStartUp by remember { mutableStateOf(true) }
     val mapEventFlatList = path.pathSectionsEvents.flatPathMapSectionEventList()
@@ -165,17 +175,37 @@ fun showSuccessMapDetailsScreen(
     val scope = rememberCoroutineScope()
     val mapOffset = remember { configuration.screenHeightDp / 16 }
     val cameraPositionState = rememberCameraPositionState {
-        position =
+        position = if (savedSate?.cameraPositionLat != null) {
+            savedSate.getCameraPosition()
+        } else {
             getCameraPosition(path.pathSectionsEvents.find { it is Event && it.isLocationNonZero() }
                 ?: path.pathSectionsEvents.first(), EVENT_ZOOM_LEVEL, context, mapOffset.dp)
+        }
     }
 
     val pagerState = rememberPagerState()
     //fixed a bug in pager that resets position
-    var currentlySelectedPager by remember { mutableStateOf(0) }
-    var bottomLayoutVisibility by remember { mutableStateOf(false) }
+    var currentlySelectedPager by remember { mutableStateOf(savedSate?.currentPage ?: 0) }
+    var bottomLayoutVisibility by remember {
+        mutableStateOf(
+            savedSate?.bottomLayoutVisibility ?: false
+        )
+    }
 
-    if (isFirstStartUp) {
+
+    DisposableEffect(Unit) {
+        onDispose {
+            viewModel.saveScreenState(
+                cameraPositionState.position,
+                pagerState.currentPage,
+                bottomLayoutVisibility,
+                path.overview.id
+            )
+        }
+    }
+
+
+    if (isFirstStartUp && savedSate == null) {
         LaunchedEffect(key1 = "initialstart zoom") {
             cameraPositionState.animate(
                 update = CameraUpdateFactory.newLatLngBounds(path.toMapItem()
@@ -199,13 +229,15 @@ fun showSuccessMapDetailsScreen(
                             getCameraPosition(event, EVENT_ZOOM_LEVEL, context, mapOffset.dp)
                         ), durationMs = DEFAULT_CAMERA_UPDATE_ANIMATION_LENGTH
                     )
-                    currentlySelectedPager =
-                        mapEventFlatList.indexOfFirst { it.eventId() == event.id }
+                    pagerState.animateScrollToPage(mapEventFlatList.indexOfFirst { it.eventId() == event.id })
                 }
             },
             cameraPositionState
         )
-        Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
             //TOP BAR
             Row(
                 Modifier
@@ -241,23 +273,59 @@ fun showSuccessMapDetailsScreen(
                     .wrapContentHeight()
                     .padding(bottom = 16.dp)
             ) {
-                IconButton(
-                    onClick = {
-                        bottomLayoutVisibility = bottomLayoutVisibility.not()
-                    },
-                    modifier = Modifier
-                        .size(48.dp)
-                        .padding(top = 16.dp)
-                ) {
-                    Icon(
+
+                Spacer(
+                    modifier = Modifier.weight(1f)
+                )
+
+                Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
+                    IconButton(
+                        onClick = {
+                            bottomLayoutVisibility = bottomLayoutVisibility.not()
+                        },
                         modifier = Modifier
-                            .fillMaxSize()
-                            .background(Color.White, CircleShape)
-                            .rotate(if (bottomLayoutVisibility.not()) 180f else 0f),
-                        painter = painterResource(id = R.drawable.outline_expand_more_24),
-                        contentDescription = null,
-                        tint = Color.Black
-                    )
+                            .size(48.dp)
+                            .padding(top = 16.dp)
+
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(Color.White, CircleShape)
+                                .rotate(if (bottomLayoutVisibility.not()) 180f else 0f),
+                            painter = painterResource(id = R.drawable.outline_expand_more_24),
+                            contentDescription = null,
+                            tint = Color.Black
+                        )
+                    }
+                }
+                Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.BottomEnd) {
+                    IconButton(
+                        onClick = {
+                            scope.launch {
+                                cameraPositionState.animate(
+                                    update = CameraUpdateFactory.newLatLngBounds(path.toMapItem()
+                                        .getBounds(),
+                                        with(density) { 26.dp.roundToPx() }),
+                                    durationMs = DEFAULT_CAMERA_UPDATE_ANIMATION_LENGTH
+                                )
+                                isFirstStartUp = false
+                            }
+                        },
+                        modifier = Modifier
+                            .size(48.dp)
+                            .padding(top = 16.dp, end = 16.dp)
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(Color.White, CircleShape),
+                            painter = painterResource(id = R.drawable.outline_place_24),
+                            contentDescription = null,
+                            tint = Color.Black
+                        )
+                    }
+
                 }
             }
 
@@ -280,6 +348,7 @@ fun showSuccessMapDetailsScreen(
             LaunchedEffect(pagerState) {
                 // Collect from the pager state a snapshotFlow reading the currentPage
                 snapshotFlow { pagerState.currentPage }.collect { page ->
+                    if (bottomLayoutVisibility.not()) return@collect
                     when (val selectedItem = mapEventFlatList[page]) {
                         is Section -> {
                             if (selectedItem.events.first().isLocationNonZero()) {
@@ -355,7 +424,10 @@ fun showEventPager(
                 }
                 .fillMaxWidth()
                 .aspectRatio(1f)) {
-            Column(verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxSize()) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxSize()
+            ) {
                 MapEventCard(pathSectionsEvents[page])
             }
         }
@@ -419,7 +491,17 @@ fun PreviewShowSuccessMapDetailsScreen() {
                             )
                         )
                     )
-                ), {}, true, Modifier
+                ),
+                PathMapDetailScreenState(0, 0.0, 0.0, 0f, 0f, 0f, 0, false),
+                {},
+                true,
+                Modifier,
+                PathDetailMapViewModel(
+                    Any() as Application,
+                    Any() as SavedStateHandle,
+                    Any() as GetLocalPathDetailsUseCase,
+                    Any() as SaveMapDetailsStateUseCase
+                )
             )
         }
     }

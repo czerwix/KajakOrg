@@ -1,5 +1,6 @@
 package com.mobeedev.kajakorg.ui.about.info
 
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,8 +20,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -31,6 +34,7 @@ import com.mobeedev.kajakorg.R
 import com.mobeedev.kajakorg.designsystem.BrandedButton
 import com.mobeedev.kajakorg.designsystem.BrandedButtonType
 import com.mobeedev.kajakorg.designsystem.theme.KajakTheme
+import java.util.Locale
 
 @Composable
 fun AboutAppRoute(
@@ -43,6 +47,7 @@ fun AboutAppRoute(
 @Composable
 fun AboutAppScreen(modifier: Modifier, navigateToExplain: () -> Unit) {
     val uriHandler = LocalUriHandler.current
+    val context = LocalContext.current
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -192,7 +197,44 @@ fun AboutAppScreen(modifier: Modifier, navigateToExplain: () -> Unit) {
                 .fillMaxWidth()
                 .height(32.dp)
         )
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp, start = 16.dp, end = 16.dp)
+        ) {
+            BrandedButton(
+                brandedButtonType = BrandedButtonType.Github.DarkGithubButton,
+                label = stringResource(R.string.change_language_polish),
+                onClick = {
+                    changeLanguage(Locale("pl"), context)
+                },
+            )
+
+            BrandedButton(
+                modifier = Modifier.padding(top = 8.dp),
+                brandedButtonType = BrandedButtonType.Github.DarkGithubButton,
+                label = stringResource(R.string.change_language_english),
+                onClick = {
+                    changeLanguage(Locale("en"), context)
+                },
+            )
+        }
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(32.dp)
+        )
     }
+}
+
+fun changeLanguage(locale: Locale, context: Context) {
+    Locale.setDefault(locale)
+    val resources = context.resources
+    val configuration = resources.configuration
+    configuration.locale = locale
+    resources.updateConfiguration(configuration, resources.displayMetrics)
 }
 
 @Preview

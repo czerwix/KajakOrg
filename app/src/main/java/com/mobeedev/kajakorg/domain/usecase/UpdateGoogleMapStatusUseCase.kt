@@ -4,9 +4,9 @@ import com.mobeedev.kajakorg.domain.repository.SharedPreferencesRepository
 import com.mobeedev.kajakorg.domain.usecase.comon.UseCase
 import com.mobeedev.kajakorg.ui.model.GoogleMapsStatusItem
 
-class UpdateGoogleMapStatusUSeCase(
+class UpdateGoogleMapStatusUseCase(
     private val sharedPreferencesRepository: SharedPreferencesRepository
-) : UseCase<Unit, UpdateGoogleMapStatusUSeCase.Params>() {
+) : UseCase<Unit, UpdateGoogleMapStatusUseCase.Params>() {
 
     override suspend fun run(params: Params): Result<Unit> =
         sharedPreferencesRepository.updateGoogleMapStatus(params.googleMapStatus)

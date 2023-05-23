@@ -2,6 +2,7 @@ package com.mobeedev.kajakorg.data.datasource.local
 
 import androidx.room.*
 import com.mobeedev.kajakorg.common.extensions.empty
+import com.mobeedev.kajakorg.data.db.PathMapDetailScreenState
 import com.mobeedev.kajakorg.data.db.overview.PathOverviewDB
 import com.mobeedev.kajakorg.data.db.path.EventDB
 import com.mobeedev.kajakorg.data.db.path.EventDescriptionDB
@@ -21,6 +22,11 @@ import com.mobeedev.kajakorg.ui.model.PathOverviewItem
 
 @Dao
 abstract class KajakPathDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun insert(pathDetailScreenState: PathMapDetailScreenState)
+    @Query("SELECT * FROM PathMapDetailScreenState WHERE pathId = :id")
+    abstract fun getPathDetailScreenState(id: Int): PathMapDetailScreenState
+
     //insert
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertAllPathsOverview(pathOverviews: List<PathOverviewDB>)

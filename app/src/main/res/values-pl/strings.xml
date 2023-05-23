@@ -60,4 +60,11 @@
     <string name="delete_yes">Tak</string>
     <string name="delete_no">Cancel</string>
     <string name="about_path_authors">Autorzy opisów:</string>
+    <string name="path_total_lenght">"Długość"</string>
+    <string name="path_about_path_authors">Autorzy opisu spływu:</string>
+
+    <string name="change_language_polish">Polski!</string>
+    <string name="change_language_english">Angielski!</string>
+    <string name="details">Szlak</string>
+    <string name="about_path">Info</string>
 </resources>

@@ -5,6 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.mobeedev.kajakorg.data.datasource.local.ChecklistDao
 import com.mobeedev.kajakorg.data.datasource.local.KajakPathDao
 import com.mobeedev.kajakorg.data.db.KajakDB.Companion.DATABASE_VERSION
@@ -22,9 +24,11 @@ import com.mobeedev.kajakorg.data.db.path.SectionDB
         SectionDB::class,
         EventDB::class,
         EventDescriptionDB::class,
-        CheckListDB::class
+        CheckListDB::class,
+        PathMapDetailScreenState::class
     ],
-    version = DATABASE_VERSION
+    version = DATABASE_VERSION,
+    exportSchema = true
 )
 @TypeConverters(DBTypeConverters::class)
 abstract class KajakDB() : RoomDatabase() {
@@ -34,7 +38,14 @@ abstract class KajakDB() : RoomDatabase() {
 
     companion object {
         const val DATABASE_NAME = "kajak_db"
-        const val DATABASE_VERSION = 2
+        const val DATABASE_VERSION = 3
+
+        val MIGRATION_2_3: Migration = object : Migration(2, 3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("CREATE TABLE IF NOT EXISTS `PathMapDetailScreenState` (`pathId` INTEGER NOT NULL, `cameraPositionLat` REAL, `cameraPositionLng` REAL, `cameraPositionZoom` REAL, `cameraPositionTilt` REAL, `cameraPositionBearing` REAL, `currentPage` INTEGER, `bottomLayoutVisibility` INTEGER, PRIMARY KEY(`pathId`))")
+            }
+        }
+
 
         @Volatile
         private var INSTANCE: KajakDB? = null
@@ -52,7 +63,8 @@ abstract class KajakDB() : RoomDatabase() {
 
                     instance = Room.databaseBuilder(context, KajakDB::class.java, DATABASE_NAME)
                         .createFromAsset("database/kajak_db.db")
-                        .fallbackToDestructiveMigration()
+                        .addMigrations(MIGRATION_2_3)
+//                        .fallbackToDestructiveMigration()
                         .build()
                     INSTANCE = instance
                 }

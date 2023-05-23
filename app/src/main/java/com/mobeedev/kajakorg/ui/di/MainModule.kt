@@ -16,11 +16,13 @@ import com.mobeedev.kajakorg.domain.usecase.GetLocalMapPathsUseCase
 import com.mobeedev.kajakorg.domain.usecase.GetLocalPathDetailsUseCase
 import com.mobeedev.kajakorg.domain.usecase.GetLocalPathOverviewItemUseCase
 import com.mobeedev.kajakorg.domain.usecase.GetLocalPathsOverviewUseCase
+import com.mobeedev.kajakorg.domain.usecase.GetMapDetailsStateUseCase
 import com.mobeedev.kajakorg.domain.usecase.GetPathDetailsScreenInfoUseCase
 import com.mobeedev.kajakorg.domain.usecase.LoadAllAvailablePathsUseCase
 import com.mobeedev.kajakorg.domain.usecase.LoadAllPathsDetailsUseCase
+import com.mobeedev.kajakorg.domain.usecase.SaveMapDetailsStateUseCase
 import com.mobeedev.kajakorg.domain.usecase.UpdateChecklistUseCase
-import com.mobeedev.kajakorg.domain.usecase.UpdateGoogleMapStatusUSeCase
+import com.mobeedev.kajakorg.domain.usecase.UpdateGoogleMapStatusUseCase
 import com.mobeedev.kajakorg.ui.MainDataLoadingViewModel
 import com.mobeedev.kajakorg.ui.checklist.ChecklistViewModel
 import com.mobeedev.kajakorg.ui.common.ModuleLoader
@@ -84,7 +86,8 @@ private val viewModelModule = module {
         PathDetailMapViewModel(
             application = get(),
             savedStateHandle = it.get(),
-            getPathDetailsUseCase = get()
+            getPathDetailsUseCase = get(),
+            saveMapDetailsBoundsUseCase = get()
         )
     }
 
@@ -106,7 +109,12 @@ private val useCaseModule = module {
     factory { GetLocalAllPathDetailsUseCase(kayakPathRepository = get()) }
     factory { GetLocalPathOverviewItemUseCase(kayakPathRepository = get()) }
     factory { GetLastUpdateDateUseCase(kayakPathRepository = get()) }
-    factory { GetLocalPathDetailsUseCase(kayakPathRepository = get()) }
+    factory {
+        GetLocalPathDetailsUseCase(
+            kayakPathRepository = get(),
+            getMapDetailsStateUseCase = get()
+        )
+    }
     factory { GetLocalMapPathsUseCase(kayakPathRepository = get()) }
     factory {
         GetPathDetailsScreenInfoUseCase(
@@ -114,10 +122,13 @@ private val useCaseModule = module {
             sharedPreferencesRepository = get()
         )
     }
-    factory { UpdateGoogleMapStatusUSeCase(sharedPreferencesRepository = get()) }
+    factory { UpdateGoogleMapStatusUseCase(sharedPreferencesRepository = get()) }
     factory { GetChecklistUseCase(checklistRepository = get()) }
     factory { UpdateChecklistUseCase(checklistRepository = get()) }
     factory { DeleteChecklistUseCase(checklistRepository = get()) }
+
+    factory { SaveMapDetailsStateUseCase(kayakPathRepository = get()) }
+    factory { GetMapDetailsStateUseCase(kayakPathRepository = get()) }
 }
 
 private val repositoryModule = module {

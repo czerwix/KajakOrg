@@ -54,6 +54,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mobeedev.kajakorg.R
 import com.mobeedev.kajakorg.common.extensions.empty
+import com.mobeedev.kajakorg.common.view.rememberForeverLazyListState
 import com.mobeedev.kajakorg.designsystem.path.pathAuthors
 import com.mobeedev.kajakorg.designsystem.theme.PrimaryColor
 import com.mobeedev.kajakorg.designsystem.theme.SelectedTabColor
@@ -107,8 +108,7 @@ fun showPathDetails(
     navigateToPathMap: (Int) -> Unit
 ) {
     var isSettingsMenuVisible: Boolean by remember { mutableStateOf(false) }
-//    val listState = rememberForeverLazyListState(key = "Path_details_${uiState.path.overview.id}")
-    val listState = rememberLazyListState()
+    val listState = rememberForeverLazyListState(key = "Path_details_${uiState.path.overview.id}")
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
@@ -146,7 +146,7 @@ fun showPathDetails(
         //tabs
         var tabIndex by remember { mutableStateOf(0) }
 
-        val tabs = listOf("Details", "About")
+        val tabs = listOf(stringResource(id = R.string.details), stringResource(id = R.string.about_path))
 
         Column(modifier = Modifier.fillMaxWidth()) {
             TabRow(
@@ -290,22 +290,22 @@ fun PathBarContent(
                     tint = Color.White
                 )
             }
-            IconButton(
-                onClick = onStarButtonClicked,
-                modifier = Modifier
-                    .size(34.dp)
-                    .background(
-                        color = LocalContentColor.current.copy(alpha = 0.0f),
-                        shape = CircleShape
-                    )
-            ) {
-                Icon(
-                    modifier = Modifier.fillMaxSize(),
-                    painter = painterResource(R.drawable.outline_star_24),
-                    contentDescription = null,
-                    tint = Color.White
-                )
-            }
+//            IconButton(
+//                onClick = onStarButtonClicked,
+//                modifier = Modifier
+//                    .size(34.dp)
+//                    .background(
+//                        color = LocalContentColor.current.copy(alpha = 0.0f),
+//                        shape = CircleShape
+//                    )
+//            ) {
+//                Icon(
+//                    modifier = Modifier.fillMaxSize(),
+//                    painter = painterResource(R.drawable.outline_star_24),
+//                    contentDescription = null,
+//                    tint = Color.White
+//                )
+//            }
             Box(modifier = Modifier.wrapContentSize()) {
                 IconButton(
                     onClick = onSettingsButtonClicked,

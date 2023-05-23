@@ -1,5 +1,6 @@
 package com.mobeedev.kajakorg.data.datasource.local
 
+import com.mobeedev.kajakorg.data.db.PathMapDetailScreenState
 import com.mobeedev.kajakorg.data.model.detail.PathDto
 import com.mobeedev.kajakorg.data.model.overview.PathOverviewDto
 import com.mobeedev.kajakorg.data.model.overview.toDB
@@ -43,5 +44,9 @@ class LocalPathSource(
     suspend fun getPathMapData(pathId: Int): PathMapItem =
         kajakPathDao.getPathMapData(pathId)
 
+    suspend fun getPathDetailScreenState(pathId: Int): PathMapDetailScreenState =
+        kajakPathDao.getPathDetailScreenState(pathId)
 
+    suspend fun savePathDetailScreenState(pathDetailScreenState: PathMapDetailScreenState) =
+        kajakPathDao.insert(pathDetailScreenState)
 }
